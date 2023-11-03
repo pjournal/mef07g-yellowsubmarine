@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "[STUDENT/GROUP NAME] Progress Journal",
+    "section": "",
+    "text": "Introduction\n\n\n\n\n\n\nSetup To-Do\n\n\n\nHere is the list of items to properly set this Progress Journal up.\n\nReplace the name placeholder “[STUDENT NAME SURNAME / PROJECT GROUP NAME]” on index.qmd with your name or group name.\nReplace the name placeholder “[STUDENT/GROUP NAME]” on _quarto.yml with your name or group name.\nReplace the repository link https://github.com/pjournal/gh-pages-quarto-template with your or your group’s repository link.\nIf this is a group PJ, follow the instructions in comments on index.qmd and add members, group name, project name and project short description.\nIf this repository does not use RStudio/Posit, then you can also remove .Rproj file. Otherwise rename it with your repository name (e.g, mefXX-reponame).\n\nThen test with quarto preview on Terminal. If everything is ok, execute quarto render command in Terminal.\nFinally, delete the above section (including this sentence) and (GitHub) push the changes to your repository.\n\n\n\nThis progress journal covers [STUDENT NAME SURNAME / PROJECT GROUP NAME]’s work during their term at BDA 503 Fall 2023.\nEach section is an assignment or an individual work."
+  },
+  {
+    "objectID": "assignment1.html",
+    "href": "assignment1.html",
+    "title": "1  Assignment 1",
+    "section": "",
+    "text": "This is a template example qmd output page. You may see an example R code below.\n\nset.seed(1)\nvec1 &lt;- sample(LETTERS,5)\npaste0(vec1,collapse=\"\")\n\n[1] \"YDGAB\""
+  }
+]
