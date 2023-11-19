@@ -1,0 +1,39 @@
+---
+title: "Prepocessed Data"
+date: "2023-11-16"
+---
+
+# Yellow Submarine's Project Proposal on WITS data
+
+The choice of this domain stems from the significance of Turkey's role in the global trade landscape. Before settling on the WITS database, we reviewed existing solutions, including the [Harvard University Atlas project](https://atlas.cid.harvard.edu/) and [Visualizations from the Observatory of Economic Complexity](https://oec.world/en).) 
+
+We have decided on this database considering the primary sources that include:
+a. Trade Partnerships: Utilize international trade databases to identify Turkey's major trade partners, assess trade volumes, and analyze the composition of exports and imports.
+b. Complexity Score: Apply complexity indices to measure the sophistication of Turkey's exports and imports, shedding light on the diversification and technological intensity of its trade activities.
+c. Current Account Projections: Examine historical current account data and employ forecasting models to project future trends, allowing for informed insights into Turkey's economic stability.
+d. Trading Routes: Analyze shipping and logistics data to map out key trading routes, highlighting the connectivity and strategic importance of Turkey in global trade.
+e. Additional Insights: Explore supplementary datasets as needed to uncover specific aspects of Turkey's trade dynamics, such as sector-specific analyses or the impact of geopolitical events.
+
+With this project, we aim to produce a comprehensive report that synthesizes the findings into a coherent narrative. Visualizations, charts, and infographics will be employed to enhance the accessibility of the data.
+---
+
+
+```{r prepocesseddata,  eval=FALSE, echo=TRUE}
+
+library(tradestatistics)
+library(tibble)
+
+wits_turkey_data <-ots_create_tidy_data(
+  years = 2018:2019,
+  reporters = "tur",
+  partners = "arg",
+  table = "yrpc"
+)
+saveRDS(wits_turkey_data, file = "wits_data.rds")
+data <- readRDS("wits_data.rds")
+data
+
+
+```
+
+ [RDS Link](https://github.com/pjournal/mef07g-yellowsubmarine/blob/main/wits_data.rds)
