@@ -11,7 +11,7 @@ library(ggplot2)
 
 url <- "https://raw.githubusercontent.com/berkorbay/datasets/master/gdd/gdd_b12_levels.csv"
 
-#Clean and orginise columns
+#Clean and organize the columns
 data <- read.csv(url)
 data <- data %>%
   rename(country = iso3)
