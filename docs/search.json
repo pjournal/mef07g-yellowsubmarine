@@ -2,15 +2,15 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "[STUDENT/GROUP NAME] Progress Journal",
+    "title": "YELLOW SUBMARINE Progress Journal",
     "section": "",
-    "text": "Introduction\n\n\n\n\n\n\nSetup To-Do\n\n\n\nHere is the list of items to properly set this Progress Journal up.\n\nReplace the name placeholder “[STUDENT NAME SURNAME / PROJECT GROUP NAME]” on index.qmd with your name or group name.\nReplace the name placeholder “[STUDENT/GROUP NAME]” on _quarto.yml with your name or group name.\nReplace the repository link https://github.com/pjournal/gh-pages-quarto-template with your or your group’s repository link.\nIf this is a group PJ, follow the instructions in comments on index.qmd and add members, group name, project name and project short description.\nIf this repository does not use RStudio/Posit, then you can also remove .Rproj file. Otherwise rename it with your repository name (e.g, mefXX-reponame).\n\nThen test with quarto preview on Terminal. If everything is ok, execute quarto render command in Terminal.\nFinally, delete the above section (including this sentence) and (GitHub) push the changes to your repository.\n\n\n\nThis progress journal covers [STUDENT NAME SURNAME / PROJECT GROUP NAME]’s work during their term at BDA 503 Fall 2023.\nEach section is an assignment or an individual work."
+    "text": "Introduction\n\n\nThis progress journal covers YELLOW SUBMARINE’s work during their term at BDA 503 Fall 2023.\nEach section is an assignment or an individual work.\n\n\n\nGroup Members\n\nAlp Göçek\n\nBengü Üzmez\n\nSezer Türkmen\n\nSezgi Ayhan\n\n\n\nGroup Project Details\nOur group project is [PROJECT NAME]. [SHORT DESCRIPTION]"
   },
   {
     "objectID": "assignment1.html",
     "href": "assignment1.html",
     "title": "1  Assignment 1",
     "section": "",
-    "text": "This is a template example qmd output page. You may see an example R code below.\n\nset.seed(1)\nvec1 &lt;- sample(LETTERS,5)\npaste0(vec1,collapse=\"\")\n\n[1] \"YDGAB\""
+    "text": "This is a template example qmd output page. You may see an example R code below.\n\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(ggplot2)\n\nurl &lt;- \"https://raw.githubusercontent.com/berkorbay/datasets/master/gdd/gdd_b12_levels.csv\"\n\n#Clean and orginise columns\ndata &lt;- read.csv(url)\ndata &lt;- data %&gt;%\n  rename(country = iso3)\ncleaned_data &lt;- data %&gt;%\n  filter(age != 999, female %in% c(0, 1))\n\n\n# Soviet Union data\nsoviet_union_abbreviations &lt;- c(\"ARM\", \"AZE\", \"BLR\", \"EST\", \"GEO\", \"KAZ\", \"KGZ\", \"LVA\", \"LTU\", \"MDA\", \"RUS\", \"TJK\", \"TKM\", \"UKR\", \"UZB\")\n\nsoviet_union_data &lt;- cleaned_data %&gt;%\n  filter(country %in% soviet_union_abbreviations)\n\nhead(soviet_union_data)\n\n  country age female urban edu year   median lowerci_95 upperci_95\n1     ARM 0.5      0   999 999 1990 1.783507  0.8432348   3.923062\n2     ARM 0.5      0   999 999 1995 1.840131  0.9001410   4.009270\n3     ARM 0.5      0   999 999 2000 1.832840  0.8638245   4.167738\n4     ARM 0.5      0   999 999 2005 1.855711  0.8971519   4.079450\n5     ARM 0.5      0   999 999 2010 1.900565  0.8984413   4.164848\n6     ARM 0.5      0   999 999 2015 1.926644  0.9241328   4.110462"
   }
 ]

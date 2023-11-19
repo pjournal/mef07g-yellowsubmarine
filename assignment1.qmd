@@ -6,7 +6,27 @@ date: "2022-10-01"
 This is a template example qmd output page. You may see an example R code below.
 
 ```{r}
-set.seed(1)
-vec1 <- sample(LETTERS,5)
-paste0(vec1,collapse="")
+library(dplyr)
+library(ggplot2)
+
+url <- "https://raw.githubusercontent.com/berkorbay/datasets/master/gdd/gdd_b12_levels.csv"
+
+#Clean and orginise columns
+data <- read.csv(url)
+data <- data %>%
+  rename(country = iso3)
+cleaned_data <- data %>%
+  filter(age != 999, female %in% c(0, 1))
+
+
+# Soviet Union data
+soviet_union_abbreviations <- c("ARM", "AZE", "BLR", "EST", "GEO", "KAZ", "KGZ", "LVA", "LTU", "MDA", "RUS", "TJK", "TKM", "UKR", "UZB")
+
+soviet_union_data <- cleaned_data %>%
+  filter(country %in% soviet_union_abbreviations)
+
+head(soviet_union_data)
+
+
 ```
+

@@ -3,8 +3,8 @@ project:
   output-dir: docs
 
 book:
-  title: "[STUDENT/GROUP NAME] Progress Journal"
-  repo-url: https://github.com/pjournal/gh-pages-quarto-template
+  title: "YELLOW SUBMARINE Progress Journal"
+  repo-url: https://github.com/pjournal/mef07g-yellowsubmarine
   chapters:
     - index.qmd
     - assignment1.qmd
