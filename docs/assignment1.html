@@ -220,29 +220,30 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/berkorbay/datasets/master/gdd/gdd_b12_levels.csv"</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Clean and orginise columns</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Clean and organize the columns</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">country =</span> iso3)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>cleaned_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age <span class="sc">!=</span> <span class="dv">999</span>, female <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Soviet Union data</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>soviet_union_abbreviations <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ARM"</span>, <span class="st">"AZE"</span>, <span class="st">"BLR"</span>, <span class="st">"EST"</span>, <span class="st">"GEO"</span>, <span class="st">"KAZ"</span>, <span class="st">"KGZ"</span>, <span class="st">"LVA"</span>, <span class="st">"LTU"</span>, <span class="st">"MDA"</span>, <span class="st">"RUS"</span>, <span class="st">"TJK"</span>, <span class="st">"TKM"</span>, <span class="st">"UKR"</span>, <span class="st">"UZB"</span>)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>soviet_union_data <span class="ot">&lt;-</span> cleaned_data <span class="sc">%&gt;%</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> soviet_union_abbreviations)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(soviet_union_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace '999' with 'NA'</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>data[data <span class="sc">==</span> <span class="dv">999</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename columns</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"country"</span>, <span class="st">"age"</span>, <span class="st">"gender"</span>, <span class="st">"urban"</span>, <span class="st">"edu"</span>, <span class="st">"year"</span>, <span class="st">"median"</span>, <span class="st">"lowerci_95"</span>, <span class="st">"upperci_95"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Soviet Union data</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>soviet_union_abbreviations <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ARM"</span>, <span class="st">"AZE"</span>, <span class="st">"BLR"</span>, <span class="st">"EST"</span>, <span class="st">"GEO"</span>, <span class="st">"KAZ"</span>, <span class="st">"KGZ"</span>, <span class="st">"LVA"</span>, <span class="st">"LTU"</span>, <span class="st">"MDA"</span>, <span class="st">"RUS"</span>, <span class="st">"TJK"</span>, <span class="st">"TKM"</span>, <span class="st">"UKR"</span>, <span class="st">"UZB"</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>soviet_union_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> soviet_union_abbreviations)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(soviet_union_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  country age female urban edu year   median lowerci_95 upperci_95
-1     ARM 0.5      0   999 999 1990 1.783507  0.8432348   3.923062
-2     ARM 0.5      0   999 999 1995 1.840131  0.9001410   4.009270
-3     ARM 0.5      0   999 999 2000 1.832840  0.8638245   4.167738
-4     ARM 0.5      0   999 999 2005 1.855711  0.8971519   4.079450
-5     ARM 0.5      0   999 999 2010 1.900565  0.8984413   4.164848
-6     ARM 0.5      0   999 999 2015 1.926644  0.9241328   4.110462</code></pre>
+<pre><code>  country age gender urban edu year   median lowerci_95 upperci_95
+1     ARM  NA      0    NA  NA 1990 3.786676   2.368080   6.264270
+2     ARM  NA      0    NA  NA 1995 3.854162   2.479479   6.332356
+3     ARM  NA      0    NA  NA 2000 3.875226   2.442322   6.428511
+4     ARM  NA      0    NA  NA 2005 3.953946   2.576360   6.397870
+5     ARM  NA      0    NA  NA 2010 4.000100   2.644318   6.421179
+6     ARM  NA      0    NA  NA 2015 4.017517   2.716484   6.324907</code></pre>
 </div>
 </div>
 

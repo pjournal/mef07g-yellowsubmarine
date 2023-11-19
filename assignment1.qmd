@@ -13,16 +13,17 @@ url <- "https://raw.githubusercontent.com/berkorbay/datasets/master/gdd/gdd_b12_
 
 #Clean and organize the columns
 data <- read.csv(url)
-data <- data %>%
-  rename(country = iso3)
-cleaned_data <- data %>%
-  filter(age != 999, female %in% c(0, 1))
 
+# Replace '999' with 'NA'
+data[data == 999] <- NA
+
+# Rename columns
+colnames(data) <- c("country", "age", "gender", "urban", "edu", "year", "median", "lowerci_95", "upperci_95")
 
 # Soviet Union data
 soviet_union_abbreviations <- c("ARM", "AZE", "BLR", "EST", "GEO", "KAZ", "KGZ", "LVA", "LTU", "MDA", "RUS", "TJK", "TKM", "UKR", "UZB")
 
-soviet_union_data <- cleaned_data %>%
+soviet_union_data <- data %>%
   filter(country %in% soviet_union_abbreviations)
 
 head(soviet_union_data)
