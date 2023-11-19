@@ -1,11 +1,18 @@
 ---
 title: "Assignment 1"
-date: "2022-10-01"
+date: "2023-11-23"
 ---
+## Group Assignment For Global Dietary Database
+In this analysis, we delve into the Global Dietary Database to scrutinize Vitamin B12 intake among Former Soviet Union countries. Employing the analytical prowess of 'dplyr' and 'ggplot2' in R, our aim is to uncover patterns and variations, offering a data-driven perspective on nutritional habits within this geopolitical region.
 
-This is a template example qmd output page. You may see an example R code below.
+[Global Dietary Database](https://globaldietarydatabase.org/)
 
-```{r}
+[Dataset](https://raw.githubusercontent.com/berkorbay/datasets/master/gdd/gdd_b12_levels.csv)
+
+
+---
+```{r setup, include=FALSE}
+
 library(dplyr)
 library(ggplot2)
 
@@ -14,20 +21,89 @@ url <- "https://raw.githubusercontent.com/berkorbay/datasets/master/gdd/gdd_b12_
 #Clean and organize the columns
 data <- read.csv(url)
 
+
 # Replace '999' with 'NA'
 data[data == 999] <- NA
 
 # Rename columns
 colnames(data) <- c("country", "age", "gender", "urban", "edu", "year", "median", "lowerci_95", "upperci_95")
 
-# Soviet Union data
+data$average <- data$median + ((data$upperci_95 - data$lowerci_95) / 2)
+
+
+
+```
+
+
+```{r, include=TRUE}
+
+
+# Soviet Union data cleaned up and inserted average column by calculating the mean
 soviet_union_abbreviations <- c("ARM", "AZE", "BLR", "EST", "GEO", "KAZ", "KGZ", "LVA", "LTU", "MDA", "RUS", "TJK", "TKM", "UKR", "UZB")
 
 soviet_union_data <- data %>%
   filter(country %in% soviet_union_abbreviations)
 
-head(soviet_union_data)
+
+# Full country names
+country_names <- c(
+  "Armenia", "Azerbaijan", "Belarus", "Estonia", "Georgia", "Kazakhstan", "Kyrgyzstan", "Latvia", "Lithuania", "Moldova",
+  "Russia", "Tajikistan", "Turkmenistan", "Ukraine", "Uzbekistan"
+)
+
+# Replace country abbreviations with full names
+soviet_union_data$country <- factor(soviet_union_data$country, levels = soviet_union_abbreviations, labels = country_names)
+
+```
+---
+
+### B12 Intakes Total Averages by Country
+The following plot displays the total averages of B12 intakes for each country in the Former Soviet Union. The bars represent the mean B12 intake, providing an overview of the variations across the different countries.
+```{r, include=TRUE}
+# Group by Country
+group_by_country_data <- soviet_union_data %>%
+  group_by(country) %>%
+  summarise(avg_b12 = mean(average, na.rm = TRUE))
+
+# Plotting the data with geom_bar
+ggplot(group_by_country_data, aes(x = country, y = avg_b12, fill = country)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.8), alpha = 0.7) +
+  labs(title = "B12 Intakes Total Averages by Country",
+       x = "Country",
+       y = "B12 intakes Total Average") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis_d()  + 
+  # Increase bar width
+  theme(legend.position = "none") +
+  geom_text(aes(label = round(avg_b12, 2)), vjust = -0.5, position = position_dodge(width = 0.8)) 
+
+```
+---
+
+### B12 Intakes Total Averages by Country and Gender
+The following plot further breaks down the B12 intakes by gender within each country. The stacked bars show the mean B12 intake for both male and female individuals, providing insights into gender-specific patterns across the Former Soviet Union.
+```{r, include=TRUE}
+
+# Group by Country and Gender
+group_by_country_gender_data <- soviet_union_data %>% filter(gender!='NA')%>%
+  group_by(country, gender) %>%
+  summarise(avg_b12 = mean(average, na.rm = TRUE), .groups = 'drop')
+
+# Plotting the data with geom_bar (stacked)
+ggplot(group_by_country_gender_data, aes(x = country, y = avg_b12, fill = factor(gender))) +
+  geom_bar(stat = "identity", position = "stack", alpha = 0.7) +
+  labs(title = "B12 Intakes Total Averages by Country and Gender",
+       x = "Country",
+       y = "B12 Intakes Total Average") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis_d(name = "Gender", labels = c("Male", "Female")) +
+  # Increase bar width
+  theme(legend.position = "top") +
+  geom_text(aes(label = round(avg_b12, 2)), position = position_stack(vjust = 0.5))
+
 
 
 ```
-
+---
