@@ -71,7 +71,6 @@ ggplot(group_by_country_data, aes(x = country, y = avg_b12, fill = country)) +
   labs(title = "B12 Intakes Total Averages by Country",
        x = "Country",
        y = "B12 intakes Total Average") +
-  theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_fill_viridis_d()  + 
   # Increase bar width
@@ -96,7 +95,6 @@ ggplot(group_by_country_gender_data, aes(x = country, y = avg_b12, fill = factor
   labs(title = "B12 Intakes Total Averages by Country and Gender",
        x = "Country",
        y = "B12 Intakes Total Average") +
-  theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_fill_viridis_d(name = "Gender", labels = c("Male", "Female")) +
   # Increase bar width
@@ -107,3 +105,22 @@ ggplot(group_by_country_gender_data, aes(x = country, y = avg_b12, fill = factor
 
 ```
 ---
+
+### B12 Intakes Total Averages by Country and Year
+This plot unveils the nuanced trends in mean B12 intake across years for Former Soviet Union countries. Stacked bars represent the average B12 intake, providing insights into variations over time within each country. 
+```{r, include=TRUE, message=FALSE}
+
+# Group by Year and Country
+group_by_country_year_data <- soviet_union_data %>% filter(gender!='NA')%>%
+  group_by(year, country) %>%
+  summarise(avg_b12 = mean(average, na.rm = TRUE), .groups = 'drop')
+
+# Plotting the data
+ggplot(group_by_country_year_data, aes(x = year, y = avg_b12, color = country,alpha = 0.7)) +
+  geom_line(linewidth = 1) +
+  labs(title = "Average B12 intake by Year and Country",
+       x = "Year",
+       y = "Average B12 intake") 
+
+```
+
