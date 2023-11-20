@@ -3,9 +3,9 @@ title: "Prepocessed Data"
 date: "2023-11-16"
 ---
 
-# Yellow Submarine's Project Proposal on WITS data
+## Yellow Submarine's Project Proposal on WITS data
 
-The choice of this domain stems from the significance of Turkey's role in the global trade landscape. Before settling on the WITS database, we reviewed existing solutions, including the [Harvard University Atlas project](https://atlas.cid.harvard.edu/) and [Visualizations from the Observatory of Economic Complexity](https://oec.world/en).) 
+The choice of this domain stems from the significance of Turkey's role in the global trade landscape between 2002-2020. Before settling on the WITS database, we reviewed existing solutions, including the [Harvard University Atlas project](https://atlas.cid.harvard.edu/) and [Visualizations from the Observatory of Economic Complexity](https://oec.world/en).) 
 
 We have decided on this database considering the primary sources that include:
 a. Trade Partnerships: Utilize international trade databases to identify Turkey's major trade partners, assess trade volumes, and analyze the composition of exports and imports.
@@ -17,23 +17,64 @@ e. Additional Insights: Explore supplementary datasets as needed to uncover spec
 With this project, we aim to produce a comprehensive report that synthesizes the findings into a coherent narrative. Visualizations, charts, and infographics will be employed to enhance the accessibility of the data.
 ---
 
+## Dataset Installation and Preprocessing
 
-```{r prepocesseddata,  eval=FALSE, echo=TRUE}
+```{r prepocesseddata,eval=FALSE, echo=TRUE,message=FALSE}
 
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
 library(tradestatistics)
 library(tibble)
 
-wits_turkey_data <-ots_create_tidy_data(
-  years = 2018:2019,
+
+wits_turkey_data_only <- ots_create_tidy_data(
+  years = 2002:2020,
   reporters = "tur",
-  partners = "arg",
+  table = "yrc"
+)
+head(wits_turkey_data_only)
+
+wits_turkey_data_with_partners <- ots_create_tidy_data(
+  years = 2002:2020,
+  reporters = "tur",
   table = "yrpc"
 )
-saveRDS(wits_turkey_data, file = "wits_data.rds")
-data <- readRDS("wits_data.rds")
-data
+head(wits_turkey_data_with_partners)
 
+
+# Combine the datasets into a list
+combined_datasets <- list(
+  wits_turkey_data_only = wits_turkey_data_only,
+  wits_turkey_data_with_partners = wits_turkey_data_with_partners
+)
 
 ```
 
+
+## Creating RDS file
+```{r rdsdata,eval=FALSE, echo=TRUE}
+
+saveRDS(combined_datasets, file = "wits_data.rds")
+
+```
  [RDS Link](https://github.com/pjournal/mef07g-yellowsubmarine/blob/main/wits_data.rds)
+ 
+## Monitoring the Data
+```{r monitoring}
+library(DT)
+
+loaded_datasets <- readRDS("wits_data.rds")
+read_wits_turkey_data_only <- loaded_datasets$wits_turkey_data_only
+read_wits_turkey_data_with_partners <- loaded_datasets$wits_turkey_data_with_partners
+
+DT::datatable(head(read_wits_turkey_data_only), editable = list(
+  target = 'row', disable = list(columns = c(1, 3, 4))
+))
+
+DT::datatable(head(read_wits_turkey_data_with_partners), editable = list(
+  target = 'row', disable = list(columns = c(1, 3, 4))
+))
+
+
+```
