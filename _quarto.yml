@@ -8,7 +8,6 @@ book:
   chapters:
     - index.qmd
     - assignment1.qmd
-    - assignment1s.qmd
     - preprocesseddata.qmd
   page-footer: 
     center: "[MEF BDA 503](https://mef-bda503.github.io)" 

@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./assignment1s.html" rel="next">
+<link href="./preprocesseddata.html" rel="next">
 <link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -168,14 +168,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./assignment1s.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Assignment 1s</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./preprocesseddata.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Prepocessed Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Prepocessed Data</span></span></a>
   </div>
 </li>
     </ul>
@@ -192,6 +186,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#b12-intakes-total-averages-by-country" id="toc-b12-intakes-total-averages-by-country" class="nav-link" data-scroll-target="#b12-intakes-total-averages-by-country"><span class="header-section-number">1.1.1</span> B12 Intakes Total Averages by Country</a></li>
   <li><a href="#b12-intakes-total-averages-by-country-and-gender" id="toc-b12-intakes-total-averages-by-country-and-gender" class="nav-link" data-scroll-target="#b12-intakes-total-averages-by-country-and-gender"><span class="header-section-number">1.1.2</span> B12 Intakes Total Averages by Country and Gender</a></li>
+  <li><a href="#b12-intakes-total-averages-by-country-and-year" id="toc-b12-intakes-total-averages-by-country-and-year" class="nav-link" data-scroll-target="#b12-intakes-total-averages-by-country-and-year"><span class="header-section-number">1.1.3</span> B12 Intakes Total Averages by Country and Year</a></li>
+  <li><a href="#dynamic-insights-age-stratified-trends-in-b12-intake-across-former-soviet-union-nations" id="toc-dynamic-insights-age-stratified-trends-in-b12-intake-across-former-soviet-union-nations" class="nav-link" data-scroll-target="#dynamic-insights-age-stratified-trends-in-b12-intake-across-former-soviet-union-nations"><span class="header-section-number">1.1.4</span> Dynamic Insights: Age-Stratified Trends in B12 Intake Across Former Soviet Union Nations</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -261,12 +257,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"B12 Intakes Total Averages by Country"</span>,</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Country"</span>,</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"B12 intakes Total Average"</span>) <span class="sc">+</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>()  <span class="sc">+</span> </span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Increase bar width</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(avg_b12, <span class="dv">2</span>)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.8</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>()  <span class="sc">+</span> </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Increase bar width</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(avg_b12, <span class="dv">2</span>)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.8</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="assignment1_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -287,16 +282,81 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"B12 Intakes Total Averages by Country and Gender"</span>,</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Country"</span>,</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"B12 Intakes Total Average"</span>) <span class="sc">+</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">name =</span> <span class="st">"Gender"</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Male"</span>, <span class="st">"Female"</span>)) <span class="sc">+</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Increase bar width</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(avg_b12, <span class="dv">2</span>)), <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">name =</span> <span class="st">"Gender"</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Male"</span>, <span class="st">"Female"</span>)) <span class="sc">+</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Increase bar width</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(avg_b12, <span class="dv">2</span>)), <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="assignment1_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 <p>:::</p>
+<hr>
+</section>
+<section id="b12-intakes-total-averages-by-country-and-year" class="level3" data-number="1.1.3">
+<h3 data-number="1.1.3" class="anchored" data-anchor-id="b12-intakes-total-averages-by-country-and-year"><span class="header-section-number">1.1.3</span> B12 Intakes Total Averages by Country and Year</h3>
+<p>This plot unveils the nuanced trends in mean B12 intake across years for Former Soviet Union countries. Stacked bars represent the average B12 intake, providing insights into variations over time within each country.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by Year and Country</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>group_by_country_year_data <span class="ot">&lt;-</span> soviet_union_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(gender<span class="sc">!=</span><span class="st">'NA'</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, country) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_b12 =</span> <span class="fu">mean</span>(average, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the data</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(group_by_country_year_data, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> avg_b12, <span class="at">color =</span> country,<span class="at">alpha =</span> <span class="fl">0.7</span>)) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average B12 intake by Year and Country"</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average B12 intake"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="assignment1_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="dynamic-insights-age-stratified-trends-in-b12-intake-across-former-soviet-union-nations" class="level3" data-number="1.1.4">
+<h3 data-number="1.1.4" class="anchored" data-anchor-id="dynamic-insights-age-stratified-trends-in-b12-intake-across-former-soviet-union-nations"><span class="header-section-number">1.1.4</span> Dynamic Insights: Age-Stratified Trends in B12 Intake Across Former Soviet Union Nations</h3>
+<p>Exploring age group dynamics in B12 intake across Former Soviet Union nations, this plot employs stacked bars to illustrate average intake trends over time. The concise representation unveils nuanced patterns, providing insight into the evolving nutritional habits within each country and highlighting age-specific variations in B12 consumption.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>raw_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Change column names &amp; column data</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>raw_data <span class="ot">&lt;-</span> <span class="fu">select</span>(raw_df,<span class="at">country =</span> iso3, age<span class="sc">:</span>upperci_95)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>soviet_data <span class="ot">&lt;-</span> <span class="fu">filter</span>(raw_data, country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"ARM"</span>, <span class="st">"AZE"</span>, <span class="st">"BLR"</span>, <span class="st">"EST"</span>, <span class="st">"GEO"</span>, <span class="st">"KAZ"</span>, <span class="st">"KGZ"</span>, <span class="st">"LVA"</span>, <span class="st">"LTU"</span>, <span class="st">"MDA"</span>, <span class="st">"RUS"</span>, <span class="st">"TJK"</span>, <span class="st">"TKM"</span>, <span class="st">"UKR"</span>, <span class="st">"UZB"</span>))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>country_mapping <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"ARM"</span><span class="ot">=</span><span class="st">"Armenia"</span>, <span class="st">"AZE"</span><span class="ot">=</span><span class="st">"Azerbaijan"</span>, <span class="st">"BLR"</span><span class="ot">=</span><span class="st">"Belarus"</span>, <span class="st">"EST"</span><span class="ot">=</span><span class="st">"Estonia"</span>, <span class="st">"GEO"</span><span class="ot">=</span><span class="st">"Georgia"</span>, <span class="st">"KAZ"</span><span class="ot">=</span><span class="st">"Kazakhstan"</span>, <span class="st">"KGZ"</span><span class="ot">=</span><span class="st">"Kyrgyzstan"</span>, <span class="st">"LVA"</span><span class="ot">=</span><span class="st">"Latvia"</span>, <span class="st">"LTU"</span><span class="ot">=</span><span class="st">"Lithuania"</span>, <span class="st">"MDA"</span><span class="ot">=</span><span class="st">"Moldova"</span>, <span class="st">"RUS"</span><span class="ot">=</span><span class="st">"Russia"</span>, <span class="st">"TJK"</span><span class="ot">=</span><span class="st">"Tajikistan"</span>, <span class="st">"TKM"</span><span class="ot">=</span><span class="st">"Turkmenistan"</span>, <span class="st">"UKR"</span><span class="ot">=</span><span class="st">"Ukraine"</span>, <span class="st">"UZB"</span><span class="ot">=</span><span class="st">"Uzbekistan"</span>) </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>soviet_data<span class="sc">$</span>country_full_name <span class="ot">&lt;-</span> country_mapping[soviet_data<span class="sc">$</span>country]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>soviet_data[soviet_data <span class="sc">==</span> <span class="dv">999</span>] <span class="ot">&lt;-</span> <span class="st">"All"</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>soviet_data <span class="ot">&lt;-</span> soviet_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate mean</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">average_calculation =</span> median <span class="sc">+</span> ((upperci_95 <span class="sc">-</span> lowerci_95) <span class="sc">/</span> <span class="dv">2</span>))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Analyze according to age_range</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>age_range <span class="ot">&lt;-</span> <span class="fu">filter</span>(soviet_data, age <span class="sc">%in%</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="fl">7.5</span>, <span class="fl">12.5</span>, <span class="fl">17.5</span>, <span class="fl">22.5</span>, <span class="fl">27.5</span>, <span class="fl">32.5</span>, <span class="fl">37.5</span>, <span class="fl">42.5</span>, <span class="fl">47.5</span>, <span class="fl">52.5</span>, <span class="fl">57.5</span>, <span class="fl">62.5</span>, <span class="fl">67.5</span>, <span class="fl">72.5</span>, <span class="fl">77.5</span>, <span class="fl">82.5</span>, <span class="fl">87.5</span>, <span class="fl">92.5</span>, <span class="fl">97.5</span>,<span class="st">"All"</span> ))</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>age_mapping <span class="ot">&lt;-</span> (<span class="fu">c</span>(<span class="st">"0.5"</span> <span class="ot">=</span> <span class="st">"Child"</span>, <span class="st">"1.5"</span> <span class="ot">=</span> <span class="st">"Child"</span>, <span class="st">"2.5"</span> <span class="ot">=</span> <span class="st">"Child"</span>,<span class="st">"7.5"</span> <span class="ot">=</span> <span class="st">"Child"</span>, <span class="st">"12.5"</span> <span class="ot">=</span> <span class="st">"Adolescent"</span>, <span class="st">"17.5 "</span><span class="ot">=</span> <span class="st">"Adolescent"</span>, <span class="st">"22.5"</span> <span class="ot">=</span> <span class="st">"Adult"</span>, <span class="st">"27.5"</span> <span class="ot">=</span> <span class="st">"Adult"</span>, <span class="st">"32.5"</span> <span class="ot">=</span> <span class="st">"Adult"</span>, <span class="st">"37.5"</span> <span class="ot">=</span> <span class="st">"Adult"</span>, <span class="st">"42.5"</span> <span class="ot">=</span> <span class="st">"Adult"</span>,<span class="st">"47"</span> <span class="ot">=</span> <span class="st">"Adult"</span>, <span class="st">"47.5 "</span><span class="ot">=</span> <span class="st">"Adult"</span>, <span class="st">"52.5"</span> <span class="ot">=</span> <span class="st">"Adult"</span>, <span class="st">"57.5"</span> <span class="ot">=</span> <span class="st">"Adult"</span>, <span class="st">"62.5"</span> <span class="ot">=</span> <span class="st">"Elderly"</span>,<span class="st">"67.5"</span> <span class="ot">=</span> <span class="st">"Elderly"</span>, <span class="st">"72.5"</span> <span class="ot">=</span> <span class="st">"Elderly"</span>, <span class="st">"77.5 "</span><span class="ot">=</span> <span class="st">"Elderly"</span>, <span class="st">"82.5"</span> <span class="ot">=</span> <span class="st">"Elderly"</span>, <span class="st">"87.5"</span> <span class="ot">=</span> <span class="st">"Elderly"</span>, <span class="st">"92.5"</span> <span class="ot">=</span> <span class="st">"Elderly"</span>,<span class="st">"97.5"</span> <span class="ot">=</span> <span class="st">"Elderly"</span>, <span class="st">"All"</span> <span class="ot">=</span> <span class="st">"Undefined"</span>))</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>soviet_data<span class="sc">$</span>age_range <span class="ot">&lt;-</span> age_mapping[soviet_data<span class="sc">$</span>age]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by Age</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>group_by_age_data <span class="ot">&lt;-</span> soviet_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(age_range) <span class="sc">%&gt;%</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_b12 =</span> <span class="fu">mean</span>(average_calculation, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))  <span class="co"># Add this line to calculate the mean for each age group</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting Histogram</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(soviet_data, <span class="fu">aes</span>(<span class="at">x =</span> average_calculation, <span class="at">fill =</span> age_range)) <span class="sc">+</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"B12 Intake by Age Group"</span>,</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Average B12 Intake"</span>,</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frequency"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="assignment1_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
 </section>
@@ -543,8 +603,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./assignment1s.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Assignment 1s</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./preprocesseddata.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Prepocessed Data</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
