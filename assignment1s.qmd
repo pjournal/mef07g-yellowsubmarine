@@ -1,0 +1,66 @@
+---
+title: "Assignment 1"
+date: "2023-11-23"
+---
+
+## Group Assignment For Global Dietary Database
+
+In this analysis, we delve into the Global Dietary Database to scrutinize Vitamin B12 intake among Former Soviet Union countries. Employing the analytical prowess of 'dplyr' and 'ggplot2' in R, our aim is to uncover patterns and variations, offering a data-driven perspective on nutritional habits within this geopolitical region.
+
+[Global Dietary Database](https://globaldietarydatabase.org/)
+
+[Dataset](https://raw.githubusercontent.com/berkorbay/datasets/master/gdd/gdd_b12_levels.csv)
+
+------------------------------------------------------------------------
+
+```{r setup, include=TRUE}
+
+library(dplyr)
+library(ggplot2)
+library(hrbrthemes)
+
+#Clean Data
+url <- "https://raw.githubusercontent.com/berkorbay/datasets/master/gdd/gdd_b12_levels.csv"
+raw_df <- read.csv(url)
+
+#Change column names & column data
+raw_data <- select(raw_df,country = iso3, age:upperci_95)
+
+soviet_data <- filter(raw_data, country %in% c("ARM", "AZE", "BLR", "EST", "GEO", "KAZ", "KGZ", "LVA", "LTU", "MDA", "RUS", "TJK", "TKM", "UKR", "UZB"))
+
+country_mapping <- c("ARM"="Armenia", "AZE"="Azerbaijan", "BLR"="Belarus", "EST"="Estonia", "GEO"="Georgia", "KAZ"="Kazakhstan", "KGZ"="Kyrgyzstan", "LVA"="Latvia", "LTU"="Lithuania", "MDA"="Moldova", "RUS"="Russia", "TJK"="Tajikistan", "TKM"="Turkmenistan", "UKR"="Ukraine", "UZB"="Uzbekistan") 
+
+soviet_data$country_full_name <- country_mapping[soviet_data$country]
+
+soviet_data[soviet_data == 999] <- "All"
+
+soviet_data <- soviet_data %>%
+
+#Calculate mean
+mutate(average_calculation = median + ((upperci_95 - lowerci_95) / 2))
+
+#Analyze according to age_range
+age_range <- filter(soviet_data, age %in% c(0.5, 1.5, 2.5, 7.5, 12.5, 17.5, 22.5, 27.5, 32.5, 37.5, 42.5, 47.5, 52.5, 57.5, 62.5, 67.5, 72.5, 77.5, 82.5, 87.5, 92.5, 97.5,"All" ))
+
+age_mapping <- (c("0.5" = "Child", "1.5" = "Child", "2.5" = "Child","7.5" = "Child", "12.5" = "Adolescent", "17.5 "= "Adolescent", "22.5" = "Adult", "27.5" = "Adult", "32.5" = "Adult", "37.5" = "Adult", "42.5" = "Adult","47" = "Adult", "47.5 "= "Adult", "52.5" = "Adult", "57.5" = "Adult", "62.5" = "Elderly","67.5" = "Elderly", "72.5" = "Elderly", "77.5 "= "Elderly", "82.5" = "Elderly", "87.5" = "Elderly", "92.5" = "Elderly","97.5" = "Elderly", "All" = "Undefined"))
+
+soviet_data$age_range <- age_mapping[soviet_data$age]
+
+# Group by Age
+group_by_age_data <- soviet_data %>%
+  group_by(age_range) %>%
+  summarize(avg_b12 = mean(average_calculation, na.rm = TRUE))  # Add this line to calculate the mean for each age group
+
+# Plotting Histogram
+ggplot(soviet_data, aes(x = average_calculation, fill = age_range)) +
+  geom_histogram(binwidth = 5, position = "dodge", color = "black", alpha = 0.7) +
+  labs(title = "B12 Intake by Age Group",
+       x = "Average B12 Intake",
+       y = "Frequency") +
+  theme_minimal()
+
+
+```
+
+```         
+```

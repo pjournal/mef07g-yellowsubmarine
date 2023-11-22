@@ -84,7 +84,6 @@ ggplot(group_by_country_data, aes(x = country, y = avg_b12, fill = country)) +
 ### B12 Intakes Total Averages by Country and Gender
 The following plot further breaks down the B12 intakes by gender within each country. The stacked bars show the mean B12 intake for both male and female individuals, providing insights into gender-specific patterns across the Former Soviet Union.
 ```{r, include=TRUE}
-
 # Group by Country and Gender
 group_by_country_gender_data <- soviet_union_data %>% filter(gender!='NA')%>%
   group_by(country, gender) %>%
@@ -102,8 +101,5 @@ ggplot(group_by_country_gender_data, aes(x = country, y = avg_b12, fill = factor
   # Increase bar width
   theme(legend.position = "top") +
   geom_text(aes(label = round(avg_b12, 2)), position = position_stack(vjust = 0.5))
-
-
-
 ```
----
+

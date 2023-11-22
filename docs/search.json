@@ -7,13 +7,6 @@
     "text": "Introduction\n\n\nThis progress journal covers YELLOW SUBMARINE’s work during their term at BDA 503 Fall 2023.\nEach section is an assignment or an individual work.\n\n\n\nGroup Members\n\nAlp Göçek\n\nBengü Üzmez\n\nSezer Türkmen\n\nSezgi Ayhan\n\n\n\nGroup Project Details\nOur group project is [PROJECT NAME]. [SHORT DESCRIPTION]"
   },
   {
-    "objectID": "assignment1.html",
-    "href": "assignment1.html",
-    "title": "1  Assignment 1",
-    "section": "",
-    "text": "In this analysis, we delve into the Global Dietary Database to scrutinize Vitamin B12 intake among Former Soviet Union countries. Employing the analytical prowess of ‘dplyr’ and ‘ggplot2’ in R, our aim is to uncover patterns and variations, offering a data-driven perspective on nutritional habits within this geopolitical region.\n\n\n# Soviet Union data cleaned up and inserted average column by calculating the mean\nsoviet_union_abbreviations &lt;- c(\"ARM\", \"AZE\", \"BLR\", \"EST\", \"GEO\", \"KAZ\", \"KGZ\", \"LVA\", \"LTU\", \"MDA\", \"RUS\", \"TJK\", \"TKM\", \"UKR\", \"UZB\")\n\nsoviet_union_data &lt;- data %&gt;%\n  filter(country %in% soviet_union_abbreviations)\n\n\n# Full country names\ncountry_names &lt;- c(\n  \"Armenia\", \"Azerbaijan\", \"Belarus\", \"Estonia\", \"Georgia\", \"Kazakhstan\", \"Kyrgyzstan\", \"Latvia\", \"Lithuania\", \"Moldova\",\n  \"Russia\", \"Tajikistan\", \"Turkmenistan\", \"Ukraine\", \"Uzbekistan\"\n)\n\n# Replace country abbreviations with full names\nsoviet_union_data$country &lt;- factor(soviet_union_data$country, levels = soviet_union_abbreviations, labels = country_names)\n\n\n# Group by Country\ngroup_by_country_data &lt;- soviet_union_data %&gt;%\n  group_by(country) %&gt;%\n  summarise(avg_b12 = mean(average, na.rm = TRUE))\n\n# Plotting the data with geom_bar\nggplot(group_by_country_data, aes(x = country, y = avg_b12, fill = country)) +\n  geom_bar(stat = \"identity\", position = position_dodge(width = 0.8), alpha = 0.7) +\n  labs(title = \"B12 Total Averages by Country\",\n       x = \"Country\",\n       y = \"B12 intake Total Average\") +\n  theme_minimal() +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +\n  scale_fill_viridis_d()  + \n  # Increase bar width\n  theme(legend.position = \"none\") +\n  geom_text(aes(label = round(avg_b12, 2)), vjust = -0.5, position = position_dodge(width = 0.8))"
-  },
-  {
     "objectID": "assignment1.html#group-assignment-for-global-dietary-database",
     "href": "assignment1.html#group-assignment-for-global-dietary-database",
     "title": "1  Assignment 1",
