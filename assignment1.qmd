@@ -157,14 +157,16 @@ soviet_data$age_range <- age_mapping[soviet_data$age]
 # Group by Age
 group_by_age_data <- soviet_data %>%
   group_by(age_range) %>%
-  summarize(avg_b12 = mean(average_calculation, na.rm = TRUE))  # Add this line to calculate the mean for each age group
+  summarize(average_calculation, na.rm = TRUE)
+
 
 # Plotting Histogram
-ggplot(soviet_data, aes(x = average_calculation, fill = age_range)) +
-  geom_histogram(binwidth = 5, position = "dodge", color = "black", alpha = 0.7) +
-  labs(title = "B12 Intake by Age Group",
-       x = "Average B12 Intake",
-       y = "Frequency") 
+ggplot(group_by_age_data, aes(x = age_range, y = average_calculation, fill = age_range)) +
+  geom_bar(stat = "identity", position = "dodge", color = "black", alpha = 0.7) +
+  labs(title = "Average B12 Intake by Age Group",
+       x = "Age Group",
+       y = "Average B12 Intake") +
+  theme_minimal()
 
 
 ```
