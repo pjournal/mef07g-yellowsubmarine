@@ -1,0 +1,280 @@
+---
+title: " Exploratory Data Analysis"
+date: "2023-12-14"
+---
+
+## Introduction: Exploratory Data Analysis on WITS data
+
+World Integrated Trade Solution (WITS) emerges as a pivotal platform, offering a comprehensive view of international trade dynamics, with a particular focus on Turkey from 2002 to 2020. This powerful tool aggregates data from diverse sources to furnish users with valuable insights into Turkey's merchandise trade, tariffs, and non-tariff measures during this specific period. With an expansive database, WITS facilitates informed decision-making and strategic planning for researchers, policymakers, and businesses interested in Turkey's trade landscape.
+
+Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loading datasets, cleaning data, and employing statistical and visual analyses specific to Turkey's trade from 2002 to 2020. This process unveils trade patterns, identifies trends, and provides actionable insights, enabling stakeholders to navigate the complexities of Turkey's trade dynamics during this crucial timeframe. The synergy between WITS and EDA empowers users to make informed decisions and strategic choices, fostering a more interconnected and informed landscape for Turkey's economy and trade.
+
+---
+
+## Step 1: Load Required Libraries
+
+```{r}
+
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(RColorBrewer)
+library(ggridges)
+
+```
+Description: Loading necessary libraries provides access to functions and tools that simplify data manipulation and visualization. dplyr is helpful for data wrangling, and ggplot2 is excellent for creating informative and visually appealing plots.
+---
+
+## Step 2: Load Datasets
+
+```{r}
+# Load the datasets
+loaded_datasets <- readRDS("wits_data.rds")
+read_wits_turkey_data_only <- loaded_datasets$wits_turkey_data_only
+read_wits_turkey_data_with_partners <- loaded_datasets$wits_turkey_data_with_partners
+```
+Description: Loading datasets is the initial step in any data analysis. It allows us to bring in the data that we'll be working with throughout the analysis.
+---
+
+## Step 3: Overview of the Datasets
+```{r}
+str(read_wits_turkey_data_only)
+summary(read_wits_turkey_data_only)
+
+str(read_wits_turkey_data_with_partners)
+summary(read_wits_turkey_data_with_partners)
+
+
+```
+Description: Checking the structure and summary of the datasets provides an understanding of the variables, data types, and basic statistics. This helps identify potential issues and informs subsequent cleaning and analysis steps.
+---
+
+## Step 4: Data Cleaning
+```{r}
+sapply(read_wits_turkey_data_only, function(x) sum(is.na(x)))
+
+# will be done
+
+```
+Description: Cleaning the data involves addressing missing values and outliers. It ensures that the data is reliable and ready for further analysis.
+---
+
+## Step 5: Exploratory Data Analysis (EDA)
+
+### Analyze Exports and Imports over the Years
+```{r}
+total_exports <- read_wits_turkey_data_only %>%
+  group_by(year) %>%
+  summarize(total_exports = sum(trade_value_usd_exp))
+
+total_imports <- read_wits_turkey_data_only %>%
+  group_by(year) %>%
+  summarize(total_imports = sum(trade_value_usd_imp))
+
+# Visualize exports and imports over the years
+ggplot() +
+  geom_line(data = total_exports, aes(x = year, y = total_exports, color = "Exports"), size = 1.5) +
+  geom_line(data = total_imports, aes(x = year, y = total_imports, color = "Imports"), size = 1.5) +
+  labs(title = "Turkey's Exports and Imports Over the Years", x = "Year", y = "Trade Value (USD)")
+
+
+```
+Description: Analyzing exports and imports over time provides insights into the trade trends of the country. Visualization helps in identifying patterns and understanding the overall trade dynamics.
+
+
+### Analyze Trade with Specific Partners
+```{r}
+top_partners <- read_wits_turkey_data_with_partners %>%
+  group_by(partner_name) %>%
+  summarize(total_trade = sum(trade_value_usd_exp + trade_value_usd_imp)) %>%
+  arrange(desc(total_trade)) %>%
+  top_n(10)
+
+# Get a color palette from RColorBrewer
+partner_colors <- brewer.pal(length(top_partners$partner_name), "Set3")
+
+# Visualize top trading partners
+ggplot(data = top_partners, aes(x = reorder(partner_name, -total_trade), y = total_trade, fill = partner_name)) +
+  geom_bar(stat = "identity", color = "black") +
+  labs(title = "Top 10 Trading Partners", x = "Partner", y = "Total Trade Value (USD)") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_fill_manual(values = partner_colors)+
+  theme(legend.position = "none")
+
+
+
+```
+Description: Analyzing trade with specific partners helps in identifying key collaborators. Visualizing the top trading partners provides a clear understanding of the major contributors to the country's trade.
+
+```{r}
+
+partners <- read_wits_turkey_data_with_partners %>%
+  group_by(partner_name) %>%
+  summarize(total_trade = sum(trade_value_usd_exp + trade_value_usd_imp)) %>%
+  arrange(desc(total_trade)) %>%
+  top_n(10)
+
+
+
+top_partners <- read_wits_turkey_data_with_partners %>%
+  filter(partner_name %in% partners$partner_name) %>%
+  group_by(partner_name) %>%
+  summarize(total_export = sum(trade_value_usd_exp),
+            total_import = sum(trade_value_usd_imp)) %>%
+  arrange(desc(total_export + total_import)) %>%
+  top_n(10)
+
+# Get a color palette from RColorBrewer
+partner_colors <- brewer.pal(n = length(top_partners$partner_name) * 2, name = "Paired")
+
+# Visualize import and export relations with top trading partners
+ggplot(data = top_partners, aes(x = reorder(partner_name, -total_export - total_import))) +
+  geom_bar(aes(y = total_export, fill = "Export"), stat = "identity", position = "dodge", color = "black") +
+  geom_bar(aes(y = -total_import, fill = "Import"), stat = "identity", position = "dodge", color = "black") +
+  labs(title = "Import and Export Relations with Top 10 Trading Partners", x = "Partner", y = "Total Trade Value (USD)") +
+  scale_fill_manual(values = c("Export" = partner_colors[1], "Import" = partner_colors[2]), name = "") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "top")
+```
+Description: 
+This bar plot illustrates the import and export relations between Turkey and its top 10 trading partners. Positive bars represent export values, while negative bars indicate import values. Each bar corresponds to a specific partner, and distinct colors differentiate between export and import transactions. The plot offers a concise overview of Turkey's trade dynamics with its key partners, emphasizing the balance of trade and highlighting significant trading relationships.
+
+### Diversity of Exported Products
+```{r}
+export_plot_data <- read_wits_turkey_data_only %>%
+  group_by(section_name) %>%
+  summarize(total_export = sum(trade_value_usd_exp)) %>%
+  top_n(10)
+
+# Truncate section names to the first 20 characters
+export_plot_data$truncated_name <- str_trunc(export_plot_data$section_name, 50)
+
+# Get distinct truncated names for colors
+color_names <- unique(export_plot_data$truncated_name)
+
+# Generate a limited number of distinct colors
+colors <- brewer.pal(length(color_names), "Set3")
+
+ggplot(data = export_plot_data, aes(x = reorder(section_name, -total_export), y = total_export, fill = truncated_name)) +
+  geom_bar(stat = "identity", color = "black") +
+  labs(title = "Top 10 Diversity of Exported Products (2002-2020, Turkey)", x = "Products", y = "Total Export Value (USD)") +
+  theme(axis.text.x = element_blank(), axis.title.x = element_blank(), legend.position = "bottom") +
+  guides(fill = guide_legend(nrow = 5)) +
+  scale_fill_manual(values = setNames(colors, color_names), name = "")
+
+```
+
+
+Description:The "Diversity of Exported Products" graphic provides insights into Turkey's international trade from 2002 to 2020. It showcases the top 10 product categories that Turkey has predominantly exported over the years. Each product category is represented by a distinct color, offering a visual representation of the diversity and distribution of exported goods. The vertical bars display the total export values in USD for each product category, providing a clear overview of Turkey's major export sectors. The graphic aids in identifying trends, patterns, and the relative significance of various product categories in Turkey's export landscape.
+
+
+```{r}
+imported_plot_data <- read_wits_turkey_data_only %>%
+  group_by(section_name) %>%
+  summarize(total_import = sum(trade_value_usd_imp)) %>%
+  top_n(10)
+
+# Truncate section names to the first 20 characters
+imported_plot_data$truncated_name <- str_trunc(imported_plot_data$section_name, 50)
+
+# Get distinct truncated names for colors
+color_names <- unique(imported_plot_data$truncated_name)
+
+# Generate a limited number of distinct colors
+colors <- brewer.pal(length(color_names), "Set3")
+
+ggplot(data = imported_plot_data, aes(x = reorder(section_name, -total_import), y = total_import, fill = truncated_name)) +
+  geom_bar(stat = "identity", color = "black") +
+  labs(title = "Top 10 Diversity of Imported Products (2002-2020, Turkey)", x = "Products", y = "Total Import Value (USD)") +
+  theme(axis.text.x = element_blank(), axis.title.x = element_blank(), legend.position = "bottom") +
+  guides(fill = guide_legend(nrow = 5)) +
+  scale_fill_manual(values = setNames(colors, color_names), name = "")
+
+```
+
+Description: The "Diversity of Imported Products" graphic illustrates the diversity of products that Turkey has imported from other countries between 2002 and 2020. Similar to the exported products graphic, this visualization highlights the top 10 imported product categories. Each category is uniquely colored for easy identification. The vertical bars display the total import values in USD for each product category, offering insights into the composition of Turkey's imports. This graphic assists in understanding the import dynamics, identifying significant product categories, and discerning patterns in Turkey's international trade relationships.
+
+Together, these graphics provide a comprehensive view of Turkey's trade dynamics, showcasing both the diversity of exported and imported products over the years.
+
+### Analyze Process
+```{r}
+top_export_products <- read_wits_turkey_data_only %>%
+  group_by(section_name) %>%
+  summarize(total_export = sum(trade_value_usd_exp)) %>%
+  top_n(10)
+
+# Filter the data with the selected top export products
+export_plot_data <- read_wits_turkey_data_with_partners %>%
+  filter(section_name %in% top_export_products$section_name) %>%
+  group_by(year, section_name) %>%
+  summarize(total_export = sum(trade_value_usd_exp))
+
+# Filter the data based on the top export products
+filtered_export_data <- export_plot_data %>%
+  filter(section_name %in% top_export_products$section_name)
+
+# Truncate section names to the first 20 characters
+filtered_export_data$truncated_name <- str_trunc(filtered_export_data$section_name, 50)
+
+# Get distinct truncated names for colors
+color_names <- unique(filtered_export_data$truncated_name)
+
+# Generate a limited number of distinct colors
+colors <- brewer.pal(length(color_names), "Set3")
+
+# Create the plot with geom_point
+ggplot(data = filtered_export_data, aes(x = year, y = total_export, color = truncated_name)) +
+  geom_line(size = 1.2, alpha = 0.7) +
+  labs(title = "Export Trends of Top 10 Products (2002-2020, Turkey)", x = "Year", y = "Total Export Value (USD)") +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(nrow = 5)) +
+  scale_color_manual(values = setNames(colors, color_names), name = "")
+```
+
+Description: Explore the export trends of Turkey's top 10 product categories from 2002 to 2020. Each line represents a product category, showcasing the variation in total export values over the years. The colors distinguish different product categories, providing a visual overview of their respective export dynamics. 
+
+
+```{r}
+top_import_products <- read_wits_turkey_data_only %>%
+  group_by(section_name) %>%
+  summarize(total_import = sum(trade_value_usd_imp)) %>%
+  top_n(10)
+
+# Filter the data with the selected top import products
+import_plot_data <- read_wits_turkey_data_with_partners %>%
+  filter(section_name %in% top_import_products$section_name) %>%
+  group_by(year, section_name) %>%
+  summarize(total_import = sum(trade_value_usd_imp))
+
+# Filter the data based on the top import products
+filtered_import_data <- import_plot_data %>%
+  filter(section_name %in% top_import_products$section_name)
+
+# Truncate section names to the first 20 characters
+filtered_import_data$truncated_name <- str_trunc(filtered_import_data$section_name, 50)
+
+# Get distinct truncated names for colors
+color_names <- unique(filtered_import_data$truncated_name)
+
+# Generate a limited number of distinct colors
+colors <- brewer.pal(length(color_names), "Set3")
+
+# Create the plot with geom_point
+ggplot(data = filtered_import_data, aes(x = year, y = total_import, color = truncated_name)) +
+  geom_line(size = 1.2, alpha = 0.7) +
+  labs(title = "Import Trends of Top 10 Products (2002-2020, Turkey)", x = "Year", y = "Total Import Value (USD)") +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(nrow = 5)) +
+  scale_color_manual(values = setNames(colors, color_names), name = "")
+```
+
+Description: Explore the import trends of Turkey's top 10 product categories from 2002 to 2020. Each line represents a product category, showcasing the variation in total import values over the years. The colors distinguish different product categories, providing a visual overview of their respective import dynamics. 
+---
+
+## Step 6: Interpretation and Conclusions
+Description: In this final step, interpretations and conclusions are drawn based on the analysis. It's an opportunity to provide insights into the data, make recommendations, and outline potential next steps for further final report and presantation.
+
+---
+
+
+

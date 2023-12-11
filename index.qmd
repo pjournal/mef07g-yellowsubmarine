@@ -24,8 +24,7 @@ Each section is an assignment or an individual work.
 <!-- IF THIS IS A GROUP UNCOMMENT BELOW -->
 
 # Group Members
-+ [Alp Göçek](https://pjournal.github.io/mef07-sezerlucianturkmen/)  
-+ [Bengü Üzmez](https://pjournal.github.io/mef07-uzmezb/)  
+
 + [Sezer Türkmen](https://pjournal.github.io/mef07-sezerlucianturkmen/)  
 + [Sezgi Ayhan](https://pjournal.github.io/mef07-sezgia/)
 
