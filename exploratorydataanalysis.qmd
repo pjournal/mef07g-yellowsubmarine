@@ -196,7 +196,7 @@ Description: The "Diversity of Imported Products" graphic illustrates the divers
 
 Together, these graphics provide a comprehensive view of Turkey's trade dynamics, showcasing both the diversity of exported and imported products over the years.
 
-### Analyze Process
+### Top Product Trade Analysis by Years
 ```{r}
 top_export_products <- read_wits_turkey_data_only %>%
   group_by(section_name) %>%
