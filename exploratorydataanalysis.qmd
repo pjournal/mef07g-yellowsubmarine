@@ -23,7 +23,7 @@ library(ggridges)
 
 ```
 
-## Description: Loading necessary libraries provides access to functions and tools that simplify data manipulation and visualization. dplyr is helpful for data wrangling, and ggplot2 is excellent for creating informative and visually appealing plots.
+Description: Loading necessary libraries provides access to functions and tools that simplify data manipulation and visualization. dplyr is helpful for data wrangling, and ggplot2 is excellent for creating informative and visually appealing plots.
 
 ## Step 2: Load Datasets
 
@@ -34,7 +34,7 @@ read_wits_turkey_data_only <- loaded_datasets$wits_turkey_data_only
 read_wits_turkey_data_with_partners <- loaded_datasets$wits_turkey_data_with_partners
 ```
 
-## Description: Loading datasets is the initial step in any data analysis. It allows us to bring in the data that we'll be working with throughout the analysis.
+Description: Loading datasets is the initial step in any data analysis. It allows us to bring in the data that we'll be working with throughout the analysis.
 
 ## Step 3: Overview of the Datasets
 
@@ -59,7 +59,7 @@ sapply(read_wits_turkey_data_only, function(x) sum(is.na(x)))
 
 ```
 
-## Description: Cleaning the data involves addressing missing values and outliers. It ensures that the data is reliable and ready for further analysis.
+Description: Cleaning the data involves addressing missing values and outliers. It ensures that the data is reliable and ready for further analysis.
 
 ## Step 5: Exploratory Data Analysis (EDA)
 
@@ -340,7 +340,7 @@ ggplot(data = filtered_import_data, aes(x = year, y = total_import, color = trun
   scale_color_manual(values = setNames(colors, color_names), name = "")
 ```
 
-## Description: Explore the import trends of Turkey's top 10 product categories from 2002 to 2020. Each line represents a product category, showcasing the variation in total import values over the years. The colors distinguish different product categories, providing a visual overview of their respective import dynamics.
+Description: Explore the import trends of Turkey's top 10 product categories from 2002 to 2020. Each line represents a product category, showcasing the variation in total import values over the years. The colors distinguish different product categories, providing a visual overview of their respective import dynamics.
 
 ## Step 6: Interpretation and Conclusions
 
