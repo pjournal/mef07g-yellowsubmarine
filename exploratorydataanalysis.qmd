@@ -145,8 +145,6 @@ ggplot(data = top_partners, aes(x = reorder(partner_name, -total_export - total_
 Description: This bar plot illustrates the import and export relations between Turkey and its top 10 trading partners. Positive bars represent export values, while negative bars indicate import values. Each bar corresponds to a specific partner, and distinct colors differentiate between export and import transactions. The plot offers a concise overview of Turkey's trade dynamics with its key partners, emphasizing the balance of trade and highlighting significant trading relationships.
 
 ```{r}
-library(ggplot2)
-library(dplyr)
 
 # Replace "YourFirstYear" and "YourEndYear" with the actual years that is selected for the analysis
 first_year <- 2015
@@ -173,17 +171,15 @@ ggplot(percentage_change, aes(x = reorder(partner_name, percentage_change), y = 
   labs(title = "Top 10 Partners: Percentage Change in Total Trade Value (2015 to 2020)",
        x = "Partner",
        y = "Percentage Change in Total Trade Value") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
 Description: This lollipop chart illustrates 5 year trade value (total import + export) change between Turkey and its top 10 trading partners. Positive bars represent increase in trade values between Turkey and its top 10 partners in 5 years, while negative bars indicate decrease in trade relationship. The chart offers a concise overview of Turkey's trade relationship with its key partners, presenting input for further analysis on defining partners that have close relationship with Turkey.
 
 ```{r}
-library(ggplot2)
-library(dplyr)
 
-# Filter data for Iraq
+# Filter data for Iraq, Spain, and USA
+partners <- c("Iraq", "Spain", "USA")
 trade_data_iraq <- read_wits_turkey_data_with_partners %>%
   filter(partner_name == "Iraq")
 
@@ -201,14 +197,18 @@ total_trade_values_5_year <- trade_data_iraq %>%
 filtered_commodity_data <- total_trade_values_5_year %>%
   top_n(5, wt = total_trade_value_5_year)
 
+# Truncate section names to the first 50 characters
+filtered_commodity_data$truncated_name <- str_trunc(filtered_commodity_data$section_name, 120)
+
 # Create a pie chart
-ggplot(filtered_commodity_data, aes(x = "", y = total_trade_value_5_year, fill = section_name)) +
+ggplot(filtered_commodity_data, aes(x = "", y = total_trade_value_5_year, fill = truncated_name)) +
   geom_bar(stat = "identity", width = 1, color = "white") +
   coord_polar(theta = "y") +
   labs(title = "Top 5 Section Name Breakdown of Total Trade Value (2015-2020)",
-       fill = "Section Name") +
+       fill = "") +
   theme_void() +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom")+
+  guides(fill = guide_legend(nrow = 5))
 ```
 Description: These pie charts illustrate commodity breakdown data of each country that has close relationship with Turkey which are defined in previous analysis. Iraq, USA and Spain were analyzed in this section. Each pie chart represent share of top 5 commodities in total trade values. 
 
