@@ -9,7 +9,7 @@ World Integrated Trade Solution (WITS) emerges as a pivotal platform, offering a
 
 Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loading datasets, cleaning data, and employing statistical and visual analyses specific to Turkey's trade from 2002 to 2020. This process unveils trade patterns, identifies trends, and provides actionable insights, enabling stakeholders to navigate the complexities of Turkey's trade dynamics during this crucial timeframe. The synergy between WITS and EDA empowers users to make informed decisions and strategic choices, fostering a more interconnected and informed landscape for Turkey's economy and trade.
 
----
+------------------------------------------------------------------------
 
 ## Step 1: Load Required Libraries
 
@@ -22,8 +22,8 @@ library(RColorBrewer)
 library(ggridges)
 
 ```
-Description: Loading necessary libraries provides access to functions and tools that simplify data manipulation and visualization. dplyr is helpful for data wrangling, and ggplot2 is excellent for creating informative and visually appealing plots.
----
+
+## Description: Loading necessary libraries provides access to functions and tools that simplify data manipulation and visualization. dplyr is helpful for data wrangling, and ggplot2 is excellent for creating informative and visually appealing plots.
 
 ## Step 2: Load Datasets
 
@@ -33,10 +33,11 @@ loaded_datasets <- readRDS("wits_data.rds")
 read_wits_turkey_data_only <- loaded_datasets$wits_turkey_data_only
 read_wits_turkey_data_with_partners <- loaded_datasets$wits_turkey_data_with_partners
 ```
-Description: Loading datasets is the initial step in any data analysis. It allows us to bring in the data that we'll be working with throughout the analysis.
----
+
+## Description: Loading datasets is the initial step in any data analysis. It allows us to bring in the data that we'll be working with throughout the analysis.
 
 ## Step 3: Overview of the Datasets
+
 ```{r}
 str(read_wits_turkey_data_only)
 summary(read_wits_turkey_data_only)
@@ -46,22 +47,24 @@ summary(read_wits_turkey_data_with_partners)
 
 
 ```
-Description: Checking the structure and summary of the datasets provides an understanding of the variables, data types, and basic statistics. This helps identify potential issues and informs subsequent cleaning and analysis steps.
----
+
+## Description: Checking the structure and summary of the datasets provides an understanding of the variables, data types, and basic statistics. This helps identify potential issues and informs subsequent cleaning and analysis steps.
 
 ## Step 4: Data Cleaning
+
 ```{r}
 sapply(read_wits_turkey_data_only, function(x) sum(is.na(x)))
 
 # will be done
 
 ```
-Description: Cleaning the data involves addressing missing values and outliers. It ensures that the data is reliable and ready for further analysis.
----
+
+## Description: Cleaning the data involves addressing missing values and outliers. It ensures that the data is reliable and ready for further analysis.
 
 ## Step 5: Exploratory Data Analysis (EDA)
 
 ### Analyze Exports and Imports over the Years
+
 ```{r}
 total_exports <- read_wits_turkey_data_only %>%
   group_by(year) %>%
@@ -79,10 +82,11 @@ ggplot() +
 
 
 ```
+
 Description: Analyzing exports and imports over time provides insights into the trade trends of the country. Visualization helps in identifying patterns and understanding the overall trade dynamics.
 
-
 ### Analyze Trade with Specific Partners
+
 ```{r}
 top_partners <- read_wits_turkey_data_with_partners %>%
   group_by(partner_name) %>%
@@ -104,6 +108,7 @@ ggplot(data = top_partners, aes(x = reorder(partner_name, -total_trade), y = tot
 
 
 ```
+
 Description: Analyzing trade with specific partners helps in identifying key collaborators. Visualizing the top trading partners provides a clear understanding of the major contributors to the country's trade.
 
 ```{r}
@@ -136,10 +141,79 @@ ggplot(data = top_partners, aes(x = reorder(partner_name, -total_export - total_
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
         legend.position = "top")
 ```
-Description: 
-This bar plot illustrates the import and export relations between Turkey and its top 10 trading partners. Positive bars represent export values, while negative bars indicate import values. Each bar corresponds to a specific partner, and distinct colors differentiate between export and import transactions. The plot offers a concise overview of Turkey's trade dynamics with its key partners, emphasizing the balance of trade and highlighting significant trading relationships.
+
+Description: This bar plot illustrates the import and export relations between Turkey and its top 10 trading partners. Positive bars represent export values, while negative bars indicate import values. Each bar corresponds to a specific partner, and distinct colors differentiate between export and import transactions. The plot offers a concise overview of Turkey's trade dynamics with its key partners, emphasizing the balance of trade and highlighting significant trading relationships.
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Replace "YourFirstYear" and "YourEndYear" with the actual years that is selected for the analysis
+first_year <- 2015
+end_year <- 2020
+
+# Calculate the total trade value for the first and end years for each partner
+total_trade_by_partner <- read_wits_turkey_data_with_partners %>%
+  group_by(partner_name) %>%
+  summarise(total_trade_first = sum(trade_value_usd_imp[year == first_year] + trade_value_usd_exp[year == first_year]),
+            total_trade_end = sum(trade_value_usd_imp[year == end_year] + trade_value_usd_exp[year == end_year]))
+
+# Find the top 10 partners based on the total trade value
+top_10_partners <- total_trade_by_partner %>%
+  top_n(10, wt = total_trade_end)
+
+# Calculate the percentage change
+percentage_change <- top_10_partners %>%
+  mutate(percentage_change = ((total_trade_end - total_trade_first) / total_trade_first) * 100)
+
+# Create a lollipop chart
+ggplot(percentage_change, aes(x = reorder(partner_name, percentage_change), y = percentage_change)) +
+  geom_segment(aes(xend = reorder(partner_name, percentage_change), yend = 0), color = "skyblue", size = 1) +
+  geom_point(color = "red", size = 3) +
+  labs(title = "Top 10 Partners: Percentage Change in Total Trade Value (2015 to 2020)",
+       x = "Partner",
+       y = "Percentage Change in Total Trade Value") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Description: This lollipop chart illustrates 5 year trade value (total import + export) change between Turkey and its top 10 trading partners. Positive bars represent increase in trade values between Turkey and its top 10 partners in 5 years, while negative bars indicate decrease in trade relationship. The chart offers a concise overview of Turkey's trade relationship with its key partners, presenting input for further analysis on defining partners that have close relationship with Turkey.
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Filter data for Iraq
+trade_data_iraq <- read_wits_turkey_data_with_partners %>%
+  filter(partner_name == "Iraq")
+
+# Add a new column for total trade
+trade_data_iraq <- trade_data_iraq %>%
+  mutate(total_trade = trade_value_usd_imp + trade_value_usd_exp)
+
+# Group by section_name and calculate total trade values for each section_name
+total_trade_values_5_year <- trade_data_iraq %>%
+  filter(year >= 2015 & year <= 2020) %>%
+  group_by(section_name) %>%
+  summarise(total_trade_value_5_year = sum(total_trade))
+
+# Filter top 5 section names
+filtered_commodity_data <- total_trade_values_5_year %>%
+  top_n(5, wt = total_trade_value_5_year)
+
+# Create a pie chart
+ggplot(filtered_commodity_data, aes(x = "", y = total_trade_value_5_year, fill = section_name)) +
+  geom_bar(stat = "identity", width = 1, color = "white") +
+  coord_polar(theta = "y") +
+  labs(title = "Top 5 Section Name Breakdown of Total Trade Value (2015-2020)",
+       fill = "Section Name") +
+  theme_void() +
+  theme(legend.position = "bottom")
+```
+Description: These pie charts illustrate commodity breakdown data of each country that has close relationship with Turkey which are defined in previous analysis. Iraq, USA and Spain were analyzed in this section. Each pie chart represent share of top 5 commodities in total trade values. 
 
 ### Diversity of Exported Products
+
 ```{r}
 export_plot_data <- read_wits_turkey_data_only %>%
   group_by(section_name) %>%
@@ -164,9 +238,7 @@ ggplot(data = export_plot_data, aes(x = reorder(section_name, -total_export), y 
 
 ```
 
-
 Description:The "Diversity of Exported Products" graphic provides insights into Turkey's international trade from 2002 to 2020. It showcases the top 10 product categories that Turkey has predominantly exported over the years. Each product category is represented by a distinct color, offering a visual representation of the diversity and distribution of exported goods. The vertical bars display the total export values in USD for each product category, providing a clear overview of Turkey's major export sectors. The graphic aids in identifying trends, patterns, and the relative significance of various product categories in Turkey's export landscape.
-
 
 ```{r}
 imported_plot_data <- read_wits_turkey_data_only %>%
@@ -197,6 +269,7 @@ Description: The "Diversity of Imported Products" graphic illustrates the divers
 Together, these graphics provide a comprehensive view of Turkey's trade dynamics, showcasing both the diversity of exported and imported products over the years.
 
 ### Top Product Trade Analysis by Years
+
 ```{r}
 top_export_products <- read_wits_turkey_data_only %>%
   group_by(section_name) %>%
@@ -231,8 +304,7 @@ ggplot(data = filtered_export_data, aes(x = year, y = total_export, color = trun
   scale_color_manual(values = setNames(colors, color_names), name = "")
 ```
 
-Description: Explore the export trends of Turkey's top 10 product categories from 2002 to 2020. Each line represents a product category, showcasing the variation in total export values over the years. The colors distinguish different product categories, providing a visual overview of their respective export dynamics. 
-
+Description: Explore the export trends of Turkey's top 10 product categories from 2002 to 2020. Each line represents a product category, showcasing the variation in total export values over the years. The colors distinguish different product categories, providing a visual overview of their respective export dynamics.
 
 ```{r}
 top_import_products <- read_wits_turkey_data_only %>%
@@ -268,13 +340,10 @@ ggplot(data = filtered_import_data, aes(x = year, y = total_import, color = trun
   scale_color_manual(values = setNames(colors, color_names), name = "")
 ```
 
-Description: Explore the import trends of Turkey's top 10 product categories from 2002 to 2020. Each line represents a product category, showcasing the variation in total import values over the years. The colors distinguish different product categories, providing a visual overview of their respective import dynamics. 
----
+## Description: Explore the import trends of Turkey's top 10 product categories from 2002 to 2020. Each line represents a product category, showcasing the variation in total import values over the years. The colors distinguish different product categories, providing a visual overview of their respective import dynamics.
 
 ## Step 6: Interpretation and Conclusions
+
 Description: In this final step, interpretations and conclusions are drawn based on the analysis. It's an opportunity to provide insights into the data, make recommendations, and outline potential next steps for further final report and presantation.
 
----
-
-
-
+------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 ---
-title: "Prepocessed Data"
+title: "Preprocessed Data"
 date: "2023-11-16"
 ---
 
@@ -9,17 +9,16 @@ The choice of this domain stems from the significance of Turkey's role in the gl
 
 We have decided on this database considering the primary sources that include:
 a. Trade Partnerships: Utilize international trade databases to identify Turkey's major trade partners, assess trade volumes, and analyze the composition of exports and imports.
-b. Complexity Score: Apply complexity indices to measure the sophistication of Turkey's exports and imports, shedding light on the diversification and technological intensity of its trade activities.
-c. Current Account Projections: Examine historical current account data and employ forecasting models to project future trends, allowing for informed insights into Turkey's economic stability.
-d. Trading Routes: Analyze shipping and logistics data to map out key trading routes, highlighting the connectivity and strategic importance of Turkey in global trade.
-e. Additional Insights: Explore supplementary datasets as needed to uncover specific aspects of Turkey's trade dynamics, such as sector-specific analyses or the impact of geopolitical events.
+b. Current Account Projections: Examine historical current account data and employ forecasting models to project future trends, allowing for informed insights into Turkey's economic stability.
+c. Trading Routes: Analyze shipping and logistics data to map out key trading routes, highlighting the connectivity and strategic importance of Turkey in global trade.
+d. Additional Insights: Explore supplementary datasets as needed to uncover specific aspects of Turkey's trade dynamics, such as sector-specific analyses or the impact of geopolitical events.
 
 With this project, we aim to produce a comprehensive report that synthesizes the findings into a coherent narrative. Visualizations, charts, and infographics will be employed to enhance the accessibility of the data.
 ---
 
 ## Dataset Installation and Preprocessing
 
-```{r prepocesseddata,eval=FALSE, echo=TRUE,message=FALSE}
+```{r preprocesseddata,eval=FALSE, echo=TRUE,message=FALSE}
 
 library(tidyverse)
 library(dplyr)
