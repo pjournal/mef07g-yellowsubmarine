@@ -237,7 +237,32 @@ ggplot(data = top_partners, aes(x = reorder(partner_name, -total_export - total_
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
         legend.position = "top")
 ```
+**Clustered Column Chart: Net Trade Difference with Top 10 Trading Partners (2015-2020)**
+```{r}
 
+# Vector of countries to filter
+selected_countries <- c("Germany", "Russian Federation", "China", "Italy", "USA", "United Kingdom", "France", "Spain", "Iran", "Iraq")
+
+top_partners <- read_wits_turkey_data_with_partners %>%
+  filter(partner_name %in% selected_countries, year %in% 2015:2020) %>%
+  group_by(partner_name, year) %>%
+  summarize(total_export = sum(trade_value_usd_exp),
+            total_import = sum(trade_value_usd_imp)) %>%
+  mutate(trade_difference = total_export - total_import)
+
+
+# Create a bar plot to show trade comparison with selected trading partners
+ggplot(data = top_partners, aes(x = reorder(partner_name, -trade_difference), y = trade_difference, fill = factor(sign(trade_difference)))) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.8), color = "black", height = 1.5) +  # Adjust the 'height' parameter
+  facet_wrap(~year, scales = "free_y", ncol = 3) +
+  scale_fill_manual(values = c("red", "blue"), name = "",
+                    labels = c("Turkey exported more", "Turkey imported more")) +
+  labs(title = "Trade Comparison with Top 10 Trading Partners(2015-2020)",
+       x = "Partner",
+       y = "Trade Difference (Export - Import, USD)") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "top")
+```
 *Chart Description: This bar plot illustrates the import and export relations between Turkey and its top 10 trading partners. Bars shows Turkey's net importer & exporter status as each of them corresponds to a specific partner, and positive figures represent Turkey's status as net exporter while negative figures represent net importer. The plot offers a concise overview of Turkey's trade dynamics with its key partners, emphasizing the balance of trade and highlighting significant trading relationships. // [Burada export-import yapıp net exporter veya net importer olup olmadığını olcelim]{.underline}*
 
 **Lollipop Chart: Trend Analysis of Top 10 Trading Partners' trade value**
