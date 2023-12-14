@@ -419,8 +419,6 @@ filtered_commodity_data <- total_trade_values_5_year %>%
   group_by(partner_name) %>%
   arrange(desc(total_trade_value)) %>%
   slice_head(n=5)
-  as.tibble(filtered_commodity_data)
-
 
 # Truncate section names to the first 20 characters
 filtered_commodity_data$truncated_name <- str_trunc(filtered_commodity_data$section_name, 50)
