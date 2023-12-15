@@ -24,6 +24,9 @@ library(dplyr)
 library(ggplot2)
 library(RColorBrewer)
 library(ggridges)
+library(knitr)
+library(kableExtra)
+library(DT)
 
 ```
 
@@ -58,7 +61,7 @@ Description: Checking the structure and summary of the datasets provides an unde
 
 ## Step 4: Data Cleaning
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 sapply(read_wits_turkey_data_only, function(x) sum(is.na(x)))
 
 # will be done
@@ -86,7 +89,7 @@ Description: Cleaning the data involves addressing missing values and outliers. 
 
 **Line Chart: Exports and Imports over the Years:**
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 total_exports <- read_wits_turkey_data_only %>%
   group_by(year) %>%
   summarize(total_exports = sum(trade_value_usd_exp))
@@ -113,7 +116,7 @@ ggplot() +
 
 **Clustered Column Chart: Diversity of Exported Products**
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 export_plot_data <- read_wits_turkey_data_only %>%
   group_by(section_name) %>%
   summarize(total_export = sum(trade_value_usd_exp)) %>%
@@ -141,7 +144,7 @@ ggplot(data = export_plot_data, aes(x = reorder(section_name, -total_export), y 
 
 **Bubble Chart: Relationship between Complexity and Annual Export Growth (CAGR Last 5 years) for Top Product Categories**
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 
 # Step 1: Find the top 10 section_name based on trade_value
 top_sections <- read_wits_turkey_data_with_partners %>%
@@ -198,7 +201,7 @@ ggplot(read_wits_turkey_data_with_partners_top10, aes(x = partner_count, y = tot
 
 **Clustered Column Chart: Diversity of Imported Products**
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 imported_plot_data <- read_wits_turkey_data_only %>%
   group_by(section_name) %>%
   summarize(total_import = sum(trade_value_usd_imp)) %>%
@@ -226,7 +229,7 @@ ggplot(data = imported_plot_data, aes(x = reorder(section_name, -total_import), 
 
 **Bubble Chart: Relationship between Complexity and Annual Import Growth (CAGR Last 5 years) for Top Product Categories**
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 
 # Step 1: Find the top 10 section_name based on trade_value
 top_sections <- read_wits_turkey_data_with_partners %>%
@@ -285,7 +288,7 @@ ggplot(read_wits_turkey_data_with_partners_top10, aes(x = partner_count, y = tot
 
 **Clustered Column Chart: Top 10 Trading Partners by Total Trade Value**
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 top_partners <- read_wits_turkey_data_with_partners %>%
   group_by(partner_name) %>%
   summarize(total_trade = sum(trade_value_usd_exp + trade_value_usd_imp)) %>%
@@ -308,35 +311,49 @@ ggplot(data = top_partners, aes(x = reorder(partner_name, -total_trade), y = tot
 
 **Clustered Column Chart: Trade Partner Classification as Net Exporter or Importer**
 
-```{r}
+```{r message=FALSE,warning=FALSE}
+# Calculate total trade for each partner
 partners <- read_wits_turkey_data_with_partners %>%
   group_by(partner_name) %>%
   summarize(total_trade = sum(trade_value_usd_exp + trade_value_usd_imp)) %>%
   arrange(desc(total_trade)) %>%
   top_n(10)
 
+# Calculate total export and import for each top partner
 top_partners <- read_wits_turkey_data_with_partners %>%
   filter(partner_name %in% partners$partner_name) %>%
   group_by(partner_name) %>%
   summarize(total_export = sum(trade_value_usd_exp),
             total_import = sum(trade_value_usd_imp)) %>%
   arrange(desc(total_export + total_import)) %>%
-  top_n(10)
+  top_n(10)%>%
+  na.omit() 
 
-# Get a color palette from RColorBrewer
-partner_colors <- brewer.pal(n = length(top_partners$partner_name) * 2, name = "Paired")
+# Calculate the net difference
+top_partners <- top_partners %>%
+  mutate(trade_difference = total_export - total_import)%>%
+  na.omit() 
+
 
 # Visualize import and export relations with top trading partners
 ggplot(data = top_partners, aes(x = reorder(partner_name, -total_export - total_import))) +
-  geom_bar(aes(y = total_export, fill = "Export"), stat = "identity", position = "dodge", color = "black") +
-  geom_bar(aes(y = -total_import, fill = "Import"), stat = "identity", position = "dodge", color = "black") +
-  labs(title = "Import and Export Relations with Top 10 Trading Partners", x = "Partner", y = "Total Trade Value (USD)") +
-  scale_fill_manual(values = c("Export" = partner_colors[1], "Import" = partner_colors[2]), name = "") +
+  geom_bar(aes(y = total_export, fill = "Export"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed" ) +
+  geom_bar(aes(y = -total_import, fill = "Import"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed") +
+  geom_bar(aes(y = trade_difference, fill = factor(sign(trade_difference))),
+           stat = "identity", position = "dodge", color = "black", alpha=0.7) +
+  labs(title = "Import and Export Relations with Top 10 Trading Partners",
+       x = "Partner", y = "Total Trade Value (USD)") +
+  scale_fill_manual(values = c("Export" = "gray", "Import" = "lightgray",
+                                "1" = "skyblue3", "-1" = "lightcoral"),
+                    name = "",
+                    labels = c("Turkey net importer", "Turkey net exporter", "Import", "Export")) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
         legend.position = "top")
 ```
-**Clustered Column Chart: Net Trade Difference with Top 10 Trading Partners (2015-2020)**
-```{r}
+*Chart Description:This chart illustrates the overall trade difference by summing the 'trade_difference' values for all top trading partners and then generates a text description based on whether Turkey was a net exporter or importer.*
+
+**Clustered Column Chart: Net Trade Difference with Top 10 Trading Partners between 2015 and 2020**
+```{r message=FALSE,warning=FALSE}
 
 # Vector of countries to filter
 selected_countries <- c("Germany", "Russian Federation", "China", "Italy", "USA", "United Kingdom", "France", "Spain", "Iran", "Iraq")
@@ -353,19 +370,19 @@ top_partners <- read_wits_turkey_data_with_partners %>%
 ggplot(data = top_partners, aes(x = reorder(partner_name, -trade_difference), y = trade_difference/1000000, fill = factor(sign(trade_difference)))) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.8), color = "black", height = 1.5) +  # Adjust the 'height' parameter
   facet_wrap(~year, scales = "free_y", ncol = 3) +
-  scale_fill_manual(values = c("red", "blue"), name = "",
-                    labels = c("Turkey net exporter", "Turkey net importer")) +
+  scale_fill_manual(values = c("lightcoral", "skyblue3"), name = "",
+                    labels = c("Turkey net importer", "Turkey net exporter")) +
   labs(title = "Trade Comparison with Top 10 Trading Partners(2015-2020)",
        x = "Partner",
        y = "Trade Difference (Export - Import, mn USD)") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
         legend.position = "top")
 ```
-*Chart Description: This bar plot illustrates the import and export relations between Turkey and its top 10 trading partners. Bars shows Turkey's net importer & exporter status as each of them corresponds to a specific partner, and positive figures represent Turkey's status as net exporter while negative figures represent net importer. The plot offers a concise overview of Turkey's trade dynamics with its key partners, emphasizing the balance of trade and highlighting significant trading relationships. // [Burada export-import yapıp net exporter veya net importer olup olmadığını olcelim]{.underline}*
+*Chart Description: This bar plot illustrates the import and export relations between Turkey and its top 10 trading partners. Bars shows Turkey's net importer & exporter status as each of them corresponds to a specific partner, and positive figures represent Turkey's status as net exporter while negative figures represent net importer. The plot offers a concise overview of Turkey's trade dynamics with its key partners, emphasizing the balance of trade and highlighting significant trading relationships. *
 
 **Lollipop Chart: Trend Analysis of Top 10 Trading Partners' trade value**
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 
 # Replace "YourFirstYear" and "YourEndYear" with the actual years that is selected for the analysis
 first_year <- 2015
@@ -399,7 +416,7 @@ ggplot(percentage_change, aes(x = reorder(partner_name, percentage_change), y = 
 
 **Stacked Column Chart: Close Trade Partners (Increasing trend in trade volumes) listed with Product Categories**
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 # Filter data for Iraq, Spain, and USA
 trade_data_selected_partners<- read_wits_turkey_data_with_partners %>%
   filter(partner_name %in% c("Iraq", "Spain", "USA"))
@@ -428,94 +445,147 @@ ggplot(filtered_commodity_data, aes(x = partner_name, y = total_trade_value, fil
   geom_col() +
   labs(title = "Total Trade Breakdown by Section Name and Partner (2015-2020)",
        x = "Partner Name", y = "Total Trade mn USD",
-       fill = "Section Name") +
+       fill = "Sections") +
   theme_minimal() +
   theme(legend.position = "bottom") +
-  guides(fill = guide_legend(nrow = 3))
+  guides(fill = guide_legend(nrow = 4))
 ```
 
 *Chart Description: These pie charts illustrate commodity breakdown data of each country that has close relationship with Turkey which are defined in previous analysis. Iraq, USA and Spain were analyzed in this section. Each pie chart represent share of top 5 commodities in total trade values.*
 
-**Line Chart: Trend Analysis of Exports Value by top 10 product categories**
-
-```{r}
+**Line Chart: Trend Analysis of Exports Value by top 9 product categories**
+```{r message=FALSE}
 top_export_products <- read_wits_turkey_data_only %>%
   group_by(section_name) %>%
   summarize(total_export = sum(trade_value_usd_exp)) %>%
-  top_n(10)
+  na.omit() 
+  
+top_export_products <- top_export_products %>%
+  arrange(desc(total_export))
+top_export_products$total_export <- scales::number_format(suffix = "M")(top_export_products$total_export / 1e6)
 
-# Filter the data with the selected top export products
-export_plot_data <- read_wits_turkey_data_with_partners %>%
-  filter(section_name %in% top_export_products$section_name) %>%
+DT::datatable(top_export_products, colnames = c('Section Name', 'Total Export(USD)'),options = list(pageLength = 9))
+
+```
+```{r message=FALSE,warning=FALSE}
+top_exports_products <- read_wits_turkey_data_only %>%
+  group_by(section_name) %>%
+  summarize(total_export = sum(trade_value_usd_exp)) %>%
+  top_n(9)%>%
+  na.omit() 
+
+top_exports_products <- top_exports_products %>% 
+  mutate(
+    section_name = case_when(
+        str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
+      str_detect(section_name, "^Base metals") ~ "Metal Products",
+      str_detect(section_name, "^Natural or") ~ "Natural Products",
+      str_detect(section_name, "^Vehicles,") ~ "Transport Equipment",
+      str_detect(section_name, "^Plastics and articles") ~ "Plastics",
+      str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
+      str_detect(section_name, "^Prepared foodstuffs,") ~ "Foodstuffs and Tobacco",
+      TRUE ~ as.character(section_name)
+    )
+  )
+
+read_wits_turkey_data_with_partners_edit <- read_wits_turkey_data_with_partners%>% 
+  mutate(
+    section_name = case_when(
+      str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
+      str_detect(section_name, "^Base metals") ~ "Metal Products",
+      str_detect(section_name, "^Natural or") ~ "Natural Products",
+      str_detect(section_name, "^Vehicles,") ~ "Transport Equipment",
+      str_detect(section_name, "^Plastics and articles") ~ "Plastics",
+      str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
+      str_detect(section_name, "^Prepared foodstuffs,") ~ "Foodstuffs and Tobacco",
+      TRUE ~ as.character(section_name)
+    )
+  )
+
+# Filter the data with the selected top import products
+export_plot_data <- read_wits_turkey_data_with_partners_edit %>%
+  filter(section_name %in% top_exports_products$section_name) %>%
   group_by(year, section_name) %>%
-  summarize(total_export = sum(trade_value_usd_exp))
-
-# Filter the data based on the top export products
-filtered_export_data <- export_plot_data %>%
-  filter(section_name %in% top_export_products$section_name)
-
-# Truncate section names to the first 20 characters
-filtered_export_data$truncated_name <- str_trunc(filtered_export_data$section_name, 50)
-
-# Get distinct truncated names for colors
-color_names <- unique(filtered_export_data$truncated_name)
-
-# Generate a limited number of distinct colors
-colors <- brewer.pal(length(color_names), "Set3")
+  summarize(total_export = sum(trade_value_usd_exp)) %>%
+  ungroup()  
 
 # Create the plot with geom_point
-ggplot(data = filtered_export_data, aes(x = year, y = total_export, color = truncated_name)) +
-  geom_line(size = 1.2, alpha = 0.7) +
-  labs(title = "Export Trends of Top 10 Products (2002-2020, Turkey)", x = "Year", y = "Total Export Value (USD)") +
-  theme(legend.position = "bottom") +
-  guides(color = guide_legend(nrow = 5)) +
-  scale_color_manual(values = setNames(colors, color_names), name = "")
+ggplot(data = export_plot_data, aes(x = year, y = total_export, color = section_name)) +
+  geom_line(size = 1.2) +
+  facet_wrap(~section_name, scales = "free_y", ncol = 3, labeller = labeller(NULL)) +
+  labs(title = "Export Trends of Top 9 Products (2002-2020, Turkey)", x = "Year", y = "Total Export Value (USD)") +
+  theme(legend.position = "none")  # Remove legend
 ```
 
 *Chart Description: Explore the export trends of Turkey's top 10 product categories from 2002 to 2020. Each line represents a product category, showcasing the variation in total export values over the years. The colors distinguish different product categories, providing a visual overview of their respective export dynamics.*
 
 **Line Chart: Trend Analysis of Global Market Share of Total Exports Value of Turkey in Total Exports by product categories**
 
-```{r}
+```{r message=FALSE,warning=FALSE}
 #tba
 ```
 
 *Chart Description: This chart Turkey's export value in global exports, providing country's presence and strategic importance in commodity markets*
 
-**Line Chart: Trend Analysis of Import Value by top 10 product categories**
-
-```{r}
+**Line Chart: Trend Analysis of Import Value by top 9 product categories**
+```{r message=FALSE}
 top_import_products <- read_wits_turkey_data_only %>%
   group_by(section_name) %>%
   summarize(total_import = sum(trade_value_usd_imp)) %>%
-  top_n(10)
+  na.omit() 
+  
+top_import_products <- top_import_products %>%
+  arrange(desc(total_import))
+top_import_products$total_import <- scales::number_format(suffix = "M")(top_import_products$total_import / 1e6)
+datatable(top_import_products, colnames = c('Section Name', 'Total Import(USD)'),options = list(pageLength = 9))
+
+```
+```{r message=FALSE}
+top_import_products <- read_wits_turkey_data_only %>%
+  group_by(section_name) %>%
+  summarize(total_import = sum(trade_value_usd_imp)) %>%
+  top_n(10)%>%
+  na.omit() 
+
+top_import_products <- top_import_products %>% 
+  mutate(
+    section_name = case_when(
+        str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
+      str_detect(section_name, "^Base metals") ~ "Metal Products",
+      str_detect(section_name, "^Natural or") ~ "Natural Products",
+      str_detect(section_name, "^Vehicles,") ~ "Transport Equipment",
+      str_detect(section_name, "^Plastics and articles") ~ "Plastics",
+      str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
+      TRUE ~ as.character(section_name)
+    )
+  )
+
+read_wits_turkey_data_with_partners_edit <- read_wits_turkey_data_with_partners%>% 
+  mutate(
+    section_name = case_when(
+      str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
+      str_detect(section_name, "^Base metals") ~ "Metal Products",
+      str_detect(section_name, "^Natural or") ~ "Natural Products",
+      str_detect(section_name, "^Vehicles,") ~ "Transport Equipment",
+      str_detect(section_name, "^Plastics and articles") ~ "Plastics",
+      str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
+      TRUE ~ as.character(section_name)
+    )
+  )
 
 # Filter the data with the selected top import products
-import_plot_data <- read_wits_turkey_data_with_partners %>%
+import_plot_data <- read_wits_turkey_data_with_partners_edit %>%
   filter(section_name %in% top_import_products$section_name) %>%
   group_by(year, section_name) %>%
-  summarize(total_import = sum(trade_value_usd_imp))
-
-# Filter the data based on the top import products
-filtered_import_data <- import_plot_data %>%
-  filter(section_name %in% top_import_products$section_name)
-
-# Truncate section names to the first 20 characters
-filtered_import_data$truncated_name <- str_trunc(filtered_import_data$section_name, 50)
-
-# Get distinct truncated names for colors
-color_names <- unique(filtered_import_data$truncated_name)
-
-# Generate a limited number of distinct colors
-colors <- brewer.pal(length(color_names), "Set3")
+  summarize(total_import = sum(trade_value_usd_imp)) %>%
+  ungroup()  
 
 # Create the plot with geom_point
-ggplot(data = filtered_import_data, aes(x = year, y = total_import, color = truncated_name)) +
-  geom_line(size = 1.2, alpha = 0.7) +
-  labs(title = "Import Trends of Top 10 Products (2002-2020, Turkey)", x = "Year", y = "Total Import Value (USD)") +
-  theme(legend.position = "bottom") +
-  guides(color = guide_legend(nrow = 5)) +
-  scale_color_manual(values = setNames(colors, color_names), name = "")
+ggplot(data = import_plot_data, aes(x = year, y = total_import, color = section_name)) +
+  geom_line(size = 1.2) +
+  facet_wrap(~section_name, scales = "free_y", ncol = 3, labeller = labeller(NULL)) +
+  labs(title = "Import Trends of Top 9 Products (2002-2020, Turkey)", x = "Year", y = "Total Import Value (USD)") +
+  theme(legend.position = "none")  # Remove legend
 ```
 
 *Chart Description: Description: Explore the import trends of Turkey's top 10 product categories from 2002 to 2020. Each line represents a product category, showcasing the variation in total import values over the years. The colors distinguish different product categories, providing a visual overview of their respective import dynamics.*
