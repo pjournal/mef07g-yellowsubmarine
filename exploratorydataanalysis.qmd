@@ -134,6 +134,7 @@ colors <- brewer.pal(length(color_names), "Set3")
 ggplot(data = export_plot_data, aes(x = reorder(section_name, -total_export), y = total_export, fill = truncated_name)) +
   geom_bar(stat = "identity", color = "black") +
   labs(title = "Top 10 Diversity of Exported Products (2002-2020, Turkey)", x = "Products", y = "Total Export Value (USD)") +
+  geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
   theme(axis.text.x = element_blank(), axis.title.x = element_blank(), legend.position = "bottom") +
   guides(fill = guide_legend(nrow = 5)) +
   scale_fill_manual(values = setNames(colors, color_names), name = "")
@@ -219,6 +220,7 @@ colors <- brewer.pal(length(color_names), "Set3")
 ggplot(data = imported_plot_data, aes(x = reorder(section_name, -total_import), y = total_import, fill = truncated_name)) +
   geom_bar(stat = "identity", color = "black") +
   labs(title = "Top 10 Diversity of Imported Products (2002-2020, Turkey)", x = "Products", y = "Total Import Value (USD)") +
+  geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
   theme(axis.text.x = element_blank(), axis.title.x = element_blank(), legend.position = "bottom") +
   guides(fill = guide_legend(nrow = 5)) +
   scale_fill_manual(values = setNames(colors, color_names), name = "")
@@ -302,6 +304,7 @@ partner_colors <- brewer.pal(length(top_partners$partner_name), "Set3")
 ggplot(data = top_partners, aes(x = reorder(partner_name, -total_trade), y = total_trade, fill = partner_name)) +
   geom_bar(stat = "identity", color = "black") +
   labs(title = "Top 10 Trading Partners", x = "Partner", y = "Total Trade Value (USD)") +
+  geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   scale_fill_manual(values = partner_colors)+
   theme(legend.position = "none")
@@ -346,7 +349,8 @@ ggplot(data = top_partners, aes(x = reorder(partner_name, -total_export - total_
   scale_fill_manual(values = c("Export" = "gray", "Import" = "lightgray",
                                 "1" = "skyblue3", "-1" = "lightcoral"),
                     name = "",
-                    labels = c("Turkey net importer", "Turkey net exporter", "Import", "Export")) +
+                    labels = c("Turkey net importer", "Turkey net exporter", "Export", "Import")) +
+  geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
         legend.position = "top")
 ```
@@ -440,15 +444,23 @@ filtered_commodity_data <- total_trade_values_5_year %>%
 # Truncate section names to the first 20 characters
 filtered_commodity_data$truncated_name <- str_trunc(filtered_commodity_data$section_name, 50)
 
-# Stacked Column Chart
+# Set up the color palette
+colors <- brewer.pal(length(unique(filtered_commodity_data$truncated_name)), "Set3")
+
+# Map colors to truncated section names
+color_mapping <- setNames(colors, unique(filtered_commodity_data$truncated_name))
+
+# Use the color_mapping in ggplot
 ggplot(filtered_commodity_data, aes(x = partner_name, y = total_trade_value, fill = truncated_name)) +
   geom_col() +
+  scale_fill_manual(values = color_mapping) +  # Set manual color scale
   labs(title = "Total Trade Breakdown by Section Name and Partner (2015-2020)",
        x = "Partner Name", y = "Total Trade mn USD",
        fill = "Sections") +
-  theme_minimal() +
+  geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
   theme(legend.position = "bottom") +
   guides(fill = guide_legend(nrow = 4))
+
 ```
 
 *Chart Description: These pie charts illustrate commodity breakdown data of each country that has close relationship with Turkey which are defined in previous analysis. Iraq, USA and Spain were analyzed in this section. Each pie chart represent share of top 5 commodities in total trade values.*
