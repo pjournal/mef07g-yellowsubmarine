@@ -18,6 +18,5 @@ book:
 format:
   html:
     theme: journal
-  pdf:
-    documentclass: scrreprt
+  
 
