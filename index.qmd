@@ -40,10 +40,6 @@ Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loa
 + [Sezer Türkmen](https://pjournal.github.io/mef07-sezerlucianturkmen/)  
 + [Sezgi Ayhan](https://pjournal.github.io/mef07-sezgia/)
 
-# Group Project Details
 
-Our group project is Turkey Analysis - Trade Balance & Partners. [Turkey-Trade-Analysis] 
-
-We use datasets of World Integrated Trade Solution, a pivotal platform, offering a comprehensive view of international trade dynamics, with a particular focus on Turkey from 2002 to 2020. Main objective of our analysis is to find out actionable insights about Turkey's position in global trade, product categories that Turkey holds strong export position or import dependency, diversification of import sources and export revenue streams. These insights might help making gap analysis on Turkey's trade balance to   suggest a new economy model.
 
 
