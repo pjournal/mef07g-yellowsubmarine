@@ -1,5 +1,5 @@
 ---
-title: " Exploratory Data Analysis"
+title: " Final Report "
 date: "2023-12-14"
 format: 
   html:
@@ -9,7 +9,9 @@ format:
 
 ## Introduction: Exploratory Data Analysis on WITS data
 
-World Integrated Trade Solution (WITS) provides a comprehensive view of Turkey's trade from 2002 to 2020, aiding informed decisions through data aggregation and Exploratory Data Analysis (EDA).
+World Integrated Trade Solution (WITS) emerges as a pivotal platform, offering a comprehensive view of international trade dynamics, with a particular focus on Turkey from 2002 to 2020. This powerful tool aggregates data from diverse sources to furnish users with valuable insights into Turkey's merchandise trade, tariffs, and non-tariff measures during this specific period. With an expansive database, WITS facilitates informed decision-making and strategic planning for researchers, policymakers, and businesses interested in Turkey's trade landscape.
+
+Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loading datasets, cleaning data, and employing statistical and visual analyses specific to Turkey's trade from 2002 to 2020. This process unveils trade patterns, identifies trends, and provides actionable insights, enabling stakeholders to navigate the complexities of Turkey's trade dynamics during this crucial timeframe. The synergy between WITS and EDA empowers users to make informed decisions and strategic choices, fostering a more interconnected and informed landscape for Turkey's economy and trade.
 
 ## Key Takeways
 
@@ -649,3 +651,10 @@ ggplot(filtered_commodity_data, aes(x = partner_name, y = total_imp_value, fill 
 
 **Key Findings:** Turkey's major trade partners are Russia, Germany and China as previously noted. During EDA, we have realized that energy is not categorized in this dataset of which seems under NA in this illustration. Turkey's energy dependency to Russia and Iran of which are major natural gas, crude and mineral suppliers of Turkey. Turkey terminated its crude supplies from Iran after 2018 when US imposed sanctions on Iranian products. Examining Turkey's major imports, it becomes evident that China and Germany play pivotal roles, particularly in the supply of machinery and mechanical components vital for industrial processes. Conversely, Turkey exhibits minimal dependency on textile and vegetable imports, reflecting its advantageous position as a net exporter in these product categories.
 
+
+### References
+
+[*World Integrated Trade Solution (World Bank)*](https://wits.worldbank.org/)
+
+
+[*Dataset*](https://docs.ropensci.org/tradestatistics/articles/basic-usage.html)

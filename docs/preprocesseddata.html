@@ -97,15 +97,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="site_libs/datatables-binding-0.31/datatables.js"></script>
+<script src="site_libs/datatables-binding-0.30/datatables.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
-<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
-<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="site_libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="site_libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 
 
 </head>
@@ -186,6 +186,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="./exploratorydataanalysis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./finalreport.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Final Report</span></span></a>
   </div>
 </li>
     </ul>
@@ -285,36 +291,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="monitoring-the-data" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="monitoring-the-data"><span class="header-section-number">2.4</span> Monitoring the Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>loaded_datasets <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"wits_data.rds"</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>read_wits_turkey_data_only <span class="ot">&lt;-</span> loaded_datasets<span class="sc">$</span>wits_turkey_data_only</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>read_wits_turkey_data_with_partners <span class="ot">&lt;-</span> loaded_datasets<span class="sc">$</span>wits_turkey_data_with_partners</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>read_wits_all_country_data <span class="ot">&lt;-</span> loaded_datasets<span class="sc">$</span>wits_all_country_data</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(read_wits_turkey_data_only), <span class="at">editable =</span> <span class="fu">list</span>(</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">'row'</span>, <span class="at">disable =</span> <span class="fu">list</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-
-<div class="datatables html-widget html-fill-item" id="htmlwidget-0ba524a406f077f0a105" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-0ba524a406f077f0a105">{"x":{"filter":"none","vertical":false,"editable":{"target":"row","disable":{"columns":[1,3,4]},"numeric":[1,8,9],"date":[]},"data":[["1","2","3","4","5","6"],[2002,2003,2004,2005,2006,2007],["tur","tur","tur","tur","tur","tur"],["Turkey","Turkey","Turkey","Turkey","Turkey","Turkey"],["010121","010121","010121","010121","010121","010121"],["Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals"],["01","01","01","01","01","01"],["Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products"],[6307262,1231248,958946,1111437,3684454,6401349],[0,136000,0,22750,403711,240770]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>year<\/th>\n      <th>reporter_iso<\/th>\n      <th>reporter_name<\/th>\n      <th>commodity_code<\/th>\n      <th>commodity_name<\/th>\n      <th>section_code<\/th>\n      <th>section_name<\/th>\n      <th>trade_value_usd_imp<\/th>\n      <th>trade_value_usd_exp<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,8,9]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"year","targets":1},{"name":"reporter_iso","targets":2},{"name":"reporter_name","targets":3},{"name":"commodity_code","targets":4},{"name":"commodity_name","targets":5},{"name":"section_code","targets":6},{"name":"section_name","targets":7},{"name":"trade_value_usd_imp","targets":8},{"name":"trade_value_usd_exp","targets":9}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'DT' was built under R version 4.3.2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(read_wits_turkey_data_with_partners), <span class="at">editable =</span> <span class="fu">list</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">'row'</span>, <span class="at">disable =</span> <span class="fu">list</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>loaded_datasets <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"wits_data.rds"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>read_wits_turkey_data_only <span class="ot">&lt;-</span> loaded_datasets<span class="sc">$</span>wits_turkey_data_only</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>read_wits_turkey_data_with_partners <span class="ot">&lt;-</span> loaded_datasets<span class="sc">$</span>wits_turkey_data_with_partners</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>read_wits_all_country_data <span class="ot">&lt;-</span> loaded_datasets<span class="sc">$</span>wits_all_country_data</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(read_wits_turkey_data_only), <span class="at">editable =</span> <span class="fu">list</span>(</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">'row'</span>, <span class="at">disable =</span> <span class="fu">list</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div class="datatables html-widget html-fill-item" id="htmlwidget-68fa1e9a9580552d6a8e" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-68fa1e9a9580552d6a8e">{"x":{"filter":"none","vertical":false,"editable":{"target":"row","disable":{"columns":[1,3,4]},"numeric":[1,10,11],"date":[]},"data":[["1","2","3","4","5","6"],[2018,2019,2018,2005,2008,2002],["tur","tur","tur","tur","tur","tur"],["Turkey","Turkey","Turkey","Turkey","Turkey","Turkey"],["arg","aus","aut","aze","aze","bel"],["Argentina","Australia","Austria","Azerbaijan","Azerbaijan","Belgium"],["010121","010121","010121","010121","010121","010121"],["Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals"],["01","01","01","01","01","01"],["Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products"],[14926,7757,26155,6784,0,901992],[0,0,0,0,10250,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>year<\/th>\n      <th>reporter_iso<\/th>\n      <th>reporter_name<\/th>\n      <th>partner_iso<\/th>\n      <th>partner_name<\/th>\n      <th>commodity_code<\/th>\n      <th>commodity_name<\/th>\n      <th>section_code<\/th>\n      <th>section_name<\/th>\n      <th>trade_value_usd_imp<\/th>\n      <th>trade_value_usd_exp<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,10,11]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"year","targets":1},{"name":"reporter_iso","targets":2},{"name":"reporter_name","targets":3},{"name":"partner_iso","targets":4},{"name":"partner_name","targets":5},{"name":"commodity_code","targets":6},{"name":"commodity_name","targets":7},{"name":"section_code","targets":8},{"name":"section_name","targets":9},{"name":"trade_value_usd_imp","targets":10},{"name":"trade_value_usd_exp","targets":11}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-31d392e03eab10f39165" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-31d392e03eab10f39165">{"x":{"filter":"none","vertical":false,"editable":{"target":"row","disable":{"columns":[1,3,4]},"numeric":[1,8,9],"date":[]},"data":[["1","2","3","4","5","6"],[2002,2003,2004,2005,2006,2007],["tur","tur","tur","tur","tur","tur"],["Turkey","Turkey","Turkey","Turkey","Turkey","Turkey"],["010121","010121","010121","010121","010121","010121"],["Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals"],["01","01","01","01","01","01"],["Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products"],[6307262,1231248,958946,1111437,3684454,6401349],[0,136000,0,22750,403711,240770]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>year<\/th>\n      <th>reporter_iso<\/th>\n      <th>reporter_name<\/th>\n      <th>commodity_code<\/th>\n      <th>commodity_name<\/th>\n      <th>section_code<\/th>\n      <th>section_name<\/th>\n      <th>trade_value_usd_imp<\/th>\n      <th>trade_value_usd_exp<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(read_wits_all_country_data), <span class="at">editable =</span> <span class="fu">list</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">'row'</span>, <span class="at">disable =</span> <span class="fu">list</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(read_wits_turkey_data_with_partners), <span class="at">editable =</span> <span class="fu">list</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">'row'</span>, <span class="at">disable =</span> <span class="fu">list</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div class="datatables html-widget html-fill-item" id="htmlwidget-45f2e0d5c9e91731121d" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-45f2e0d5c9e91731121d">{"x":null,"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-0c93b851910eab1c7fcc" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-0c93b851910eab1c7fcc">{"x":{"filter":"none","vertical":false,"editable":{"target":"row","disable":{"columns":[1,3,4]},"numeric":[1,10,11],"date":[]},"data":[["1","2","3","4","5","6"],[2018,2019,2018,2005,2008,2002],["tur","tur","tur","tur","tur","tur"],["Turkey","Turkey","Turkey","Turkey","Turkey","Turkey"],["arg","aus","aut","aze","aze","bel"],["Argentina","Australia","Austria","Azerbaijan","Azerbaijan","Belgium"],["010121","010121","010121","010121","010121","010121"],["Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals"],["01","01","01","01","01","01"],["Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products"],[14926,7757,26155,6784,0,901992],[0,0,0,0,10250,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>year<\/th>\n      <th>reporter_iso<\/th>\n      <th>reporter_name<\/th>\n      <th>partner_iso<\/th>\n      <th>partner_name<\/th>\n      <th>commodity_code<\/th>\n      <th>commodity_name<\/th>\n      <th>section_code<\/th>\n      <th>section_name<\/th>\n      <th>trade_value_usd_imp<\/th>\n      <th>trade_value_usd_exp<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,10,11]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(read_wits_all_country_data), <span class="at">editable =</span> <span class="fu">list</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">'row'</span>, <span class="at">disable =</span> <span class="fu">list</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ca18477450cc095e4ba7" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ca18477450cc095e4ba7">{"x":null,"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 

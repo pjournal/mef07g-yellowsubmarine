@@ -23,6 +23,18 @@ Each section is an assignment or an individual work.
 
 <!-- IF THIS IS A GROUP UNCOMMENT BELOW -->
 
+::: {style="text-align: center;"}
+<iframe width="680" height="430" src="https://www.youtube.com/embed/7osS1YQZPSQ" frameborder="0" allowfullscreen style="display: inline-block;"></iframe>
+</iframe>
+:::
+
+[*MEF University, Exploratory Data Analytics, Yellow Submarine's Group Project, Teaser, 2023*](https://www.youtube.com/watch?v=7osS1YQZPSQ)
+
+
+World Integrated Trade Solution (WITS) emerges as a pivotal platform, offering a comprehensive view of international trade dynamics, with a particular focus on Turkey from 2002 to 2020. This powerful tool aggregates data from diverse sources to furnish users with valuable insights into Turkey's merchandise trade, tariffs, and non-tariff measures during this specific period. With an expansive database, WITS facilitates informed decision-making and strategic planning for researchers, policymakers, and businesses interested in Turkey's trade landscape.
+
+Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loading datasets, cleaning data, and employing statistical and visual analyses specific to Turkey's trade from 2002 to 2020. This process unveils trade patterns, identifies trends, and provides actionable insights, enabling stakeholders to navigate the complexities of Turkey's trade dynamics during this crucial timeframe. The synergy between WITS and EDA empowers users to make informed decisions and strategic choices, fostering a more interconnected and informed landscape for Turkey's economy and trade.
+
 # Group Members
 
 + [Sezer Türkmen](https://pjournal.github.io/mef07-sezerlucianturkmen/)  
@@ -33,3 +45,5 @@ Each section is an assignment or an individual work.
 Our group project is Turkey Analysis - Trade Balance & Partners. [Turkey-Trade-Analysis] 
 
 We use datasets of World Integrated Trade Solution, a pivotal platform, offering a comprehensive view of international trade dynamics, with a particular focus on Turkey from 2002 to 2020. Main objective of our analysis is to find out actionable insights about Turkey's position in global trade, product categories that Turkey holds strong export position or import dependency, diversification of import sources and export revenue streams. These insights might help making gap analysis on Turkey's trade balance to   suggest a new economy model.
+
+
