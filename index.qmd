@@ -1,4 +1,5 @@
 ![](cover.jpg){fig-align="center" width="800"}
+<small>Here is an image taken from [Morfosis](https://morfosis.mx/) , produced by AI and edited by us</small>
 
 # Introduction {.unnumbered}
 
