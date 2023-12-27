@@ -13,7 +13,7 @@ World Integrated Trade Solution (WITS) provides a comprehensive view of Turkey's
 
 ## Key Takeways
 
-1.  For the analysis period which is between 2002 and 2020, Turkey kept ist net importer position in majority of the product categories that are primarily used as an intermediary in industrials
+1.  For the analysis period which is between 2002 and 2020, Turkey kept its net importer position in majority of the product categories that are primarily used as an intermediary in industrials
 
 2.  Turkey's dependence on energy and natural resources is concentrated, posing a significant risk if relations with Russia and Iran were to deteriorate. A similar vulnerability is observed in machinery and mechanical components, suggesting the need for diversification or incentives to encourage local production.
 
@@ -418,7 +418,7 @@ theme(
     
   )
 ```
-
+*\*Each bubble represents 5 year CAGR (2015-2020) for each product category*
 **Key Findings**: Through this analysis, we have identified that Turkey's dependency is diversified and country engages with more than 200 distinct import partners across its top 10 product categories, excluding natural product categories (mostly composed of semi-precious products, stones and powder that may be used for construction industry). Despite declining trend, machinery and mechanical appliances exhibited the highest import stream in 2020 of which has the highest number of trade partners. Conversely, plastics and chemicals demonstrated an increased import value over the last five years, albeit still trailing behind the primary product categories mentioned earlier.
 
 Turkey showcases a diverse range of trading partners. Let's explore further to identify those that are among the top 10 for both exports and imports.
