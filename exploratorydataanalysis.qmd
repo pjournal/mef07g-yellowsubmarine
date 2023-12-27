@@ -76,32 +76,6 @@ sapply(read_wits_turkey_data_with_partners, function(x) sum(is.na(x)))
 
 Description: Cleaning the data involves addressing missing values and outliers. It ensures that the data is reliable and ready for further analysis.
 
-### Data Summary
-
-```{r}
-#Partners_Analysis
-total_partners_summary <- read_wits_turkey_data_with_partners %>%
-group_by(partner_name)%>%
-summarize(total_partners_summary = n_distinct(partner_name), total_trade_value_exp = sum(trade_value_usd_exp),total_trade_value_imp = sum(trade_value_usd_imp)) %>%
-print(total_partners_summary)
-```
-
-```{r}
-#Commodity_Analysis
-total_commodity_count <- read_wits_turkey_data_with_partners %>%
-summarize(total_commodity_count = n_distinct(commodity_code)) %>%
-print(total_commodity_count)
-```
-
-```{r}
-#Product_Category_Analysis
-total_section_count <- read_wits_turkey_data_with_partners %>%
-group_by(section_name)%>%
-    summarize(total_section_count = n_distinct(section_name), total_trade_value_exp = sum(trade_value_usd_exp),total_trade_value_imp = sum(trade_value_usd_imp))
-as.tibble(total_section_count)
-```
-
-
 ## Exploratory Data Analysis (EDA)
 
 ### Exports & Imports Analysis
