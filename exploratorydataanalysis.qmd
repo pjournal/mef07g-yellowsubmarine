@@ -346,7 +346,6 @@ ggplot(read_wits_turkey_data_with_partners_top10, aes(x = partner_count, y = tot
        y = "Total Export Revenue mn USD (2020) ",
        size = "5 year CAGR", 
        color = "Section Name") +
-    theme_minimal () +
  theme(
     legend.position = "right",  
     legend.box = "horizontal",   
@@ -410,7 +409,6 @@ ggplot(read_wits_turkey_data_with_partners_top10, aes(x = partner_count, y = tot
        y = "Total Import mn USD (2020) ",
        size = "5 year CAGR", 
        color = "Section Name") +
-    theme_minimal () +
 theme(
     legend.position = "right",  
     legend.box = "horizontal",   

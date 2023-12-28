@@ -1,0 +1,12 @@
+name: yellowsubmarine
+title: yellowsubmarine
+username: sezerlucianturkmen
+account: sezerlucianturkmen
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10851936
+bundleId: 8090055
+url: https://sezerlucianturkmen.shinyapps.io/yellowsubmarine/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

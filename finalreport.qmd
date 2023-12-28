@@ -348,7 +348,6 @@ ggplot(read_wits_turkey_data_with_partners_top10, aes(x = partner_count, y = tot
        y = "Total Export Revenue mn USD (2020) ",
        size = "5 year CAGR", 
        color = "Section Name") +
-    theme_minimal () +
  theme(
     legend.position = "right",  
     legend.box = "horizontal",   
@@ -412,7 +411,6 @@ ggplot(read_wits_turkey_data_with_partners_top10, aes(x = partner_count, y = tot
        y = "Total Import mn USD (2020) ",
        size = "5 year CAGR", 
        color = "Section Name") +
-    theme_minimal () +
 theme(
     legend.position = "right",  
     legend.box = "horizontal",   
@@ -655,6 +653,17 @@ ggplot(filtered_commodity_data, aes(x = partner_name, y = total_imp_value, fill 
 In the expansive world of global trade, Turkey demonstrates practical adaptability, resilience, and strategic insight. The examination of its trade balance, net position, and partnerships unfolds a story of economic growth. As Turkey moves forward, navigating the international trade waters, the insights drawn from this analysis act as a practical guide — an aid for informed decision-making and strategic planning.
 
 Turkey’s trade story isn’t confined to numbers on spreadsheets; it’s a living account, alive with the energy of economic interaction. As the nation faces the completixities of the global economy, the focus on trade balance and partnerships lights the way toward sustainable and robust economic development.
+
+### Shiny App Link
+
+```{r}
+#| eval: false
+#| echo: true
+
+library(shiny)
+shiny::runGitHub("pjournal/mef07g-yellowsubmarine", subdir = "/app/app.R")
+```
+[Shiny App Link is here.](https://sezerlucianturkmen.shinyapps.io/yellowsubmarine/)
 
 ### References
 
