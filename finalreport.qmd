@@ -25,7 +25,7 @@ Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loa
 
 5.  As the main outcome; this EDA reveals Turkey's heavy reliance on intermediate goods and a relatively lower emphasis on strategic investments in R&D and incentives for a skilled workforce, pointing out a necessity of adopting a new economic model, which encourages innovation, reduces dependence on intermediates, increasing diversification of trade partners and ensures a more sustainable and resilient trade ecosystem.
 
-## Analysis
+## Outcomes
 
 
 
@@ -81,19 +81,7 @@ ggplot() +
 
 Let's conduct a more in-depth analysis to determine the product categories in which Turkey holds a strong position in its exports.
 
-```{r message=FALSE}
-top_export_products <- read_wits_turkey_data_only %>%
-  group_by(section_name) %>%
-  summarize(total_export = sum(trade_value_usd_exp)) %>%
-  na.omit() 
-  
-top_export_products <- top_export_products %>%
-  arrange(desc(total_export))
-top_export_products$total_export <- scales::number_format(suffix = "M")(top_export_products$total_export / 1e6)
 
-DT::datatable(top_export_products, colnames = c('Section Name', 'Total Export(USD)'),options = list(pageLength = 9))
-
-```
 
 ```{r message=FALSE,warning=FALSE}
 export_plot_data <- read_wits_turkey_data_only %>%
@@ -178,18 +166,6 @@ ggplot(data = export_plot_data, aes(x = year, y = total_export/1000000, color = 
 
 Let's conduct a more in-depth analysis to determine the product categories in which Turkey is most dependent on its imports.
 
-```{r message=FALSE}
-top_import_products <- read_wits_turkey_data_only %>%
-  group_by(section_name) %>%
-  summarize(total_import = sum(trade_value_usd_imp)) %>%
-  na.omit() 
-  
-top_import_products <- top_import_products %>%
-  arrange(desc(total_import))
-top_import_products$total_import <- scales::number_format(suffix = "M")(top_import_products$total_import / 1e6)
-datatable(top_import_products, colnames = c('Section Name', 'Total Import(USD)'),options = list(pageLength = 9))
-
-```
 
 ```{r message=FALSE,warning=FALSE}
 imported_plot_data <- read_wits_turkey_data_only %>%
