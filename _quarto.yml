@@ -7,10 +7,10 @@ book:
   repo-url: https://github.com/pjournal/mef07g-yellowsubmarine
   chapters:
     - index.qmd
-    - assignment1.qmd
     - preprocesseddata.qmd
     - exploratorydataanalysis.qmd
     - finalreport.qmd
+    - assignment1.qmd
   page-footer: 
     center: "[MEF BDA 503](https://mef-bda503.github.io)" 
   sharing: [twitter, facebook]

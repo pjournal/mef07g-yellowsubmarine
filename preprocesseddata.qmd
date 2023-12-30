@@ -1,35 +1,43 @@
 ---
 title: "Preprocessed Data"
+author: "Group Yellow Submarine"
 date: "2023-11-16"
 ---
 
 ## Yellow Submarine's Project Proposal on WITS data
 
-The choice of this domain stems from the significance of Turkey's role in the global trade landscape between 2002-2020. Before settling on the WITS database, we reviewed existing solutions, including the [Harvard University Atlas project](https://atlas.cid.harvard.edu/) and [Visualizations from the Observatory of Economic Complexity](https://oec.world/en).) 
+The choice of this domain stems from the significance of Turkey's role in the global trade landscape between 2002-2020. Before settling on the WITS database, we reviewed existing solutions, including the [Harvard University Atlas project](https://atlas.cid.harvard.edu/) and [Visualizations from the Observatory of Economic Complexity](https://oec.world/en).)
 
 We have decided on this database considering the primary sources that include:
-a. Trade Partnerships: Utilize international trade databases to identify Turkey's major trade partner and assess trade volumes
-b. Composition of Exports&Imports: Analyze composition of exports and imports data by complexity for each commodity 
-c. Additional Insights: Explore supplementary datasets as needed to uncover specific aspects of Turkey's trade dynamics, such as tariffs and distances data to map out key trading routes, highlighting the connectivity and strategic importance of Turkey in global trade.
+
+a\. Exports&Imports: Analyze composition of exports and imports data by complexity for each commodity
+
+b\. Trade Partnerships: Utilize international trade databases to identify Turkey's major trade partner and assess trade volumes
+
+c\. Additional Insights: Explore supplementary datasets as needed to uncover specific aspects of Turkey's trade dynamics, such as tariffs and distances data to map out key trading routes, highlighting the connectivity and strategic importance of Turkey in global trade.
 
 With this project, we aim to produce a comprehensive report that synthesizes the findings into a coherent narrative. Visualizations, charts, and infographics will be employed to enhance the accessibility of the data.
----
 
 ## Dataset Installation and Preprocessing
 
-```{r preprocesseddata,eval=FALSE, echo=TRUE,message=FALSE}
+### Necessary Source Packages
 
+```{r}
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(tradestatistics)
 library(tibble)
+```
 
-wits_all_country_data <- ots_create_tidy_data(
-  years = 2020,
-  table = "reporters"
-)
-head(wits_all_country_data)
+### Datasets
+
+**DataSet 1:** This data set shows Turkey's export and import values with product categories & related commodities' names & codes only
+
+**DataSet 2:** This data set shows Turkey's and its partners' export and import values with product categories & related commodities' names & codes
+
+```{r preprocesseddata,eval=FALSE, echo=TRUE,message=FALSE}
+#DataSet 1: 
 
 wits_turkey_data_only <- ots_create_tidy_data(
   years = 2002:2020,
@@ -38,6 +46,8 @@ wits_turkey_data_only <- ots_create_tidy_data(
 )
 head(wits_turkey_data_only)
 
+#DataSet 2: 
+
 wits_turkey_data_with_partners <- ots_create_tidy_data(
   years = 2002:2020,
   reporters = "tur",
@@ -45,23 +55,24 @@ wits_turkey_data_with_partners <- ots_create_tidy_data(
 )
 head(wits_turkey_data_with_partners)
 
-# Combine the datasets into a list
+#Combine the datasets into a list
 combined_datasets <- list(
   wits_turkey_data_only = wits_turkey_data_only,
-  wits_turkey_data_with_partners = wits_turkey_data_with_partners,
-  wits_all_country_data = wits_all_country_data
+  wits_turkey_data_with_partners = wits_turkey_data_with_partners
 )
+
 ```
 
 ## Creating RDS file
+
 ```{r rdsdata,eval=FALSE, echo=TRUE}
-
 saveRDS(combined_datasets, file = "wits_data.rds")
-
 ```
-[RDS Link](https://github.com/pjournal/mef07g-yellowsubmarine/blob/main/wits_data.rds)
- 
+
+The created .Rdata file can be reached through [RDS Link](https://github.com/pjournal/mef07g-yellowsubmarine/blob/main/wits_data.rds)
+
 ## Monitoring the Data
+
 ```{r monitoring}
 library(DT)
 
@@ -70,16 +81,15 @@ read_wits_turkey_data_only <- loaded_datasets$wits_turkey_data_only
 read_wits_turkey_data_with_partners <- loaded_datasets$wits_turkey_data_with_partners
 read_wits_all_country_data <- loaded_datasets$wits_all_country_data
 
-DT::datatable(head(read_wits_turkey_data_only), editable = list(
+DT::datatable(head(read_wits_turkey_data_only),editable = list(
   target = 'row', disable = list(columns = c(1, 3, 4))
 ))
 
 DT::datatable(head(read_wits_turkey_data_with_partners), editable = list(
   target = 'row', disable = list(columns = c(1, 3, 4))
 ))
-
-DT::datatable(head(read_wits_all_country_data), editable = list(
-  target = 'row', disable = list(columns = c(1, 3, 4))
-))
-
 ```
+
+## References
+
+Basic examples of [this link](file%20https://docs.ropensci.org/tradestatistics/articles/basic-usage.html) were useful during creating RDS and monitoring data tables
