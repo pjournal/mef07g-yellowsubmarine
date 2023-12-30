@@ -5,7 +5,7 @@ account: sezerlucianturkmen
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10851936
-bundleId: 8090055
+bundleId: 8095166
 url: https://sezerlucianturkmen.shinyapps.io/yellowsubmarine/
 version: 1
 asMultiple: FALSE

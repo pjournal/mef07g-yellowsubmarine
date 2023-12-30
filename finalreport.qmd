@@ -27,9 +27,9 @@ Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loa
 
 ## Analysis
 
-### Library
 
-```{r}
+
+```{r include=FALSE}
 
 library(tidyverse)
 library(dplyr)
@@ -42,43 +42,21 @@ library(DT)
 
 ```
 
-Description: Loading necessary libraries provides access to functions and tools that simplify data manipulation and visualization. dplyr is helpful for data wrangling, and ggplot2 is excellent for creating informative and visually appealing plots.
 
-### Datasets
-
-```{r}
+```{r include=FALSE}
 # Load the datasets
 loaded_datasets <- readRDS("wits_data.rds")
 read_wits_turkey_data_only <- loaded_datasets$wits_turkey_data_only
 read_wits_turkey_data_with_partners <- loaded_datasets$wits_turkey_data_with_partners
 ```
 
-Description: Loading datasets is the initial step in any data analysis. It allows us to bring in the data that we'll be working with throughout the analysis.
 
-### Overview of the Datasets
-
-```{r}
-str(read_wits_turkey_data_only)
-summary(read_wits_turkey_data_only)
-
-str(read_wits_turkey_data_with_partners)
-summary(read_wits_turkey_data_with_partners)
-
-```
-
-Description: Checking the structure and summary of the datasets provides an understanding of the variables, data types, and basic statistics. This helps identify potential issues and informs subsequent cleaning and analysis steps.
-
-### Data Cleaning
-
-```{r message=FALSE,warning=FALSE}
+```{r include=FALSE, message=FALSE,warning=FALSE}
 sapply(read_wits_turkey_data_only, function(x) sum(is.na(x)))
 sapply(read_wits_turkey_data_with_partners, function(x) sum(is.na(x)))
 
 ```
 
-Description: Cleaning the data involves addressing missing values and outliers. It ensures that the data is reliable and ready for further analysis.
-
-## Exploratory Data Analysis (EDA)
 
 ### Exports & Imports Analysis
 

@@ -160,6 +160,12 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#group-members" id="toc-group-members" class="nav-link" data-scroll-target="#group-members">Group Members</a></li>
+  <li><a href="#group-project---a-turkey-analysis-trade-balance-partners-based-on-world-integrated-trade-systems-wits-database" id="toc-group-project---a-turkey-analysis-trade-balance-partners-based-on-world-integrated-trade-systems-wits-database" class="nav-link" data-scroll-target="#group-project---a-turkey-analysis-trade-balance-partners-based-on-world-integrated-trade-systems-wits-database">Group Project - A Turkey Analysis: Trade Balance &amp; Partners based on World Integrated Trade Systems (WITS) Database</a>
+  <ul class="collapse">
+  <li><a href="#about" id="toc-about" class="nav-link" data-scroll-target="#about">About</a></li>
+  <li><a href="#teaser" id="toc-teaser" class="nav-link" data-scroll-target="#teaser">Teaser</a></li>
+  <li><a href="#contents" id="toc-contents" class="nav-link" data-scroll-target="#contents">Contents</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -186,32 +192,10 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="cover.jpg" class="img-fluid" data-fig-align="center" width="800"> <small>Here is an image taken from <a href="https://morfosis.mx/">Morfosis</a> , produced by AI and edited by us</small></p>
 <section id="introduction" class="level1 unnumbered">
 <h1 class="unnumbered">Introduction</h1>
-<!--
-::: {.callout-caution title="Setup To-Do"}
-
-Here is the list of items to properly set this Progress Journal up.
-
-1. Replace the name placeholder "YELLOW SUBMARINE" on `index.qmd` with your name or group name.
-2. Replace the name placeholder "YELLOW SUBMARINE" on `_quarto.yml` with your name or group name.
-3. Replace the repository link `https://github.com/pjournal/mef07g-yellowsubmarine` with your or your group's repository link.
-4. If this is a group PJ, follow the instructions in comments on `index.qmd` and add members, group name, project name and project short description.
-5. If this repository does not use RStudio/Posit, then you can also remove `.Rproj` file. Otherwise rename it with your repository name (e.g, mefXX-reponame).
-
-Then test with `quarto preview` on Terminal. If everything is ok, execute `quarto render` command in Terminal.
-
-**Finally, delete the above section (including this sentence) and (GitHub) push the changes to your repository.**
-::: -->
 <!-- DO NOT TOUCH THIS PART EXCEPT FILLING YOUR OR YOUR GROUP's NAME -->
 <p>This progress journal covers YELLOW SUBMARINE’s work during their term at <a href="https://mef-bda503.github.io/fall23/">BDA 503 Fall 2023</a>.</p>
 <p>Each section is an assignment or an individual work.</p>
 <!-- IF THIS IS A GROUP UNCOMMENT BELOW -->
-<p>World Integrated Trade Solution (WITS) emerges as a pivotal platform, offering a comprehensive view of international trade dynamics, with a particular focus on Turkey from 2002 to 2020. This powerful tool aggregates data from diverse sources to furnish users with valuable insights into Turkey’s merchandise trade, tariffs, and non-tariff measures during this specific period. With an expansive database, WITS facilitates informed decision-making and strategic planning for researchers, policymakers, and businesses interested in Turkey’s trade landscape.</p>
-<div style="text-align: center;">
-<iframe width="750" height="430" src="https://www.youtube.com/embed/7osS1YQZPSQ" frameborder="0" allowfullscreen="" style="display: inline-block;">
-</iframe>
-
-</div>
-<p>Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loading datasets, cleaning data, and employing statistical and visual analyses specific to Turkey’s trade from 2002 to 2020. This process unveils trade patterns, identifies trends, and provides actionable insights, enabling stakeholders to navigate the complexities of Turkey’s trade dynamics during this crucial timeframe. The synergy between WITS and EDA empowers users to make informed decisions and strategic choices, fostering a more interconnected and informed landscape for Turkey’s economy and trade.</p>
 </section>
 <section id="group-members" class="level1">
 <h1>Group Members</h1>
@@ -220,8 +204,34 @@ Then test with `quarto preview` on Terminal. If everything is ok, execute `quart
 </li>
 <li><a href="https://pjournal.github.io/mef07-sezgia/">Sezgi Ayhan</a></li>
 </ul>
+</section>
+<section id="group-project---a-turkey-analysis-trade-balance-partners-based-on-world-integrated-trade-systems-wits-database" class="level1">
+<h1>Group Project - A Turkey Analysis: Trade Balance &amp; Partners based on World Integrated Trade Systems (WITS) Database</h1>
+<section id="about" class="level2">
+<h2 class="anchored" data-anchor-id="about">About</h2>
+<p>World Integrated Trade Solution (WITS) emerges as a pivotal platform, offering a comprehensive view of international trade dynamics, with a particular focus on Turkey from 2002 to 2020. This powerful tool aggregates data from diverse sources to furnish users with valuable insights into Turkey’s merchandise trade, tariffs, and non-tariff measures during this specific period. With an expansive database, WITS facilitates informed decision-making and strategic planning for researchers, policymakers, and businesses interested in Turkey’s trade landscape.</p>
+<p>Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loading datasets, cleaning data, and employing statistical and visual analyses specific to Turkey’s trade from 2002 to 2020. This process unveils trade patterns, identifies trends, and provides actionable insights, enabling stakeholders to navigate the complexities of Turkey’s trade dynamics during this crucial timeframe. The synergy between WITS and EDA empowers users to make informed decisions and strategic choices, fostering a more interconnected and informed landscape for Turkey’s economy and trade.</p>
+</section>
+<section id="teaser" class="level2">
+<h2 class="anchored" data-anchor-id="teaser">Teaser</h2>
+<div style="text-align: center;">
+<iframe width="750" height="430" src="https://www.youtube.com/embed/7osS1YQZPSQ" frameborder="0" allowfullscreen="" style="display: inline-block;">
+</iframe>
+
+</div>
+</section>
+<section id="contents" class="level2">
+<h2 class="anchored" data-anchor-id="contents">Contents</h2>
+<ul>
+<li><p><a href="docs/preprocesseddata.html">Data Preprocessing</a></p></li>
+<li><p><a href="exploratorydataanalysis.html">Exploratory Data Analysis</a></p></li>
+<li><p><a href="finalreport.html">Final Report</a></p></li>
+<li><p><a href="https://sezerlucianturkmen.shinyapps.io/yellowsubmarine/">Shiny App</a></p></li>
+<li><p><a href="https://medium.com/eda-journal/a-turkey-analysis-trade-balance-partners-based-on-world-integrated-trade-systems-wits-database-ecaf9597204c">Medium Post</a></p></li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

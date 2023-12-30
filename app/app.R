@@ -77,8 +77,13 @@ ui <- fluidPage(
       tabsetPanel(
         tabPanel("Exports and Imports Rating", plotOutput("exports_imports_plot")),
         tabPanel("Top 10 Exported and Imported Products", plotOutput("top_imported_exported_products")),
-        tabPanel("Revenue Growth Analysis", plotOutput("scatterPlot")),
-        tabPanel("Exported Products Ranking", dataTableOutput("top_export_products_table")),
+        tabPanel("Product Comparison Analysis",
+                 selectInput("selected_partners", "Select Partners:",
+                             choices = unique(read_wits_turkey_data_with_partners$partner_name),
+                             selected = c("Germany","Spain","Iraq"),
+                             multiple = TRUE),
+                 plotOutput("scatterPlot")
+        ),        tabPanel("Exported Products Ranking", dataTableOutput("top_export_products_table")),
         tabPanel("Imported Products Ranking", dataTableOutput("top_import_products_table"))
         
       )
@@ -95,6 +100,15 @@ server <- function(input, output) {
     read_wits_turkey_data_with_partners %>%
       filter(partner_name == input$selected_country & year >= input$selected_year_slider[1] & year <= input$selected_year_slider[2])
     
+  })
+  
+  selected_country_data_2 <- reactive({
+    read_wits_turkey_data_with_partners %>%
+      filter(
+        partner_name %in% input$selected_partners,
+        year >= input$selected_year_slider[1],
+        year <= input$selected_year_slider[2]
+      )
   })
   
   
@@ -226,87 +240,73 @@ server <- function(input, output) {
   
     # Reactive expression for ggplot
     output$scatterPlot <- renderPlot({
-      # Replace the ggplot code here with modifications for Shiny
-      top_sections_export <- selected_country_data() %>%
-        group_by(section_name) %>%
-        summarize(total_export = sum(trade_value_usd_exp)) %>%
-        arrange(desc(total_export)) %>%
-        head(10)
       
-      selected_data_top10_export <- selected_country_data() %>%
-        filter(section_name %in% top_sections_export$section_name) %>%
-        group_by(section_name) %>%
-        mutate(
-          partner_count = n_distinct(partner_name),
-          cagr = ifelse(
-            n_distinct(year) > 1, 
-            ((trade_value_usd_exp[which(year == max(year))] / trade_value_usd_exp[which(year == min(year))])^(1/(max(year) - min(year) + 1)) - 1) * 100, 
-            NA
-          ),
-          total_trade_value_exp_2020 = sum(trade_value_usd_exp) / 1000000
-        ) %>%
-        ungroup()
+      # Add a new column for total trade
+      trade_data_selected_partners <- selected_country_data_2() %>%
+        mutate(total_trade_exp = (trade_value_usd_exp)/19000000,
+               total_trade_imp = (trade_value_usd_imp)/19000000)
       
-      selected_data_top10_export$truncated_name <- str_trunc(selected_data_top10_export$section_name, 35)
+      # Group by section_name and calculate total trade values for each section_name
+      total_trade_values_19_year_exp <- trade_data_selected_partners %>%
+        group_by(section_name, partner_name) %>%
+        summarise(total_exp_value = sum(total_trade_exp))
       
-      gg_export <- ggplot(selected_data_top10_export, aes(x = section_name, y = total_trade_value_exp_2020, size = cagr, color = truncated_name)) +
-        geom_point(alpha = 0.7, position = position_dodge(width = 0.8)) +
-        scale_size_continuous(range = c(3, 15)) +
-        labs(title = paste("Export Partner and Revenue Growth Analysis for", input$selected_country),
-             y = "Total Export Revenue (mn USD )",
-             size = "CAGR",
-             color = "Section Name") +
-        theme(
-          axis.text.x = element_blank(), axis.title.x = element_blank(),  # Hide x-axis labels
-          legend.position = "right",
-          legend.box = "horizontal",
-          legend.margin = margin(t = 0, r = 0, b = 0, l = 0)
-        )+
-        scale_x_discrete(expand = c(0.5, 0.5)) +  # Adjust the expand values as needed
-        scale_y_continuous(expand = c(0.1, 0.1))   
+      total_trade_values_19_year_imp <- trade_data_selected_partners %>%
+        group_by(section_name, partner_name) %>%
+        summarise(total_imp_value = sum(total_trade_imp))
       
-      # Repeat the process for import
-      top_sections_import <- selected_country_data() %>%
-        group_by(section_name) %>%
-        summarize(total_import = sum(trade_value_usd_imp)) %>%
-        arrange(desc(total_import)) %>%
-        head(10)
+      # Filter top 5 section names for exports
+      filtered_commodity_data_exp <- total_trade_values_19_year_exp %>%
+        group_by(partner_name) %>%
+        arrange(desc(total_exp_value)) %>%
+        slice_head(n = 6)
       
-      selected_data_top10_import <- selected_country_data() %>%
-        filter(section_name %in% top_sections_import$section_name) %>%
-        group_by(section_name) %>%
-        mutate(
-          partner_count = n_distinct(partner_name),
-          cagr = ifelse(
-            n_distinct(year) > 1, 
-            ((trade_value_usd_imp[which(year == max(year))] / trade_value_usd_imp[which(year == min(year))])^(1/(max(year) - min(year) + 1)) - 1) * 100, 
-            NA
-          ),
-          total_trade_value_imp_2020 = sum(trade_value_usd_imp) / 1000000
-        ) %>%
-        ungroup()
+      # Filter top 5 section names for imports
+      filtered_commodity_data_imp <- total_trade_values_19_year_imp %>%
+        group_by(partner_name) %>%
+        arrange(desc(total_imp_value)) %>%
+        slice_head(n = 6)
       
-      selected_data_top10_import$truncated_name <- str_trunc(selected_data_top10_import$section_name, 35)
+      # Truncate section names to the first 20 characters
+      filtered_commodity_data_exp$truncated_name <- str_trunc(filtered_commodity_data_exp$section_name, 60)
+      filtered_commodity_data_imp$truncated_name <- str_trunc(filtered_commodity_data_imp$section_name, 60)
       
-      gg_import <- ggplot(selected_data_top10_import, aes(x = section_name, y = total_trade_value_imp_2020, size = cagr, color = truncated_name)) +
-        geom_point(alpha = 0.7, position = position_dodge(width = 0.8)) +
-        scale_size_continuous(range = c(3, 15)) +
-        labs(title = paste("Import Partner and Revenue Growth Analysis for", input$selected_country),
-             y = "Total Import Revenue (mn USD )",
-             size = "CAGR",
-             color = "Section Name") +
-        theme(
-          axis.text.x = element_blank(), axis.title.x = element_blank(),  # Hide x-axis labels
-          legend.position = "right",
-          legend.box = "horizontal",
-          legend.margin = margin(t = 0, r = 0, b = 0, l = 0)
-        )+
-        scale_x_discrete(expand = c(0.5, 0.5)) +  # Adjust the expand values as needed
-        scale_y_continuous(expand = c(0.1, 0.1))   
+      # Set up the color palette for exports
+      colors_exp <- brewer.pal(length(unique(filtered_commodity_data_exp$truncated_name)), "Set3")
+      unique_names_exp <- unique(filtered_commodity_data_exp$truncated_name)
+      color_mapping_exp <- setNames(colors_exp[1:length(unique_names_exp)], unique_names_exp)
       
-      # Arrange plots vertically with export on top
-      grid.arrange(gg_export, gg_import, ncol = 2, heights = c(0.7, 0.3))
+      # Set up the color palette for imports
+      colors_imp <- brewer.pal(length(unique(filtered_commodity_data_imp$truncated_name)), "Set3")
+      unique_names_imp <- unique(filtered_commodity_data_imp$truncated_name)
+      color_mapping_imp <- setNames(colors_imp[1:length(unique_names_imp)], unique_names_imp)
+      
+      # Use the color_mapping in ggplot for exports
+      pro_export <- ggplot(filtered_commodity_data_exp, aes(x = partner_name, y = total_exp_value, fill = truncated_name)) +
+        geom_col() +
+        scale_fill_manual(values = color_mapping_exp[unique(filtered_commodity_data_exp$truncated_name)]) +  # Set manual color scale
+        labs(title = paste("Average Annual Export Breakdown by Product Category and Partner (", "Country", ", ", paste(input$selected_year_slider, collapse = " - "), ")"),
+             x = "Partner Name", y = "Total Export mn USD",
+             fill = NULL) +
+        geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
+        theme(legend.position = "bottom") +
+        guides(fill = guide_legend(nrow = 10))
+      
+      # Use the color_mapping in ggplot for imports
+      pro_import <- ggplot(filtered_commodity_data_imp, aes(x = partner_name, y = total_imp_value, fill = truncated_name)) +
+        geom_col() +
+        scale_fill_manual(values = color_mapping_imp[unique(filtered_commodity_data_imp$truncated_name)]) +  # Set manual color scale
+        labs(title = paste("Average Annual Import Breakdown by Product Category and Partner (", "Country", ", ", paste(input$selected_year_slider, collapse = " - "), ")"),
+             x = "Partner Name", y = "Total Import mn USD",
+             fill = NULL) +
+        geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
+        theme(legend.position = "bottom") +
+        guides(fill = guide_legend(nrow = 10))
+      
+      # Arrange plots side by side
+      grid.arrange(pro_export, pro_import, ncol = 2)
     })
+    
     
   
 }
