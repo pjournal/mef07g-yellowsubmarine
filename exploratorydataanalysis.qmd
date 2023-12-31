@@ -9,9 +9,9 @@ format:
     number-sections: false
 ---
 
-## Exploratory Data Analysis (EDA) on Group Project - A Turkey Analysis: Trade Balance & Partners
+## Exploratory Data Analysis (EDA), A Turkey Analysis: Trade Balance & Partners
 
-The choice of this domain stems from the significance of Turkey's role in the global trade landscape between 2002-2020. We utilized a table generated within the 'data' package, developed by a team led by Mauricio Vargas. This package retrieves its data from [API](api.tradestatistics.io)
+The choice of this domain stems from the significance of Turkey's role in the global trade landscape between 2002-2020. We utilized a table generated within the 'data' package, developed by a team led by Mauricio Vargas. This package retrieves its data from [API](https://api.tradestatistics.io/)
 
 ## Analysis
 
@@ -46,6 +46,7 @@ read_wits_turkey_data_with_partners <- loaded_datasets$wits_turkey_data_with_par
 ```
 
 ### Overview of the Datasets
+
 
 **Dataset 1:** This data set shows Turkey's export and import values with product categories & related commodities' names & codes only
 
@@ -184,6 +185,7 @@ DT::datatable(top_export_products, colnames = c('Section Name', 'Annual Export I
 
 ```
 
+
 Below column chart illustrates top 10 product categories' annual export income throughout the analysis period, y-axis with annual export income and x-axis with years.
 
 ```{r message=FALSE,warning=FALSE}
@@ -306,6 +308,7 @@ top_import_products$total_import <- scales::number_format(suffix = " mn")(top_im
 datatable(top_import_products, colnames = c('Section Name', 'Annual Import Value (USD)'),options = list(pageLength = 10))
 
 ```
+
 
 Below column chart illustrates top 10 product categories' annual import value throughout the analysis period, y-axis with annual import value and x-axis with years.
 
@@ -752,13 +755,18 @@ The chart presented here illustrates the top 10 import partners on x axis, each 
 
 Turkey's major trade partners are Russia, Germany and China as previously noted. 
 
+
 During EDA, we have realized that energy is not categorized in this dataset of which seems under NA in this illustration. Turkey's energy dependency to Russia and Iran of which are major natural gas, crude and mineral suppliers of Turkey. Turkey terminated its crude supplies from Iran after 2018 when US imposed sanctions on Iranian products. 
+
 
 Examining Turkey's major imports, it becomes evident that China and Germany play pivotal roles, particularly in the supply of machinery and mechanical components vital for industrial processes. 
 
+
 Conversely, Turkey exhibits minimal dependency on textile and vegetable imports, reflecting its advantageous position as a net exporter in these product categories.
+
   
 Important aspects to consider with this analysis include a further examination on product concentration with these trading partners
+
 
 ```{r message=FALSE,warning=FALSE}
 # Filter data for Iraq, Spain, and USA
