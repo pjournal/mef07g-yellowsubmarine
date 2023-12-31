@@ -1,34 +1,26 @@
 ---
 title: " Exploratory Data Analysis"
+author: "Group Yellow Submarine"
 date: "2023-12-14"
 format: 
   html:
     code-fold: true
     code-tools: true
+    number-sections: false
 ---
 
-## Introduction: Exploratory Data Analysis on WITS data
+## Exploratory Data Analysis (EDA) on Group Project - A Turkey Analysis: Trade Balance & Partners
 
-World Integrated Trade Solution (WITS) provides a comprehensive view of Turkey's trade from 2002 to 2020, aiding informed decisions through data aggregation and Exploratory Data Analysis (EDA).
-
-## Key Takeways
-
-1.  For the analysis period which is between 2002 and 2020, Turkey kept its net importer position in majority of the product categories that are primarily used as an intermediary in industrials
-
-2.  Turkey's dependence on energy and natural resources is concentrated, posing a significant risk if relations with Russia and Iran were to deteriorate. A similar vulnerability is observed in machinery and mechanical components, suggesting the need for diversification or incentives to encourage local production.
-
-3.  Turkey has close relations with Europe, taking advantage of being a signatory of custom union with the EU. On the contrary; the exposure to Europe, as evidenced in the EDA, underscores a category risk for Turkey. Economic downturns or recessions in Europe significantly impact Turkey's exports and imports.
-
-4.  While Turkey boasts more than 200 trading partners for both exports and imports, the high revenue-generating product categories lack diversification. Most of the top 10 product categories show stagnant or declining growth in USD values. This signals the importance of exploring new markets and expanding the product portfolio to mitigate risks associated with concentrated trade.
-
-5.  As the main outcome; this EDA reveals Turkey's heavy reliance on intermediate goods and a relatively lower emphasis on strategic investments in R&D and incentives for a skilled workforce, pointing out a necessity of adopting a new economic model, which encourages innovation, reduces dependence on intermediates, increasing diversification of trade partners and ensures a more sustainable and resilient trade ecosystem.
+The choice of this domain stems from the significance of Turkey's role in the global trade landscape between 2002-2020. We utilized a table generated within the 'data' package, developed by a team led by Mauricio Vargas. This package retrieves its data from [API](api.tradestatistics.io)
 
 ## Analysis
 
-### Library
+### Necessary Libraries
 
-```{r}
+```{r setup, include = FALSE}
 
+knitr::opts_chunk$set(echo = TRUE)
+library(htmlwidgets)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
@@ -38,87 +30,166 @@ library(knitr)
 library(kableExtra)
 library(DT)
 
+#In order to solve conflicts in different packages, we additionally loaded conflicted package to set our preference as dplyr
+
+library(conflicted)
+conflict_prefer("filter", "dplyr")
+conflict_prefer("lag", "dplyr")
 ```
 
-Description: Loading necessary libraries provides access to functions and tools that simplify data manipulation and visualization. dplyr is helpful for data wrangling, and ggplot2 is excellent for creating informative and visually appealing plots.
-
-### Datasets
+### Loading Datasets
 
 ```{r}
-# Load the datasets
 loaded_datasets <- readRDS("wits_data.rds")
 read_wits_turkey_data_only <- loaded_datasets$wits_turkey_data_only
 read_wits_turkey_data_with_partners <- loaded_datasets$wits_turkey_data_with_partners
 ```
 
-Description: Loading datasets is the initial step in any data analysis. It allows us to bring in the data that we'll be working with throughout the analysis.
-
 ### Overview of the Datasets
+
+**Dataset 1:** This data set shows Turkey's export and import values with product categories & related commodities' names & codes only
 
 ```{r}
 str(read_wits_turkey_data_only)
 summary(read_wits_turkey_data_only)
-
-str(read_wits_turkey_data_with_partners)
-summary(read_wits_turkey_data_with_partners)
-
 ```
 
-Description: Checking the structure and summary of the datasets provides an understanding of the variables, data types, and basic statistics. This helps identify potential issues and informs subsequent cleaning and analysis steps.
+**Dataset 2:** This data set shows Turkey's and its partners' export and import values with product categories & related commodities' names & codes
+
+```{r}
+str(read_wits_turkey_data_with_partners)
+summary(read_wits_turkey_data_with_partners)
+```
 
 ### Data Cleaning
 
 ```{r message=FALSE,warning=FALSE}
 sapply(read_wits_turkey_data_only, function(x) sum(is.na(x)))
 sapply(read_wits_turkey_data_with_partners, function(x) sum(is.na(x)))
-
+unique_values <- unique(read_wits_turkey_data_with_partners$section_name)
+rows_with_missing_values <- read_wits_turkey_data_with_partners[is.na(read_wits_turkey_data_with_partners$section_name), ]
 ```
 
-Description: Cleaning the data involves addressing missing values and outliers. It ensures that the data is reliable and ready for further analysis.
+We have identified rows with missing values in the column which are labelled as commodities that are not specified according to a kind. Since these rows contain both export and import values crucial for our overall analysis, we have opted not to remove them. Instead, we flagged them as NA for further analysis
 
 ## Exploratory Data Analysis (EDA)
 
 ### Exports & Imports Analysis
 
+#### Overview of Turkey's Exports and Imports Over the Years
+
+Turkey has experienced a consistent upward trajectory in both exports and imports from 2002 to 2020, as displayed in the y axis with aggregated amount of trade value in USDs throughout the analysis period and years in x axis.
+
+**Key Findings**: 
+Important aspects to consider with this analysis include consistent upward trajectory, influence factors such as global financial crisis, monetary policies of trade partners and currency fluctuations. Turkey's net position has always been negative. *(total exports value - total imports value = foreign trade deficit).*
+
+Interestingly, the foreign trade deficit expanded between 2011 and 2014 (inclusive of both start and end years) and began to diminish from 2015 to 2020, except for a spike in 2017. We will delve deeper into the yearly dynamics and extend our analysis by examining product categories and trade partners.
+
 ```{r message=FALSE,warning=FALSE}
-total_exports <- read_wits_turkey_data_only %>%
+total_exports<- read_wits_turkey_data_only %>%
   group_by(year) %>%
   summarize(total_exports = sum(trade_value_usd_exp))
+  te_e <- total_exports$total_exports
+  
 
 total_imports <- read_wits_turkey_data_only %>%
   group_by(year) %>%
   summarize(total_imports = sum(trade_value_usd_imp))
+  ti_i <- total_imports$total_imports
+
 
 # Visualize exports and imports over the years
 ggplot() +
-  geom_line(data = total_exports, aes(x = year, y = total_exports, color = "Exports"), size = 1.5) +
-  geom_line(data = total_imports, aes(x = year, y = total_imports, color = "Imports"), size = 1.5) +
-  labs(title = "Turkey's Exports and Imports Over the Years", x = "Year", y = "Trade Value (USD)"
-)
+  geom_line(data = total_exports, aes(x = year, y = (te_e / 1e6), color = "Exports"), size = 1.5) +
+  geom_line(data = total_imports, aes(x = year, y = (ti_i / 1e6), color = "Imports"), size = 1.5) +
+  labs(title = "Turkey's Exports and Imports Over the Years", x = "Year", y = "Trade Value (USD)",
+ )
 ```
 
-**Key Findings:** Turkey has experienced a consistent upward trajectory in both exports and imports from 2002 to 2020, as measured in USD values, influenced by factors such as price dynamics, quantities, and currency exchange rates. Notably, there was a slowdown in total trade values in 2009, coinciding with the global financial crisis of 2008. The decline in 2015 can be attributed to the implementation of quantitative easing in Europe, implemented after European debt crisis and recession, leading to an increased money supply in the region and devaluation of the EUR against USD. Further analysis within this EDA reveals the EU as a crucial economic partner for Turkey, and EUR/USD exchange rate playing a significant role in affecting Turkey's export values. Up until the onset of the global COVID-19 crisis in 2020, Turkey consistently increased its export values. Contrary to exports, import value has increased in 2020 as an indicator of increased dependency.
+The chart illustrated below shows Turkey's foreign trade deficit in lightcoral colored column with year data on x axis, trade values on y axis.
+
+```{r message=FALSE,warning=FALSE}
+# Calculate total trade for each year
+yearly_trade <- read_wits_turkey_data_with_partners %>%
+  group_by(year) %>%
+  summarize(total_trade = sum(trade_value_usd_exp + trade_value_usd_imp)) %>%
+  arrange(desc(year)) 
+  
+# Calculate total export and import for each year
+yearly_trade_net <- read_wits_turkey_data_with_partners %>%
+  group_by(year) %>%
+  summarize(total_export = sum(trade_value_usd_exp),
+            total_import = sum(trade_value_usd_imp)) %>%
+  arrange(desc(year))
+
+
+# Calculate the net difference
+yearly_trade_net <- yearly_trade_net  %>%
+  mutate(trade_difference = total_export - total_import)%>%
+  na.omit() 
+
+
+# Visualize import and export by year
+
+ggplot(data = yearly_trade_net, aes(x = year)) +
+  geom_bar(aes(y = total_export, fill = "Export"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed" ) +
+  geom_bar(aes(y = -total_import, fill = "Import"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed") +
+  geom_bar(aes(y = trade_difference, fill = factor(sign(trade_difference))),
+           stat = "identity", position = "dodge", color = "black", alpha=0.7) +
+  labs(title = "Net Trade Position of Turkey",
+       x = "Year", y = "Total Trade Value (USD)") +
+  scale_fill_manual(values = c("Export" = "gray", "Import" = "lightgray",
+                                "1" = "skyblue3", "-1" = "lightcoral"),
+                    name = "",
+                    labels = c("Net importer", "Export", "Import")) +
+  geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "right")
+```
 
 Let's conduct a more in-depth analysis to determine the product categories in which Turkey holds a strong position in its exports.
+
+#### Top Export Product Categories
+
+Turkey's annual export revenue on average throughout the analysis period is \~125bn USD, as calculated below:
+
+```{r}
+# Calculate the annual export revenue througout the analysis period (by taking average)
+annual_export_value<-read_wits_turkey_data_with_partners %>%
+  summarise(annual_export_value = sum(trade_value_usd_exp))
+print(annual_export_value/19000000) # in mn USDs
+```
+
+We examined annual export income of each product category listed under top 10. Below list shows the ranking of each product category which generates the highest annual export income throughout the analysis period.
+
+**Key Findings**: 
+
+Turkey's top 10 export revenues constitutes 89% of total export income. Textiles and apparel, machinery and equipment, vehicles and associated equipment, as well as base metals and mineral products, are the significant contributors to Turkey's export revenue.
+
+Important aspects to consider with this analysis include key export players in Turkey and key trade partners that Turkey have, top product categories' yearly trends and fluctuations over the analysis period.
+
+*Definition: Annual export income: aggregated amount of trade value of each product category/analysis period (19 years)*
 
 ```{r message=FALSE}
 top_export_products <- read_wits_turkey_data_only %>%
   group_by(section_name) %>%
-  summarize(total_export = sum(trade_value_usd_exp)) %>%
+  summarize(total_export = sum(trade_value_usd_exp)/19) %>%
   na.omit() 
   
 top_export_products <- top_export_products %>%
   arrange(desc(total_export))
-top_export_products$total_export <- scales::number_format(suffix = "M")(top_export_products$total_export / 1e6)
+top_export_products$total_export <- scales::number_format(suffix = " mn")(top_export_products$total_export / 1e6)
 
-DT::datatable(top_export_products, colnames = c('Section Name', 'Total Export(USD)'),options = list(pageLength = 9))
+DT::datatable(top_export_products, colnames = c('Section Name', 'Annual Export Income (USD) (2002-2020)'),options = list(pageLength = 10))
 
 ```
+
+Below column chart illustrates top 10 product categories' annual export income throughout the analysis period, y-axis with annual export income and x-axis with years.
 
 ```{r message=FALSE,warning=FALSE}
 export_plot_data <- read_wits_turkey_data_only %>%
   group_by(section_name) %>%
-  summarize(total_export = sum(trade_value_usd_exp)) %>%
+  summarize(total_export = sum(trade_value_usd_exp)/19000000) %>%
   top_n(10)
 
 # Truncate section names to the first 20 characters
@@ -140,11 +211,16 @@ ggplot(data = export_plot_data, aes(x = reorder(section_name, -total_export), y 
 
 ```
 
-**Key Findings:** Textiles and apparel, machinery and equipment, vehicles and associated equipment, as well as base metals and mineral products, constitute significant contributors to Turkey's export revenue. Findings from a study conducted by the Turkey Exporters Assembly (TEA), which defines the top 1000 exports, align with our observations. Prominent exporter companies in Turkey are engaged in the export of vehicles and spare parts, home appliances, and the export of base metals and mineral products. Examples include Ford Otosan, Arcelik, Erdemir and Kibar Holding. The study also highlights the presence of textile manufacturers on the list, although they may not be top-rated, indicating a higher number of companies in this category compared to others in Turkey. Source of TEA's study: <https://tim.org.tr/en/default>.
-
 Let's examine the trend analysis of these product categories from 2002 to 2020
 
+**Key Findings**: 
+
+Fluctuations in natural and mineral product exports require further investigation. Initial thoughts focused on factors like steel industry dynamics, potential sanctions and commodity crises. Additionally, fluctuations in Turkey's gold exports and imports which exhibited up and downs over recent years are also considered.
+
+In 2020, a downward trend was noted in every product category, except for essential items such as vegetable products, plastics, and foodstuff, which exhibited inelastic demand and remained resilient during the pandemic.
+
 ```{r message=FALSE,warning=FALSE}
+library(dplyr)
 top_exports_products <- read_wits_turkey_data_only %>%
   group_by(section_name) %>%
   summarize(total_export = sum(trade_value_usd_exp)) %>%
@@ -154,10 +230,10 @@ top_exports_products <- read_wits_turkey_data_only %>%
 top_exports_products <- top_exports_products %>% 
   mutate(
     section_name = case_when(
-        str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
-      str_detect(section_name, "^Base metals") ~ "Metal Products",
+      str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
+      str_detect(section_name, "^Base metals") ~ "Base Metal Products",
       str_detect(section_name, "^Natural or") ~ "Natural Products",
-      str_detect(section_name, "^Vehicles,") ~ "Transport Equipment",
+      str_detect(section_name, "^Vehicles,") ~ "Vehicles Equipment",
       str_detect(section_name, "^Plastics and articles") ~ "Plastics",
       str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
       str_detect(section_name, "^Prepared foodstuffs,") ~ "Foodstuffs and Tobacco",
@@ -169,9 +245,9 @@ read_wits_turkey_data_with_partners_edit <- read_wits_turkey_data_with_partners%
   mutate(
     section_name = case_when(
       str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
-      str_detect(section_name, "^Base metals") ~ "Metal Products",
+      str_detect(section_name, "^Base metals") ~ "Base Metal Products",
       str_detect(section_name, "^Natural or") ~ "Natural Products",
-      str_detect(section_name, "^Vehicles,") ~ "Transport Equipment",
+      str_detect(section_name, "^Vehicles,") ~ "Vehicles Equipment",
       str_detect(section_name, "^Plastics and articles") ~ "Plastics",
       str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
       str_detect(section_name, "^Prepared foodstuffs,") ~ "Foodstuffs and Tobacco",
@@ -181,35 +257,57 @@ read_wits_turkey_data_with_partners_edit <- read_wits_turkey_data_with_partners%
 
 # Filter the data with the selected top import products
 export_plot_data <- read_wits_turkey_data_with_partners_edit %>%
-  filter(section_name %in% top_exports_products$section_name) %>%
+filter(section_name %in% top_exports_products$section_name)%>%
   group_by(year, section_name) %>%
   summarize(total_export = sum(trade_value_usd_exp)) %>%
-  ungroup()  
+  ungroup()
+  
 
 # Create the plot with geom_point
 ggplot(data = export_plot_data, aes(x = year, y = total_export/1000000, color = section_name)) +
   geom_line(size = 1.2) +
   facet_wrap(~section_name, scales = "free_y", ncol = 3, labeller = labeller(NULL)) +
-  labs(title = "Export Trends of Top 9 Products (2002-2020, Turkey)", x = "Year", y = "Total Export Value (mn USD)") +
+  labs(title = "Export Trends of Top Products (2002-2020, Turkey)", x = "Year", y = "Total Export Value (mn USD)") +
   theme(legend.position = "none")  # Remove legend
 ```
 
-**Key Findings:** Fluctuations in natural and mineral product exports require further investigation. Initial thoughts focused on factors like steel industry dynamics, potential sanctions and commodity crises. Additionally, fluctuations in Turkey's gold exports and imports which exhibited up and downs over recent years are also considered.In 2020, a downward trend was noted in every product category, except for essential items such as vegetable products, plastics, and foodstuff, which exhibited inelastic demand and remained resilient during the pandemic.
-
 Let's conduct a more in-depth analysis to determine the product categories in which Turkey is most dependent on its imports.
+
+#### Top Import Product Categories
+
+Turkey's import value on average throughout the analysis period is \~183 bn USD, as calculated below:
+
+```{r}
+# Calculate the annual export revenue througout the analysis period (by taking average)
+annual_import_value<-read_wits_turkey_data_with_partners %>%
+  summarise(annual_imp_value = sum(trade_value_usd_imp))
+print(annual_import_value/19000000) # in mn USDs
+```
+
+We examined annual import value of each product category listed under top 10. Below list shows the ranking of each product category which generates the highest annual import value throughout the analysis period.
+
+**Key Findings**: 
+
+Turkey's top 10 import revenue constitute 81% of total import income. Machinery and equipment, base metals and their articles, mineral products, chemicals as well as vehicles and associated equipment constitute the primary import categories contributing to Turkey's import value.
+
+Important aspects to consider with this analysis include key importers, top product categories' yearly trends and fluctuations over the analysis period.
+
+*Definition: Annual import value: aggregated amount of trade value of each product category/analysis period (19 years)*
 
 ```{r message=FALSE}
 top_import_products <- read_wits_turkey_data_only %>%
   group_by(section_name) %>%
-  summarize(total_import = sum(trade_value_usd_imp)) %>%
+  summarize(total_import = sum(trade_value_usd_imp)/19) %>%
   na.omit() 
   
 top_import_products <- top_import_products %>%
   arrange(desc(total_import))
-top_import_products$total_import <- scales::number_format(suffix = "M")(top_import_products$total_import / 1e6)
-datatable(top_import_products, colnames = c('Section Name', 'Total Import(USD)'),options = list(pageLength = 9))
+top_import_products$total_import <- scales::number_format(suffix = " mn")(top_import_products$total_import / 1e6)
+datatable(top_import_products, colnames = c('Section Name', 'Annual Import Value (USD)'),options = list(pageLength = 10))
 
 ```
+
+Below column chart illustrates top 10 product categories' annual import value throughout the analysis period, y-axis with annual import value and x-axis with years.
 
 ```{r message=FALSE,warning=FALSE}
 imported_plot_data <- read_wits_turkey_data_only %>%
@@ -236,11 +334,15 @@ ggplot(data = imported_plot_data, aes(x = reorder(section_name, -total_import), 
 
 ```
 
-**Key Findings:** Machinery and equipment, base metals and their articles, mineral products, chemicals as well as vehicles and associated equipment constitute the primary import categories contributing to Turkey's import value. There is a substantial import of investment goods, components and parts, along with unprocessed materials used in industrial activities. This highlights Turkey's dependence on a significant influx of intermediate goods.
-
-Based on these observations, there is a need for a strategic focus on R&D investments and incentives for a highly skilled workforce. This is crucial for adoption of a new economic model, which Turkey could leverage to reduce its reliance on intermediate goods.
-
 Let's examine the trend analysis of these product categories from 2002 to 2020
+
+**Key Findings**: 
+
+Slowdown in imports of all product categories is initially observed in 2009 reflecting the effects of global crisis in 2008.
+
+Import values of mineral and natural products fluctuated during analysis period, requires further investigation as it has been mentioned in exports section.
+
+Analysis for product categories of vegetables and plastics under export section remains applicable for imports, showcasing inelastic demand during pandemic.
 
 ```{r message=FALSE}
 top_import_products <- read_wits_turkey_data_only %>%
@@ -290,17 +392,27 @@ ggplot(data = import_plot_data, aes(x = year, y = total_import, color = section_
   theme(legend.position = "none")  # Remove legend
 ```
 
-**Key Findings**: First slowdown in imports of all product categories is observed in 2009 reflecting ongoing effects of global crisis in 2008. Import values of mineral and natural products fluctuated during analysis period, requires further investigation as it has been mentioned in exports section. Analysis for product categories of vegetables and plastics under export section remains applicable for imports, showcasing inelastic demand during pandemic.
-
 ### Trade Partnership Analysis
 
-Ensuring a broad range of diverse trade partners is crucial for any country in order to diversify its export and import streams and serves as a risk mitigation strategy, particularly in the face of any possible geopolitical challenges.
+#### Diversification of Export Revenue Streams by Top 10 Product Category 
 
-This chart aims to assess Turkey's revenue generation capacity by scrutinizing top 10 product category. The focus is to understand diversity of Turkey's trade partners, identifying leading revenue generators in 2020 and evaluating the performance of these revenue categories over the past five years.
+This chart aims to assess Turkey's revenue generation capacity by scrutinizing top 10 product category.
+
+The focus is to understand diversity of Turkey's trade partners, identifying leading revenue generators in 2020 and evaluating the performance of these revenue categories over the last five years.
+
+**Key Findings**: 
+
+Important aspects to consider with this analysis include trade partner diversification of Turkey's revenue streams, significant export revenue contributor categories' performance within the last 5 year.
+
+Interestingly, Textiles and Apparel, Vehicles and Associated Equipment and Base Metals and Mineral exhibits a trend of non-growth or decline in revenue generation, which are among the highest revenue generator in 2020.
+
+Conversely, Mineral Products, Miscellaneous Manufactured Articles, Vegetable Products and Plastics demonstrated an increased capacity for revenue generation over the last five years, albeit still trailing behind the primary product categories mentioned earlier.
+
+*Definition: Each bubble represents compounded annual growth rate of export income within the last 5 years, 2015-2020) for each product category. Export revenue value of 2020 generated from each product category that is colored in the bubbles is on y-axis, while number of distinct trade partners in on x axis.5 year compounded growth rate is calculated by dividing total trade value generated in 2020 by total trade value generated in 2015, the result is raised to an exponent of one divided by five years, one was subtracted from the subsequent result and multiplied by 100 to be presented as percentage*
 
 ```{r message=FALSE,warning=FALSE}
 
-# Step 1: Find the top 10 section_name based on trade_value
+# Find the top 10 section_name based on trade_value
 top_sections <- read_wits_turkey_data_with_partners %>%
   group_by(section_name) %>%
   summarize(total_export = sum(trade_value_usd_exp)) %>%
@@ -328,7 +440,7 @@ read_wits_turkey_data_with_partners_top10 <- read_wits_turkey_data_with_partners
   mutate(total_trade_value_exp_2020 = sum(trade_value_usd_exp)/1000000) %>%
   ungroup()
 
-# Truncate section names to the first 20 characters
+# Truncate section names to the first 35 characters
 read_wits_turkey_data_with_partners_top10$truncated_name <- str_trunc(read_wits_turkey_data_with_partners_top10$section_name, 35)
 
 # Get distinct truncated names for colors
@@ -352,14 +464,17 @@ ggplot(read_wits_turkey_data_with_partners_top10, aes(x = partner_count, y = tot
     legend.margin = margin(t = 0, r = 0, b = 0, l = 0)  
     
   )
-
 ```
 
-*\*Each bubble represents 5 year CAGR (2015-2020) for each product category*
+#### Diversification of Import Streams by Top 10 Product Category 
 
-**Key Findings**: Through this analysis, we have identified that Turkey engages with more than 200 distinct export partners across its top 10 product categories, showcasing a diversified revenue stream. As previously noted in the above sections of this EDA; Textiles and Apparel, Vehicles and Associated Equipment and Base Metals and Mineral Products stand out as significant contributors to Turkey's export revenue. Despite a trend of non-growth or decline in revenue generation, these categories exhibited the highest revenue generation in 2020. Conversely, Mineral Products, Miscellaneous Manufactured Articles, Vegetable Products and Plastics demonstrated an increased capacity for revenue generation over the last five years, albeit still trailing behind the primary product categories mentioned earlier.
+This chart aims to assess Turkey's dependency on imports for its top 10 product categories and to understand diversity of Turkey's trade partners, identifying leading import sources in 2020 and evaluating the performance of these sources over the last five years.
 
-This chart aims to assess Turkey's dependency on imports for its top 10 product categories and to understand diversity of Turkey's trade partners, identifying leading import sources in 2020 and evaluating the performance of these sources over the past five years.
+**Key Findings**: 
+
+Interestingly, despite declining trend in import values, machinery and mechanical appliances exhibited the highest import stream in 2020 of which has the highest number of trade partners. Conversely, plastics and chemicals demonstrated an increased import value over the last five years, albeit still trailing behind the primary product categories mentioned earlier.
+
+*Definition: Each bubble represents compounded annual growth rate of trade value within the last 5 years, 2015-2020) for each product category. Import values of 2020 generated from each product category that is colored in the bubbles is on y-axis, while number of distinct trade partners in on x axis.*
 
 ```{r message=FALSE,warning=FALSE}
 
@@ -397,7 +512,6 @@ read_wits_turkey_data_with_partners_top10$truncated_name <- str_trunc(read_wits_
 # Get distinct truncated names for colors
 color_names <- read_wits_turkey_data_with_partners_top10$truncated_name
 
-
 ggplot(read_wits_turkey_data_with_partners_top10, aes(x = partner_count, y = total_trade_value_imp_2020, size = cagr, color = truncated_name)) +
   geom_point(alpha = 0.7) +
   scale_size_continuous(range = c(3, 15)) +
@@ -416,10 +530,20 @@ theme(
     
   )
 ```
-*\*Each bubble represents 5 year CAGR (2015-2020) for each product category*
-**Key Findings**: Through this analysis, we have identified that Turkey's dependency is diversified and country engages with more than 200 distinct import partners across its top 10 product categories, excluding natural product categories (mostly composed of semi-precious products, stones and powder that may be used for construction industry). Despite declining trend, machinery and mechanical appliances exhibited the highest import stream in 2020 of which has the highest number of trade partners. Conversely, plastics and chemicals demonstrated an increased import value over the last five years, albeit still trailing behind the primary product categories mentioned earlier.
 
 Turkey showcases a diverse range of trading partners. Let's explore further to identify those that are among the top 10 for both exports and imports.
+
+#### Top 10 Trading Partners 
+
+The chart presented here illustrates the top 10 trade partners in each column along with the average annual bilateral trading value (a total of exports and imports) on y-axis for each trade partners on x- axis during analysis period (2002-2020).
+
+**Key Findings**: 
+
+Top 10 trade partners' trade value (total exports+imports) with Turkey throughout the analysis period constitute 51% of total trade value
+
+Turkey has strong relations with neighboring countries - closest relationship with Germany - followed by major economies such as China, USA and Russia.
+
+Important aspects to consider with this analysis include, showing Turkey's dependency on key trade partners by product categories.
 
 ```{r message=FALSE,warning=FALSE}
 top_partners <- read_wits_turkey_data_with_partners %>%
@@ -441,13 +565,13 @@ ggplot(data = top_partners, aes(x = reorder(partner_name, -total_trade), y = tot
   theme(legend.position = "none")
 ```
 
-**Key Findings**: Turkey has strong relations with neighboring countries and major economies such as China and the USA. The chart presented here illustrates the top 10 trade partners along with the average annual bilateral trading value for each country during analysis period (2002-2020).
-
-::: callout-warning
-Notice: Above chart does not represent net trading value and Turkey's trading position. Trading values are calculated by summing up total export and import values for each year and results indicate average values during analysis period.
-:::
-
 Let's delve deeper into the analysis by specifically examining Turkey's net exporter/importer position, the trading partners with whom Turkey increased its relations within the analysis period and on which the product categories Turkey is most dependent for its importers and holding a strong export position.
+
+The chart presented here illustrates the top 10 trade partners in each column along with total of exports, imports and net trade values (export-import) on y-axis for each trade partners on x-axis during analysis period (2002-2020).
+
+**Key Findings**: 
+
+Turkey predominantly maintains a net importer position among its major trading partners, with the exceptions of the United Kingdom and Iraq on an aggregate level throughout the analysis period. Notably, Turkey exhibits a higher dependency on Russia and China compared to other partners.
 
 ```{r message=FALSE,warning=FALSE}
 # Calculate total trade for each partner
@@ -489,6 +613,12 @@ ggplot(data = top_partners, aes(x = reorder(partner_name, -total_export - total_
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
         legend.position = "top")
 ```
+The chart presented here illustrates the top 10 trade partners on x axis, each column represents Turkey's net exporter/importer position with their trade value on y-axis. Analysis were made separately for each year within the last 5 years
+
+**Key Findings**:
+
+This chart gives us a clearer understanding of Turkey's position for each year during the analysis period. Turkey has transitioned from a net importer to a net exporter for some European countries, such as Spain and France.
+
 
 ```{r message=FALSE,warning=FALSE}
 
@@ -516,11 +646,17 @@ ggplot(data = top_partners, aes(x = reorder(partner_name, -trade_difference), y 
         legend.position = "top")
 ```
 
-**Key Findings**: Turkey predominantly maintains a net importer position among its major trading partners, with the exceptions of the United Kingdom and Iraq on an aggregate level throughout the analysis period. Notably, Turkey exhibits a higher dependency on Russia and China compared to other partners.
-
-The second chart provides a clearer understanding of Turkey's position for each year during the analysis period. Turkey has transitioned from a net importer to a net exporter for some European countries, such as Spain and France.
-
 To gain a better understanding of the partners with whom Turkey has strengthened its relations the most, let's examine the chart below, which illustrates the 5-year CAGR in total trade values for each trading partner.
+
+The chart presented here illustrates the top 10 trade partners on x axis along with 5 year CAGR of their trade value with Turkey  on y-axis. 
+
+**Key Findings:** 
+
+Trade relations with Iraq, special categories that are not well described in the dataset, USA and Spain have seen increased growth in trade values over the last 5 years. 
+
+In contrast, relations with Germany, France, and the UK have remained relatively flat.
+
+Important aspects to consider with this analysis include the trend in product categories with these trading partners
 
 ```{r message=FALSE,warning=FALSE}
 
@@ -548,13 +684,22 @@ ggplot(percentage_change, aes(x = reorder(partner_name, percentage_change), y = 
   geom_point(color = "red", size = 3) +
   labs(title = "Top 10 Partners: 5 year CAGR growth in Total Trade Value by 2020",
        x = "Partner",
-       y = "Percentage Change in Total Trade Value") +
+       y = "5 year CAGR growth in Total Trade Value") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-**Key Findings:** Trade relations with Iraq, special categories that are not well described in the dataset - possibly Iran, USA and Spain have seen increased growth in trade values over the last 5 years. In contrast, relations with Germany, France, and the UK have remained relatively flat.
 
 On which category Turkey was the most export revenue generative, let's have a look at the below chart:
+
+The chart presented here illustrates the top 10 export partners on x axis, each column represent top product categories, with annual export revenue generated from them on y-axis. 
+
+**Key Findings:** 
+
+Major export partners of Turkey imported textile and its articles which are followed by vehicles, aircraft and machinery and mechanical components. 
+
+Export product categories do not vary significantly among the top export partners, except for China, which notably imports mineral products the most.
+
+Important aspects to consider with this analysis include a further examination on product concentration with these trading partners
 
 ```{r message=FALSE,warning=FALSE}
 # Filter data for Iraq, Spain, and USA
@@ -591,7 +736,7 @@ ggplot(filtered_commodity_data, aes(x = partner_name, y = total_exp_value, fill 
   geom_col() +
   scale_fill_manual(values = color_mapping) +  # Set manual color scale
   labs(title = "Average Annual Export Breakdown by Product Category and Partner (2002-2020)",
-       x = "Partner Name", y = "Total Export mn USD",
+       x = "Partner Name", y = "Annual Export Revenue mn USD",
        fill = "Sections") +
   geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
   theme(legend.position = "bottom") +
@@ -599,9 +744,21 @@ ggplot(filtered_commodity_data, aes(x = partner_name, y = total_exp_value, fill 
 
 ```
 
-**Key Findings:** Major export partners of Turkey imported textile and its articles which are followed by vehicles, aircraft and machinery and mechanical components. Export product categories do not vary significantly among the top export partners, except for China, which notably imports mineral products the most.
-
 On which category Turkey was the dependent, let's have a look at importers chart:
+
+The chart presented here illustrates the top 10 import partners on x axis, each column represent top product categories, with annual import value on y-axis.
+
+**Key Findings:** 
+
+Turkey's major trade partners are Russia, Germany and China as previously noted. 
+
+During EDA, we have realized that energy is not categorized in this dataset of which seems under NA in this illustration. Turkey's energy dependency to Russia and Iran of which are major natural gas, crude and mineral suppliers of Turkey. Turkey terminated its crude supplies from Iran after 2018 when US imposed sanctions on Iranian products. 
+
+Examining Turkey's major imports, it becomes evident that China and Germany play pivotal roles, particularly in the supply of machinery and mechanical components vital for industrial processes. 
+
+Conversely, Turkey exhibits minimal dependency on textile and vegetable imports, reflecting its advantageous position as a net exporter in these product categories.
+  
+Important aspects to consider with this analysis include a further examination on product concentration with these trading partners
 
 ```{r message=FALSE,warning=FALSE}
 # Filter data for Iraq, Spain, and USA
@@ -645,5 +802,4 @@ ggplot(filtered_commodity_data, aes(x = partner_name, y = total_imp_value, fill 
   guides(fill = guide_legend(nrow = 4))
 ```
 
-**Key Findings:** Turkey's major trade partners are Russia, Germany and China as previously noted. During EDA, we have realized that energy is not categorized in this dataset of which seems under NA in this illustration. Turkey's energy dependency to Russia and Iran of which are major natural gas, crude and mineral suppliers of Turkey. Turkey terminated its crude supplies from Iran after 2018 when US imposed sanctions on Iranian products. Examining Turkey's major imports, it becomes evident that China and Germany play pivotal roles, particularly in the supply of machinery and mechanical components vital for industrial processes. Conversely, Turkey exhibits minimal dependency on textile and vegetable imports, reflecting its advantageous position as a net exporter in these product categories.
 

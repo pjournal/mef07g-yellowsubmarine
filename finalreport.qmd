@@ -15,7 +15,7 @@ Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loa
 
 ## Key Takeways
 
-1.  For the analysis period which is between 2002 and 2020, Turkey kept ist net importer position in majority of the product categories that are primarily used as an intermediary in industrials
+1.  For the analysis period which is between 2002 and 2020, Turkey kept its net importer position in majority of the product categories that are primarily used as an intermediary in industrials
 
 2.  Turkey's dependence on energy and natural resources is concentrated, posing a significant risk if relations with Russia and Iran were to deteriorate. A similar vulnerability is observed in machinery and mechanical components, suggesting the need for diversification or incentives to encourage local production.
 
@@ -39,6 +39,7 @@ library(ggridges)
 library(knitr)
 library(kableExtra)
 library(DT)
+library(conflicted)
 
 ```
 
@@ -78,6 +79,46 @@ ggplot() +
 ```
 
 **Key Findings:** Turkey has experienced a consistent upward trajectory in both exports and imports from 2002 to 2020, as measured in USD values, influenced by factors such as price dynamics, quantities, and currency exchange rates. Notably, there was a slowdown in total trade values in 2009, coinciding with the global financial crisis of 2008. The decline in 2015 can be attributed to the implementation of quantitative easing in Europe, implemented after European debt crisis and recession, leading to an increased money supply in the region and devaluation of the EUR against USD. Further analysis within this EDA reveals the EU as a crucial economic partner for Turkey, and EUR/USD exchange rate playing a significant role in affecting Turkey's export values. Up until the onset of the global COVID-19 crisis in 2020, Turkey consistently increased its export values. Contrary to exports, import value has increased in 2020 as an indicator of increased dependency.
+
+
+```{r message=FALSE,warning=FALSE}
+# Calculate total trade for each partner
+partners <- read_wits_turkey_data_with_partners %>%
+  group_by(year) %>%
+  summarize(total_trade = sum(trade_value_usd_exp + trade_value_usd_imp)) %>%
+  arrange(desc(year)) 
+  
+# Calculate total export and import for each top partner
+top_partners <- read_wits_turkey_data_with_partners %>%
+  group_by(year) %>%
+  summarize(total_export = sum(trade_value_usd_exp),
+            total_import = sum(trade_value_usd_imp)) %>%
+  arrange(desc(year))
+
+
+# Calculate the net difference
+top_partners <- top_partners %>%
+  mutate(trade_difference = total_export - total_import)%>%
+  na.omit() 
+
+
+# Visualize import and export relations with top trading partners
+ggplot(data = top_partners, aes(x = year)) +
+  geom_bar(aes(y = total_export, fill = "Export"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed" ) +
+  geom_bar(aes(y = -total_import, fill = "Import"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed") +
+  geom_bar(aes(y = trade_difference, fill = factor(sign(trade_difference))),
+           stat = "identity", position = "dodge", color = "black", alpha=0.7) +
+  labs(title = "Net Trade Position of Turkey",
+       x = "Year", y = "Total Trade Value (USD)") +
+  scale_fill_manual(values = c("Export" = "gray", "Import" = "lightgray",
+                                "1" = "skyblue3", "-1" = "lightcoral"),
+                    name = "",
+                    labels = c("Turkey net importer", "Turkey net exporter", "Export", "Import")) +
+  geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = "top")
+```
+
 
 Let's conduct a more in-depth analysis to determine the product categories in which Turkey holds a strong position in its exports.
 
