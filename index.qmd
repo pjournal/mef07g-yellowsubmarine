@@ -1,5 +1,4 @@
-![](cover.jpg){fig-align="center" width="800"}
-<small>Here is an image taken from [Morfosis](https://morfosis.mx/) , produced by AI and edited by us</small>
+![](cover.jpg){fig-align="center" width="800"} <small>Here is an image taken from [Morfosis](https://morfosis.mx/) , produced by AI and edited by us</small>
 
 # Introduction {.unnumbered}
 
@@ -13,10 +12,10 @@ Each section is an assignment or an individual work.
 
 # Group Members
 
-+ [Sezer Türkmen](https://pjournal.github.io/mef07-sezerlucianturkmen/)  
-+ [Sezgi Ayhan](https://pjournal.github.io/mef07-sezgia/)
+-   [Sezer Türkmen](https://pjournal.github.io/mef07-sezerlucianturkmen/)\
+-   [Sezgi Ayhan](https://pjournal.github.io/mef07-sezgia/)
 
-# Group Project - A Turkey Analysis: Trade Balance & Partners based on World Integrated Trade Systems (WITS) Database
+# Group Project - Turkey Analysis: Trade Balance & Partners based on World Integrated Trade Systems (WITS) Database
 
 ## About
 
@@ -27,22 +26,23 @@ Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loa
 ## Teaser
 
 ::: {style="text-align: center;"}
-<iframe width="750" height="430" src="https://www.youtube.com/embed/7osS1YQZPSQ" frameborder="0" allowfullscreen style="display: inline-block;"></iframe>
+<iframe width="750" height="430" src="https://www.youtube.com/embed/7osS1YQZPSQ" frameborder="0" allowfullscreen style="display: inline-block;">
+
+</iframe>
+
 </iframe>
 :::
 
 ## Contents
 
-- [Data Preprocessing](docs/preprocesseddata.html)
+-   [Data Preprocessing](docs/preprocesseddata.html)
 
-- [Exploratory Data Analysis](exploratorydataanalysis.html)
+    -   [RDS Link](https://github.com/pjournal/mef07g-yellowsubmarine/blob/main/wits_data.rds)
 
-- [Final Report](finalreport.html)
+-   [Exploratory Data Analysis](exploratorydataanalysis.html)
 
-- [Shiny App](https://sezerlucianturkmen.shinyapps.io/yellowsubmarine/)
+-   [Final Report](finalreport.html)
 
-- [Medium Post](https://medium.com/eda-journal/a-turkey-analysis-trade-balance-partners-based-on-world-integrated-trade-systems-wits-database-ecaf9597204c)
+-   [Shiny App](https://sezerlucianturkmen.shinyapps.io/yellowsubmarine/)
 
-
-
-
+-   [Medium Post](https://medium.com/eda-journal/a-turkey-analysis-trade-balance-partners-based-on-world-integrated-trade-systems-wits-database-ecaf9597204c)
