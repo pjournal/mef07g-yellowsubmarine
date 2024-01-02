@@ -10,6 +10,7 @@ book:
     - preprocesseddata.qmd
     - exploratorydataanalysis.qmd
     - finalreport.qmd
+    - presentation.qmd
     - assignment1.qmd
   page-footer: 
     center: "[MEF BDA 503](https://mef-bda503.github.io)" 
@@ -18,12 +19,6 @@ book:
 format:
   html:
     theme: journal
-  pdf:
-    documentclass: scrreprt
-    chapters:
-      preprocesseddata.qmd: false
-      exploratorydataanalysis.qmd: false
-      finalreport.qmd: true 
-      index.qmd: false
-      assignment1.qmd: false
+
+   
 

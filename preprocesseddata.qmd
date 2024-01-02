@@ -2,7 +2,6 @@
 title: "Preprocessed Data"
 author: "Group Yellow Submarine"
 date: "2023-11-16"
-
 ---
 
 ## Yellow Submarine's Project Proposal on WITS data
