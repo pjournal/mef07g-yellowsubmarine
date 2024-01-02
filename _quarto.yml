@@ -18,5 +18,12 @@ book:
 format:
   html:
     theme: journal
-  
+  pdf:
+    documentclass: scrreprt
+    chapters:
+      preprocesseddata.qmd: false
+      exploratorydataanalysis.qmd: false
+      finalreport.qmd: true 
+      index.qmd: false
+      assignment1.qmd: false
 

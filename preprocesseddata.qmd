@@ -2,8 +2,7 @@
 title: "Preprocessed Data"
 author: "Group Yellow Submarine"
 date: "2023-11-16"
-number-sections: false
-toc: true
+
 ---
 
 ## Yellow Submarine's Project Proposal on WITS data
@@ -95,4 +94,4 @@ DT::datatable(head(read_wits_turkey_data_with_partners), editable = list(
 
 ## References
 
-Basic examples listed in [this link](file%20https://docs.ropensci.org/tradestatistics/articles/basic-usage.html) were useful during creating RDS and monitoring data tables
+Basic examples listed in [this link](https://docs.ropensci.org/tradestatistics/articles/basic-usage.html) were useful during creating RDS and monitoring data tables

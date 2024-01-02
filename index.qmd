@@ -43,6 +43,14 @@ Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loa
 
 -   [Final Report](finalreport.html)
 
+    - [PDF format](finalreport.pdf)
+    - [HTML format](finalreport.html)
+
 -   [Shiny App](https://sezerlucianturkmen.shinyapps.io/yellowsubmarine/)
+
+    -   [Shiny Codes](https://github.com/pjournal/mef07g-yellowsubmarine/blob/main/app/app.R)
+    -   You can also reach the Shiny App by running the code below in R Console:
+
+        **`shiny::runGitHub(repo = "pjournal/mef07g-yellowsubmarine",subdir="app/app.R")`**
 
 -   [Medium Post](https://medium.com/eda-journal/a-turkey-analysis-trade-balance-partners-based-on-world-integrated-trade-systems-wits-database-ecaf9597204c)

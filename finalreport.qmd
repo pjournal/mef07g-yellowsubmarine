@@ -1,5 +1,5 @@
 ---
-title: " Final Reports"
+title: " Final Report"
 author: "Group Yellow Submarine"
 date: "2024-01-04"
 format: 
@@ -7,6 +7,10 @@ format:
     code-fold: true
     code-tools: true
     number-sections: false
+  pdf:
+    code-fold: true
+    number-sections: false
+
 ---
 
 ## Key Takeways
@@ -46,7 +50,7 @@ library(ggplot2)
 library(RColorBrewer)
 library(ggridges)
 library(knitr)
-library(kableExtra)
+#library(kableExtra)
 library(DT)
 
 #In order to solve conflicts in different packages, we additionally loaded conflicted package to set our preference as dplyr
@@ -100,8 +104,8 @@ total_imports <- read_wits_turkey_data_only %>%
 ggplot() +
   geom_line(data = total_exports, aes(x = year, y = total_exports, color = "Exports"), size = 1.5) +
   geom_line(data = total_imports, aes(x = year, y = total_imports, color = "Imports"), size = 1.5) +
-  labs(title = "Turkey's Exports and Imports Over the Years", x = "Year", y = "Trade Value (USD)"
-)
+  labs(title = "Turkey's Exports and Imports Over the Years", x = "Year", y = "Trade Value (mn USD)") +
+  scale_y_continuous(labels = scales::comma_format(scale = 1e-6))  # Format y-axis labels as millions
 ```
 
 ```{r message=FALSE,warning=FALSE}
@@ -127,21 +131,21 @@ yearly_trade_net <- yearly_trade_net  %>%
 
 
 # Visualize import and export by year
-
 ggplot(data = yearly_trade_net, aes(x = year)) +
-  geom_bar(aes(y = total_export, fill = "Export"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed" ) +
-  geom_bar(aes(y = -total_import, fill = "Import"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed") +
-  geom_bar(aes(y = trade_difference, fill = factor(sign(trade_difference))),
+  geom_bar(aes(y = total_export, fill = "Export"), stat = "identity", position = "dodge", color = "darkgray", linetype = "dashed" ) +
+  geom_bar(aes(y = -total_import , fill = "Import"), stat = "identity", position = "dodge", color = "darkgray", linetype = "dashed") +
+  geom_bar(aes(y = trade_difference , fill = factor(sign(trade_difference))),
            stat = "identity", position = "dodge", color = "black", alpha=0.7) +
   labs(title = "Net Trade Position of Turkey",
-       x = "Year", y = "Total Trade Value (USD)") +
+       x = "Year", y = "Total Trade Value (mn USD)") +
   scale_fill_manual(values = c("Export" = "gray", "Import" = "lightgray",
                                 "1" = "skyblue3", "-1" = "lightcoral"),
                     name = "",
                     labels = c("Net importer", "Export", "Import")) +
   geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
   theme(axis.text.x = element_text(angle = 90, hjust = 0.5),
-        legend.position = "top")
+        legend.position = "top") +
+  scale_y_continuous(labels = scales::comma_format(scale = 1e-6))
 ```
 
 #### Top Export Product Categories
@@ -249,13 +253,13 @@ Turkey's top 10 import value constitute 81% of total imports.
 
 Machinery and equipment, base metals and their articles, mineral products, chemicals as well as vehicles and associated equipment constitute the primary import categories contributing to Turkey's import value. There is a substantial import of investment goods, components and parts, along with unprocessed materials used in industrial activities. Sectors with the highest import requirements are the ones with higher capital and technology intensity[^6] .This highlights Turkey's dependence on a significant influx of intermediate goods.
 
-[^6]: \[Import Content of Turkish Production and Exports: A sectoral analysis\](<https://www.sciencedirect.com/science/article/pii/S1303070120300275#fig1>)
+[^6]: [Import Content of Turkish Production and Exports: A sectoral analysis](<https://www.sciencedirect.com/science/article/pii/S1303070120300275#fig1>)
 
 Uncategorized value, labelled as NA has an average of \$21 billion of import bill throughout the analysis period, fills a gap in this analysis that we haven't touched upon, which is the energy dependency of Turkey. Between 2002 and 2020, Turkey's average energy bill, as reported by the Turkish Statistical Institute in the Foreign Trade Indicators, amounts to \$31 billion. This constitutes 17% of Turkey's total imports, playing a significant role in driving the economy.
 
 Second chart also proves that Turkey’s exports are concentrated in the sectors where the use of imported inputs has expanded during the past two decade.[^7] The third chart explicitly highlights Turkey's import dependency, underscoring the critical need to enhance local input production. This transition is crucial in order to position Turkey with its price advantage (undervalued TL), boost export profitability and enhance its competitiveness in the international market.
 
-[^7]: \[Import Content of Turkish Production and Exports: A sectoral analysis\](<https://www.sciencedirect.com/science/article/pii/S1303070120300275#fig1>)
+[^7]: [Import Content of Turkish Production and Exports: A sectoral analysis](<https://www.sciencedirect.com/science/article/pii/S1303070120300275#fig1>)
 
 Based on these observations, there is a need for a strategic focus on R&D investments and incentives for a highly skilled workforce. This is crucial for adoption of a new economic model, which Turkey could leverage to reduce its reliance on intermediate goods.
 
@@ -333,7 +337,7 @@ ggplot(data = import_plot_data, aes(x = year, y = total_import/1000000, color = 
   theme(legend.position = "none")  # Remove legend
 ```
 
-```{r}
+```{r message= FALSE}
 # Calculate total trade for each section
 sections <- read_wits_turkey_data_with_partners %>%
   group_by(section_name) %>%
@@ -375,10 +379,10 @@ top_sections <- top_sections %>%
     
 # Visualize import and export relations with top trading partners
 ggplot(data = top_sections, aes(x = reorder(section_name, -total_export - total_import))) +
-  geom_bar(aes(y = total_export/1e6, fill = "Export"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed" ) +
-  geom_bar(aes(y = -total_import/1e6, fill = "Import"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed") +
-  geom_bar(aes(y = trade_difference/1e6, fill = factor(sign(trade_difference/1e6))),
-           stat = "identity", position = "dodge", color = "black", alpha=0.7) +
+  geom_bar(aes(y = total_export , fill = "Export"), stat = "identity", position = "dodge", color = "darkgray", linetype = "dashed" ) +
+  geom_bar(aes(y = -total_import , fill = "Import"), stat = "identity", position = "dodge", color = "darkgray", linetype = "dashed") +
+  geom_bar(aes(y = trade_difference , fill = factor(sign(trade_difference / 1e6))),
+           stat = "identity", position = "dodge", color = "black", alpha = 0.7) +
   labs(title = "Foreign Trade Surplus/Deficit by Top 10 Products",
        x = "Partner", y = "Total Trade Value (mn USD)") +
   scale_fill_manual(values = c("Export" = "gray", "Import" = "lightgray",
@@ -387,7 +391,8 @@ ggplot(data = top_sections, aes(x = reorder(section_name, -total_export - total_
                     labels = c("Turkey net importer", "Turkey net exporter", "Export", "Import")) +
   geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
   theme(axis.text.x = element_text(angle = 90, hjust = 0.5),
-        legend.position = "top")
+        legend.position = "top") +
+  scale_y_continuous(labels = scales::comma_format(scale = 1e-6)) 
 ```
 
 ### Trade Partnership Analysis
@@ -413,6 +418,28 @@ top_sections <- read_wits_turkey_data_with_partners %>%
 read_wits_turkey_data_with_partners_top10 <- read_wits_turkey_data_with_partners %>%
   filter(section_name %in% top_sections$section_name)
 
+
+read_wits_turkey_data_with_partners_top10 <- read_wits_turkey_data_with_partners_top10 %>% 
+  mutate(
+    section_name = case_when(
+      str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
+      str_detect(section_name, "^Base metals") ~ "Base Metal Products",
+      str_detect(section_name, "^Articles of stone") ~ "Stone Products",
+      str_detect(section_name, "^Live animals") ~ "Animal Products",
+      str_detect(section_name, "^Machinery and") ~ "Mechanical Products",
+      str_detect(section_name, "^Miscellaneous manufactured") ~ "Manucraft Products",
+      str_detect(section_name, "^Optical,") ~ "Media Products",
+      str_detect(section_name, "^Pulp of wood") ~ "Wood Products",
+      str_detect(section_name, "^Natural or") ~ "Natural Products",
+      str_detect(section_name, "^Vehicles,") ~ "Vehicles Equipment",
+      str_detect(section_name, "^Plastics and articles") ~ "Plastics",
+      str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
+      str_detect(section_name, "^Prepared foodstuffs,") ~ "Foodstuffs and Tobacco",
+      TRUE ~ as.character(section_name)
+    )
+  )
+
+
 # Step 3: Count partner_names corresponding to the top 10 section_names in the entire dataframe
 read_wits_turkey_data_with_partners_top10  <- read_wits_turkey_data_with_partners_top10  %>%
   group_by(section_name) %>%
@@ -430,7 +457,7 @@ read_wits_turkey_data_with_partners_top10 <- read_wits_turkey_data_with_partners
   ungroup()
 
 # Truncate section names to the first 20 characters
-read_wits_turkey_data_with_partners_top10$truncated_name <- str_trunc(read_wits_turkey_data_with_partners_top10$section_name, 35)
+read_wits_turkey_data_with_partners_top10$truncated_name <- str_trunc(read_wits_turkey_data_with_partners_top10$section_name, 28)
 
 # Get distinct truncated names for colors
 color_names <- read_wits_turkey_data_with_partners_top10$truncated_name
@@ -464,9 +491,10 @@ Through this analysis, we have identified that Turkey's dependency is diversifie
 
 In the last five years, import stream from machinery and mechanical appliances have been declining which has the highest contribution to import value of Turkey and has the highest distinct number of trading partners. Meanwhile, import values of vehicles and equipment and chemicals were flat during this period. Conversely, plastics demonstrated a substantial increased import value over the last five years. After China banned plastic waste imports, Turkey became one of the world's primary destinations for the global plastic waste trade.[^8]
 
-[^8]: \[Why Turkey should not import plastic waste pollution from developed countries?\] (<https://www.sciencedirect.com/science/article/abs/pii/S0025326X21008067>)
+[^8]: [Why Turkey should not import plastic waste pollution from developed countries](<https://www.sciencedirect.com/science/article/abs/pii/S0025326X21008067>)
 
 ```{r message=FALSE,warning=FALSE}
+
 
 # Step 1: Find the top 10 section_name based on trade_value
 top_sections <- read_wits_turkey_data_with_partners %>%
@@ -478,6 +506,26 @@ top_sections <- read_wits_turkey_data_with_partners %>%
 # Step 2: Filter the dataframe to include only the top 10 section_names
 read_wits_turkey_data_with_partners_top10 <- read_wits_turkey_data_with_partners %>%
   filter(section_name %in% top_sections$section_name)
+
+read_wits_turkey_data_with_partners_top10 <- read_wits_turkey_data_with_partners_top10 %>% 
+  mutate(
+    section_name = case_when(
+      str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
+      str_detect(section_name, "^Base metals") ~ "Base Metal Products",
+      str_detect(section_name, "^Articles of stone") ~ "Stone Products",
+      str_detect(section_name, "^Live animals") ~ "Animal Products",
+      str_detect(section_name, "^Machinery and") ~ "Mechanical Products",
+      str_detect(section_name, "^Miscellaneous manufactured") ~ "Manucraft Products",
+      str_detect(section_name, "^Optical,") ~ "Media Products",
+      str_detect(section_name, "^Pulp of wood") ~ "Wood Products",
+      str_detect(section_name, "^Natural or") ~ "Natural Products",
+      str_detect(section_name, "^Vehicles,") ~ "Vehicles Equipment",
+      str_detect(section_name, "^Plastics and articles") ~ "Plastics",
+      str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
+      str_detect(section_name, "^Prepared foodstuffs,") ~ "Foodstuffs and Tobacco",
+      TRUE ~ as.character(section_name)
+    )
+  )
 
 # Step 3: Count partner_names corresponding to the top 10 section_names in the entire dataframe
 read_wits_turkey_data_with_partners_top10  <- read_wits_turkey_data_with_partners_top10  %>%
@@ -495,8 +543,9 @@ read_wits_turkey_data_with_partners_top10 <- read_wits_turkey_data_with_partners
   mutate(total_trade_value_imp_avg = sum(trade_value_usd_imp)/19000000) %>%
   ungroup()
 
+
 # Truncate section names to the first 50 characters
-read_wits_turkey_data_with_partners_top10$truncated_name <- str_trunc(read_wits_turkey_data_with_partners_top10$section_name, 50)
+read_wits_turkey_data_with_partners_top10$truncated_name <- str_trunc(read_wits_turkey_data_with_partners_top10$section_name, 28)
 
 # Get distinct truncated names for colors
 color_names <- read_wits_turkey_data_with_partners_top10$truncated_name
@@ -537,7 +586,7 @@ Since 1991, Turkey and Russia, as countries with a shared maritime border, have 
 
 Introduction of Belt & Road Initiative which was introduced by China in 2013, is a multinational effort to revive Silk Road and carry out trade through Far East Asia and Europe, with feeding different continents and countries along the way[^10].Turkey plays a strategic role due to its close proximity to both Asia and Europe. Being a signatory of this initiative and strong bilateral relationships with China further enhances its strategic position.
 
-[^10]: \[International Trade between Turkey and China\] (<https://dergipark.org.tr/tr/download/article-file/2939520>)
+[^10]: [International Trade between Turkey and China] (<https://dergipark.org.tr/tr/download/article-file/2939520>)
 
 Turkey predominantly maintains a net importer position among its major trading partners, with the exceptions of the United Kingdom and Iraq on an aggregate level throughout the analysis period, as exhibited in the second chart. Notably, Turkey shows a higher dependency on Russia and China compared to other partners.
 
@@ -597,9 +646,9 @@ top_partners <- top_partners %>%
 
 # Visualize import and export relations with top trading partners
 ggplot(data = top_partners, aes(x = reorder(partner_name, -total_export - total_import))) +
-  geom_bar(aes(y = total_export/1e6, fill = "Export"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed" ) +
-  geom_bar(aes(y = -total_import/1e6, fill = "Import"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed") +
-  geom_bar(aes(y = trade_difference/1e6, fill = factor(sign(trade_difference/1e6))),
+  geom_bar(aes(y = total_export, fill = "Export"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed" ) +
+  geom_bar(aes(y = -total_import, fill = "Import"), stat = "identity", position = "dodge",color = "darkgray", linetype = "dashed") +
+  geom_bar(aes(y = trade_difference, fill = factor(sign(trade_difference/1e6))),
            stat = "identity", position = "dodge", color = "black", alpha=0.7) +
   labs(title = "Foreign Trade Surplus/Deficit by Top 10 Partners",
        x = "Partner", y = "Total Trade Value (mn USD)") +
@@ -609,7 +658,8 @@ ggplot(data = top_partners, aes(x = reorder(partner_name, -total_export - total_
                     labels = c("Turkey net importer", "Turkey net exporter", "Export", "Import")) +
   geom_hline(yintercept = 0, linetype = "solid", color = "black", size = 0.5) +  # Add horizontal line at y = 0
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
-        legend.position = "top")
+        legend.position = "top") +
+  scale_y_continuous(labels = scales::comma_format(scale = 1e-6))
 ```
 
 ```{r message=FALSE,warning=FALSE}
