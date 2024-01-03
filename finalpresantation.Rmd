@@ -31,26 +31,32 @@ body {
 ## Key Takeways
 
 
- **Net Importer Position:**  Majority Importer, Intermediary Goods
+ **Net Importer Position:**  Import Dependency on Intermediary Goods
 
- **Dependency on Energy/Resources:**  Russia, Iran Risk, Concentrated Resources
+ **Trade Partner Concentration Risk:** 200+ Total Partners, Limited Ones on Strategic Product Categories
+ 
+ **Product Category Risk:**  More than 80% of Total Exports/Imports coming from Top 10 Product Categories
+ 
+ **Stagnant Revenue Streams :** Stagnant Growth in Top Export Product Categories
 
- **Vulnerability in Machinery:**  Diversification Needed,  Local Production
+ **Reliance on Intermediates:** Heavy Intermediate Use, Low level of Local Input Production  
 
- **Close Relations with Europe:** EU Customs Union, European Economic Impact
-
- **Limited Diversification:** 200+ Partners,  Stagnant Top Categories
-
- **Reliance on Intermediates:** Heavy Intermediate Use,  Low R&D Emphasis
-
- **New Economic Model Needed:** Innovation Emphasis, Diversify Trade
+ **New Economic Model Needed:** Investments on R&D, Innovation Emphasis, Diversification of  Import & Export Sources
 
 
 ---
 ## Introduction
+Group members are Sezer Türkmen, Sezgi Ayhan
 
-** Turkey, between 2002 and 2020, predominantly imported intermediary goods, indicating a reliance on external sources. Vulnerabilities in energy, machinery, and close ties with Europe were noted. Despite having 200+ trading partners, there's limited diversification in high-revenue categories, signaling a need for market exploration. The study emphasizes Turkey's heavy dependence on intermediates and calls for a new economic model, encouraging innovation, reducing dependence, and ensuring a resilient trade ecosystem.**
+Our group project, "Turkey Analysis: Trade Balance & Partners" delves into the details of Turkey's international trade landscape from 2002 to 2020.
 
+The data, sourced from a package developed by a team led by Mauricio Vargas provides a comprehensive overview of Turkey's trade dynamics. With this study, we have;
+
+Explored certain sectors, like textiles and machinery, significantly contribute to Turkey's export revenue. On the import side, machinery and base metals play a crucial role. 
+
+Delved into the trends of these categories over the years, identifying fluctuations and their potential drivers.
+
+Explored Turkey's trade partnerships, highlighting the country's diverse range of trading allies. 
 
 
 ```{r setup, include = FALSE}
@@ -113,10 +119,7 @@ ggplot() +
 ```
 
 
-**Turkey has experienced a consistent upward 
-trajectory in both exports and imports from 2002 to 2020, influenced by factors such as 
-global crisis, commodity shocks and changes in macroeconomic 
-policies and currency exchange rates.**
+Turkey has experienced an upward trajectory in both exports and imports from 2002 to 2020, influenced by factors such as global crisis, commodity shocks and changes in macroeconomic policies and currency exchange rates.
 
 
 
@@ -163,6 +166,8 @@ ggplot(data = yearly_trade_net, aes(x = year)) +
   scale_y_continuous(labels = scales::comma_format(scale = 1e-6))
 ```
 
+Turkey has always registered net foreign trade deficit throughout the analysis period.
+
 ---
 
 
@@ -194,60 +199,7 @@ ggplot(data = export_plot_data, aes(x = reorder(section_name, -total_export), y 
 
 ```
 
-
-
----
-## Top Export Product Categories
-```{r fig.width=11, fig.height=5,echo=FALSE, message=FALSE,warning=FALSE}
-top_exports_products <- read_wits_turkey_data_only %>%
-  group_by(section_name) %>%
-  summarize(total_export = sum(trade_value_usd_exp)/19) %>%
-  top_n(9)%>%
-  na.omit() 
-
-top_exports_products <- top_exports_products %>% 
-  mutate(
-    section_name = case_when(
-      str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
-      str_detect(section_name, "^Base metals") ~ "Base Metal Products",
-      str_detect(section_name, "^Natural or") ~ "Natural Products",
-      str_detect(section_name, "^Vehicles,") ~ "Vehicles Equipment",
-      str_detect(section_name, "^Plastics and articles") ~ "Plastics",
-      str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
-      str_detect(section_name, "^Prepared foodstuffs,") ~ "Foodstuffs and Tobacco",
-      TRUE ~ as.character(section_name)
-    )
-  )
-
-read_wits_turkey_data_with_partners_edit <- read_wits_turkey_data_with_partners%>% 
-  mutate(
-    section_name = case_when(
-      str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
-      str_detect(section_name, "^Base metals") ~ "Base Metal Products",
-      str_detect(section_name, "^Natural or") ~ "Natural Products",
-      str_detect(section_name, "^Vehicles,") ~ "Vehicles Equipment",
-      str_detect(section_name, "^Plastics and articles") ~ "Plastics",
-      str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
-      str_detect(section_name, "^Prepared foodstuffs,") ~ "Foodstuffs and Tobacco",
-      TRUE ~ as.character(section_name)
-    )
-  )
-
-# Filter the data with the selected top import products
-export_plot_data <- read_wits_turkey_data_with_partners_edit %>%
-filter(section_name %in% top_exports_products$section_name)%>%
-  group_by(year, section_name) %>%
-  summarize(total_export = sum(trade_value_usd_exp)) %>%
-  ungroup()
-  
-
-# Create the plot with geom_point
-ggplot(data = export_plot_data, aes(x = year, y = total_export/1000000, color = section_name)) +
-  geom_line(size = 1.2) +
-  facet_wrap(~section_name, scales = "free_y", ncol = 3, labeller = labeller(NULL)) +
-  labs(title = "Export Trends of Top Products (2002-2020, Turkey)", x = "Year", y = "Annual Export Value (mn USD)") +
-  theme(legend.position = "none")  # Remove legend
-```
+Turkey's annual export revenue on average throughout the analysis period is \~125bn USD. Turkey's top 10 export revenues constitute 89% of total export income.
 
 ---
 ## Top Import Product Categories
@@ -279,60 +231,11 @@ ggplot(data = imported_plot_data, aes(x = reorder(section_name, -total_import), 
 
 ```
 
----
-## Top Import Product Categories
-
-```{r fig.width=11, fig.height=5,echo=FALSE,message=FALSE}
-top_import_products <- read_wits_turkey_data_only %>%
-  group_by(section_name) %>%
-  summarize(total_import = sum(trade_value_usd_imp)) %>%
-  top_n(10)%>%
-  na.omit() 
-
-top_import_products <- top_import_products %>% 
-  mutate(
-    section_name = case_when(
-        str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
-      str_detect(section_name, "^Base metals") ~ "Base Metal Products",
-      str_detect(section_name, "^Natural or") ~ "Natural Products",
-      str_detect(section_name, "^Vehicles,") ~ "Vehicles Equipment",
-      str_detect(section_name, "^Plastics and articles") ~ "Plastics",
-      str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
-      TRUE ~ as.character(section_name)
-    )
-  )
-
-read_wits_turkey_data_with_partners_edit <- read_wits_turkey_data_with_partners%>% 
-  mutate(
-    section_name = case_when(
-      str_detect(section_name, "^Machinery and mechanical appliances") ~ "Machinery Products",
-      str_detect(section_name, "^Base metals") ~ "Base Metal Products",
-      str_detect(section_name, "^Natural or") ~ "Natural Products",
-      str_detect(section_name, "^Vehicles,") ~ "Vehicles Equipment",
-      str_detect(section_name, "^Plastics and articles") ~ "Plastics",
-      str_detect(section_name, "^Product of the chemicals") ~ "Chemicals",
-      TRUE ~ as.character(section_name)
-    )
-  )
-
-# Filter the data with the selected top import products
-import_plot_data <- read_wits_turkey_data_with_partners_edit %>%
-  filter(section_name %in% top_import_products$section_name) %>%
-  group_by(year, section_name) %>%
-  summarize(total_import = sum(trade_value_usd_imp)) %>%
-  ungroup()  
-
-# Create the plot with geom_point
-ggplot(data = import_plot_data, aes(x = year, y = total_import/1000000, color = section_name)) +
-  geom_line(size = 1.2) +
-  facet_wrap(~section_name, scales = "free_y", ncol = 3, labeller = labeller(NULL)) +
-  labs(title = "Import Trends of Top 9 Products (2002-2020, Turkey)", x = "Year", y = "Import Value") +
-  theme(legend.position = "none")  # Remove legend
-```
-
+Turkey's import value on average throughout the analysis period is \~183 bn USD.Turkey's top 10 import value constitute 81% of total imports.
 
 ---
-## Top Import Product Categories
+
+## Product Category Analysis
 
 ```{r fig.width=11, fig.height=5,echo=FALSE,message= FALSE}
 # Calculate total trade for each section
@@ -416,6 +319,8 @@ ggplot(data = top_partners, aes(x = reorder(partner_name, -total_trade), y = tot
   theme(legend.position = "none")
 
 ```
+
+Turkey engages with more than 200 distinct export partners across its top 10 product categories, showcasing a diversified revenue stream. Top 10 trade partners' total trade value with Turkey throughout the analysis period constitute 51% of total trade value.
 
 ---
 ## Trade Partnership Analysis
@@ -620,21 +525,19 @@ ggplot(filtered_commodity_data, aes(x = partner_name, y = total_imp_value, fill 
 ## Conclusion
 
 **Robust Growth Amid Global Shifts:**
-Turkey's trade has steadily grown over two decades, navigating events like financial crises and policy changes.*
-
-**Monetary Policy's Trade Impact:**
-Adoption of a floating exchange rate post-2001 significantly shaped Turkey's trade dynamics.
+Turkey's trade has steadily grown over two decades, navigating events like financial crises and policy changes.
 
 **Resilience Through Deficits:**
-Despite trade deficits, Turkey adapts well to economic challenges, evident in the 2008 crisis and recent pandemic slowdown.
+Despite facing a persistent foreign trade deficit, Turkey has showcased its ability to navigate through economic downturns
 
 **Key Sectors and Dependencies:**
-Textiles, machinery, and base metals drive exports; machinery and base metals are crucial imports, revealing reliance on diverse intermediates.
+Textiles, machinery, and base metals drive exports; machinery and base metals are crucial imports, revealing reliance on diverse intermediates. Turkey’s exports are also concentrated in the sectors where the use of imported inputs has expanded.
 
 **Diverse Global Partnerships:**
 Turkey's 200+ trade partners, including neighboring countries and major economies like Germany, Italy, China, the USA, and Russia, highlight its strategic global trade position.
 
-
+**Actionable Insights:**
+There is a need to enhance local input production, reduce reliance on intermediate goods, and strategically focus on R&D investments 
 ---
 
 ## Thank You For Listening!
