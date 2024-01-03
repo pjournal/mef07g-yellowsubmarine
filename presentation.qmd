@@ -10,12 +10,12 @@ format:
 ---
 *Here you can find Presentation Codes:*
 
--   [Presentation Code](https://github.com/pjournal/mef07g-yellowsubmarine/blob/main/finalpresantation.Rmd)
+-   [Presentation R Codes](https://github.com/pjournal/mef07g-yellowsubmarine/blob/main/finalpresantation.Rmd)
 
 *Here you can find Presentation in HTML :*
 
--   [Presentation Code](https://github.com/pjournal/mef07g-yellowsubmarine/blob/main/finalpresantation.html)
+-   [Presentation HTML](finalpresantation.html)
 
 *Here you can find Presentation in PDF :*
 
--   [Presentation Code](https://github.com/pjournal/mef07g-yellowsubmarine/blob/main/docs/finalpresentation.pdf)
+-   [Presentation PDF](finalpresentation.pdf)

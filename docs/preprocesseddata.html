@@ -271,6 +271,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'dplyr' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'stringr' was built under R version 4.3.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.4
 ✔ forcats   1.0.0     ✔ stringr   1.5.1
@@ -282,10 +288,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tradestatistics)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tradestatistics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tradestatistics' was built under R version 4.3.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="datasets" class="level3" data-number="1.2.2">
@@ -294,63 +303,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>DataSet 1:</strong> This data set shows Turkey’s export and import values with product categories &amp; related commodities’ names &amp; codes only</p>
 <p><strong>DataSet 2:</strong> This data set shows Turkey’s and its partners’ export and import values with product categories &amp; related commodities’ names &amp; codes</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#DataSet 1: </span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>wits_turkey_data_only <span class="ot">&lt;-</span> <span class="fu">ots_create_tidy_data</span>(</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> <span class="dv">2002</span><span class="sc">:</span><span class="dv">2020</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">reporters =</span> <span class="st">"tur"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">table =</span> <span class="st">"yrc"</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wits_turkey_data_only)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#DataSet 2: </span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>wits_turkey_data_with_partners <span class="ot">&lt;-</span> <span class="fu">ots_create_tidy_data</span>(</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> <span class="dv">2002</span><span class="sc">:</span><span class="dv">2020</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">reporters =</span> <span class="st">"tur"</span>,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">table =</span> <span class="st">"yrpc"</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wits_turkey_data_with_partners)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#Combine the datasets into a list</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>combined_datasets <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">wits_turkey_data_only =</span> wits_turkey_data_only,</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">wits_turkey_data_with_partners =</span> wits_turkey_data_with_partners</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#DataSet 1: </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>wits_turkey_data_only <span class="ot">&lt;-</span> <span class="fu">ots_create_tidy_data</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> <span class="dv">2002</span><span class="sc">:</span><span class="dv">2020</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">reporters =</span> <span class="st">"tur"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">table =</span> <span class="st">"yrc"</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wits_turkey_data_only)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#DataSet 2: </span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>wits_turkey_data_with_partners <span class="ot">&lt;-</span> <span class="fu">ots_create_tidy_data</span>(</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> <span class="dv">2002</span><span class="sc">:</span><span class="dv">2020</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">reporters =</span> <span class="st">"tur"</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">table =</span> <span class="st">"yrpc"</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wits_turkey_data_with_partners)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#Combine the datasets into a list</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>combined_datasets <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">wits_turkey_data_only =</span> wits_turkey_data_only,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">wits_turkey_data_with_partners =</span> wits_turkey_data_with_partners</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
 <section id="creating-rds-file" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="creating-rds-file"><span class="header-section-number">1.3</span> Creating RDS file</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(combined_datasets, <span class="at">file =</span> <span class="st">"wits_data.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(combined_datasets, <span class="at">file =</span> <span class="st">"wits_data.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The created .Rdata file can be reached through <a href="https://github.com/pjournal/mef07g-yellowsubmarine/blob/main/wits_data.rds">RDS Link</a></p>
 </section>
 <section id="monitoring-the-data" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="monitoring-the-data"><span class="header-section-number">1.4</span> Monitoring the Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>loaded_datasets <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"wits_data.rds"</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>read_wits_turkey_data_only <span class="ot">&lt;-</span> loaded_datasets<span class="sc">$</span>wits_turkey_data_only</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>read_wits_turkey_data_with_partners <span class="ot">&lt;-</span> loaded_datasets<span class="sc">$</span>wits_turkey_data_with_partners</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(read_wits_turkey_data_only),<span class="at">editable =</span> <span class="fu">list</span>(</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">'row'</span>, <span class="at">disable =</span> <span class="fu">list</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-
-<div class="datatables html-widget html-fill-item" id="htmlwidget-21ca33c5441f14054f2e" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-21ca33c5441f14054f2e">{"x":{"filter":"none","vertical":false,"editable":{"target":"row","disable":{"columns":[1,3,4]},"numeric":[1,8,9],"date":[]},"data":[["1","2","3","4","5","6"],[2002,2003,2004,2005,2006,2007],["tur","tur","tur","tur","tur","tur"],["Turkey","Turkey","Turkey","Turkey","Turkey","Turkey"],["010121","010121","010121","010121","010121","010121"],["Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals"],["01","01","01","01","01","01"],["Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products"],[6307262,1231248,958946,1111437,3684454,6401349],[0,136000,0,22750,403711,240770]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>year<\/th>\n      <th>reporter_iso<\/th>\n      <th>reporter_name<\/th>\n      <th>commodity_code<\/th>\n      <th>commodity_name<\/th>\n      <th>section_code<\/th>\n      <th>section_name<\/th>\n      <th>trade_value_usd_imp<\/th>\n      <th>trade_value_usd_exp<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,8,9]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"year","targets":1},{"name":"reporter_iso","targets":2},{"name":"reporter_name","targets":3},{"name":"commodity_code","targets":4},{"name":"commodity_name","targets":5},{"name":"section_code","targets":6},{"name":"section_name","targets":7},{"name":"trade_value_usd_imp","targets":8},{"name":"trade_value_usd_exp","targets":9}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'DT' was built under R version 4.3.2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(read_wits_turkey_data_with_partners), <span class="at">editable =</span> <span class="fu">list</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">'row'</span>, <span class="at">disable =</span> <span class="fu">list</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>loaded_datasets <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"wits_data.rds"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>read_wits_turkey_data_only <span class="ot">&lt;-</span> loaded_datasets<span class="sc">$</span>wits_turkey_data_only</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>read_wits_turkey_data_with_partners <span class="ot">&lt;-</span> loaded_datasets<span class="sc">$</span>wits_turkey_data_with_partners</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(read_wits_turkey_data_only),<span class="at">editable =</span> <span class="fu">list</span>(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">'row'</span>, <span class="at">disable =</span> <span class="fu">list</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div class="datatables html-widget html-fill-item" id="htmlwidget-f6a2629c85902817989d" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-f6a2629c85902817989d">{"x":{"filter":"none","vertical":false,"editable":{"target":"row","disable":{"columns":[1,3,4]},"numeric":[1,10,11],"date":[]},"data":[["1","2","3","4","5","6"],[2018,2019,2018,2005,2008,2002],["tur","tur","tur","tur","tur","tur"],["Turkey","Turkey","Turkey","Turkey","Turkey","Turkey"],["arg","aus","aut","aze","aze","bel"],["Argentina","Australia","Austria","Azerbaijan","Azerbaijan","Belgium"],["010121","010121","010121","010121","010121","010121"],["Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals"],["01","01","01","01","01","01"],["Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products"],[14926,7757,26155,6784,0,901992],[0,0,0,0,10250,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>year<\/th>\n      <th>reporter_iso<\/th>\n      <th>reporter_name<\/th>\n      <th>partner_iso<\/th>\n      <th>partner_name<\/th>\n      <th>commodity_code<\/th>\n      <th>commodity_name<\/th>\n      <th>section_code<\/th>\n      <th>section_name<\/th>\n      <th>trade_value_usd_imp<\/th>\n      <th>trade_value_usd_exp<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,10,11]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"year","targets":1},{"name":"reporter_iso","targets":2},{"name":"reporter_name","targets":3},{"name":"partner_iso","targets":4},{"name":"partner_name","targets":5},{"name":"commodity_code","targets":6},{"name":"commodity_name","targets":7},{"name":"section_code","targets":8},{"name":"section_name","targets":9},{"name":"trade_value_usd_imp","targets":10},{"name":"trade_value_usd_exp","targets":11}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-61255df4ffcf0bcc596c" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-61255df4ffcf0bcc596c">{"x":{"filter":"none","vertical":false,"editable":{"target":"row","disable":{"columns":[1,3,4]},"numeric":[1,8,9],"date":[]},"data":[["1","2","3","4","5","6"],[2002,2003,2004,2005,2006,2007],["tur","tur","tur","tur","tur","tur"],["Turkey","Turkey","Turkey","Turkey","Turkey","Turkey"],["010121","010121","010121","010121","010121","010121"],["Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals"],["01","01","01","01","01","01"],["Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products"],[6307262,1231248,958946,1111437,3684454,6401349],[0,136000,0,22750,403711,240770]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>year<\/th>\n      <th>reporter_iso<\/th>\n      <th>reporter_name<\/th>\n      <th>commodity_code<\/th>\n      <th>commodity_name<\/th>\n      <th>section_code<\/th>\n      <th>section_name<\/th>\n      <th>trade_value_usd_imp<\/th>\n      <th>trade_value_usd_exp<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,8,9]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"year","targets":1},{"name":"reporter_iso","targets":2},{"name":"reporter_name","targets":3},{"name":"commodity_code","targets":4},{"name":"commodity_name","targets":5},{"name":"section_code","targets":6},{"name":"section_name","targets":7},{"name":"trade_value_usd_imp","targets":8},{"name":"trade_value_usd_exp","targets":9}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(<span class="fu">head</span>(read_wits_turkey_data_with_partners), <span class="at">editable =</span> <span class="fu">list</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">'row'</span>, <span class="at">disable =</span> <span class="fu">list</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="datatables html-widget html-fill-item" id="htmlwidget-259748c705bb89a795bd" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-259748c705bb89a795bd">{"x":{"filter":"none","vertical":false,"editable":{"target":"row","disable":{"columns":[1,3,4]},"numeric":[1,10,11],"date":[]},"data":[["1","2","3","4","5","6"],[2018,2019,2018,2005,2008,2002],["tur","tur","tur","tur","tur","tur"],["Turkey","Turkey","Turkey","Turkey","Turkey","Turkey"],["arg","aus","aut","aze","aze","bel"],["Argentina","Australia","Austria","Azerbaijan","Azerbaijan","Belgium"],["010121","010121","010121","010121","010121","010121"],["Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals","Horses; live, pure-bred breeding animals"],["01","01","01","01","01","01"],["Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products","Live animals and animal products"],[14926,7757,26155,6784,0,901992],[0,0,0,0,10250,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>year<\/th>\n      <th>reporter_iso<\/th>\n      <th>reporter_name<\/th>\n      <th>partner_iso<\/th>\n      <th>partner_name<\/th>\n      <th>commodity_code<\/th>\n      <th>commodity_name<\/th>\n      <th>section_code<\/th>\n      <th>section_name<\/th>\n      <th>trade_value_usd_imp<\/th>\n      <th>trade_value_usd_exp<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,10,11]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"year","targets":1},{"name":"reporter_iso","targets":2},{"name":"reporter_name","targets":3},{"name":"partner_iso","targets":4},{"name":"partner_name","targets":5},{"name":"commodity_code","targets":6},{"name":"commodity_name","targets":7},{"name":"section_code","targets":8},{"name":"section_name","targets":9},{"name":"trade_value_usd_imp","targets":10},{"name":"trade_value_usd_exp","targets":11}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>

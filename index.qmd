@@ -45,6 +45,11 @@ Embarking on an Exploratory Data Analysis (EDA) journey within WITS involves loa
 
     -   [PDF format](finalreport.pdf)
     -   [HTML format](finalreport.html)
+    
+-   [Final Presentation](finalpresantation.html)
+
+    -   [PDF format](finalpresentation.pdf)
+    -   [HTML format](finalpresantation.html)
 
 -   [Shiny App](https://sezerlucianturkmen.shinyapps.io/yellowsubmarine/)
 
